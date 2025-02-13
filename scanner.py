@@ -102,6 +102,7 @@ def parse_args():
     return parser.parse_args()
 
 # Main Execution
+
 if __name__ == "__main__":
     args = parse_args()
 
@@ -112,3 +113,5 @@ if __name__ == "__main__":
         nmap_scan(args.target)
     else:
         print("⚠️ Please provide either --network or --target. Use --help for more info.")
+
+#this is just to test git
