@@ -1,8 +1,7 @@
 <h1 align="center"> Research Documentation 📃</h1>
 
 
-
-## Overview
+### Overview
 This document contains my research on existing scanning tools, network and web vulnerabilities and CVE Detection.
 
 
