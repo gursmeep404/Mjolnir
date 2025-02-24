@@ -68,10 +68,10 @@ Fun Fact 🎈 (Learned it the hard way) : Scapy uses a function sniff() to captu
 - Handling large scan results
 
 # **References** 📚
-[Nmap_Documentation] (https://nmap.org/book/man.html)
-- [Shodan_Documentation] (https://help.shodan.io/the-basics/what-is-shodan)
-- [Scapy_Docs] (https://scapy.readthedocs.io/en/latest/)
-- [Nikto] (https://cirt.net/nikto2)
-- [OWASP_ZAP] (https://www.zaproxy.org/getting-started/)
-- [NIST_NVD] (https://nvd.nist.gov/)
-- [ExploitDB] (https://www.exploit-db.com/?author=11688)
+- [Nmap Documentation](https://nmap.org/book/man.html)
+- [Shodan Documentation](https://help.shodan.io/the-basics/what-is-shodan)
+- [Scapy Docs](https://scapy.readthedocs.io/en/latest/)
+- [Nikto](https://cirt.net/nikto2)
+- [OWASP ZAP](https://www.zaproxy.org/getting-started/)
+- [NIST NVD](https://nvd.nist.gov/)
+- [ExploitDB](https://www.exploit-db.com/?author=11688)
