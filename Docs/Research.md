@@ -51,7 +51,7 @@ Fun Fact 🎈 (Learned it the hard way) : Scapy uses a function sniff() to captu
 
 ## Nikto 
 
-## OWASP Zap
+## OWASP ZAP
 
 # **Web Vulnerabilities**
 
@@ -61,17 +61,17 @@ Fun Fact 🎈 (Learned it the hard way) : Scapy uses a function sniff() to captu
 
 ## LFI
 
-# **CVE Mappint and Exploit Detection**
+# **CVE Mapping and Exploit Detection**
 
 # **Challenges**
 - Eliminating false positives in vulnerability detection
 - Handling large scan results
 
 # **References** 📚
-- [Nmap_Documentation] ()
-- [Shodan_Documentation] ()
-- [Scapy_Docs] ()
-- [Nikto] ()
-- [OWASP_Zap] ()
-- [NIST_NVD] ()
-- [ExploitDB] ()
+- [Nmap_Documentation] (https://nmap.org/book/man.html)
+- [Shodan_Documentation] (https://help.shodan.io/the-basics/what-is-shodan)
+- [Scapy_Docs] (https://scapy.readthedocs.io/en/latest/)
+- [Nikto] (https://cirt.net/nikto2)
+- [OWASP_ZAP] (https://www.zaproxy.org/getting-started/)
+- [NIST_NVD] (https://nvd.nist.gov/)
+- [ExploitDB] (https://www.exploit-db.com/?author=11688)
