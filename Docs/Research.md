@@ -39,7 +39,9 @@ Majority of the data collected is from banners but the sad thing is that it is p
 This is a python library for intercepting network traffic. It performs sniffing, crafting and sending packets and also manipulates them. 
 
 
-Fun Fact 🎈 (Learned it the hard way) : Scapy uses a function sniff() to capture packets and this function works just fine on Linux/Mac but windows like always has a problem with it. Which is why you need a system driver like npcap or winpcap(outdated now) to be able to capture packets. Whereas Linux/Mac allow direct raw socket access. So scapy directly interacts  with network interfaces using raw sockets (AF_INET). Whatever!😏
+Fun Fact 🎈 (Learned it the hard way) : Scapy uses a function sniff() to capture packets and this function works just fine on Linux/Mac but windows like always has a problem with it. Which is why you need a system driver like npcap or winpcap(outdated now) to be able to capture packets. Whereas Linux/Mac allow direct raw socket access. So scapy directly interacts  with network interfaces using raw sockets (AF_INET). 
+
+Windows I feel is like Gollum. Starts out with good intentions but you don't know when he will lose it and all hell will break loose.😏
 
 
 ## What will I use?
@@ -66,6 +68,7 @@ It is an open source web server scanner. Scans servers for misconfigurations, da
 ## OWASP ZAP
 
 ### About
+It is a web application scanner developed
 
 
 # **Web Vulnerabilities**
