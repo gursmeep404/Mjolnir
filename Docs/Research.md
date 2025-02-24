@@ -51,7 +51,22 @@ Fun Fact 🎈 (Learned it the hard way) : Scapy uses a function sniff() to captu
 
 ## Nikto 
 
+### About
+It is an open source web server scanner. Scans servers for misconfigurations, dangerous files and programs and even reveals outdated servers.
+
+### Features
+- **Banner Grabbing:**Performs banner grabbing to identify web server software and version. Then it checks if the version is outdated and what are the known vulnerabilities in that version.
+- **File Checking:**It looks for files that might expose sensitive information.
+- **SSL/TLS security check:**It checks for weak SSL/TLS (cryptographic protocols - TLS handshake to establish a secure connection) ciphers. Identifies issues with SSL/TLS certificate and hence can help prevent man in the middle attacks.
+
+### Basic commands
+- nikto -h IP_addr/domain_name
+
+
 ## OWASP ZAP
+
+### About
+
 
 # **Web Vulnerabilities**
 
