@@ -68,7 +68,15 @@ It is an open source web server scanner. Scans servers for misconfigurations, da
 ## OWASP ZAP
 
 ### About
-It is a web application scanner developed
+It is a web application scanner developed by OWASP. It performs both active and passive scanning of the application.
+
+### Features
+- **Passive Scanning:** Monitors the request and response packets
+- **Active Scanning:** Sends malicious payloads and tests for SQLi, XSS, etc
+- **fuzzing:** It performs fuzzing to check for failures if malicious input is passed
+
+### Basic Command
+- zaproxy : Opens the GUI for ZAP. You enter the URL you wish to scan and hit attack. It gives you an active scan and shows all the alerts.
 
 
 # **Web Vulnerabilities**
