@@ -67,7 +67,7 @@ Fun Fact 🎈 (Learned it the hard way) : Scapy uses a function sniff() to captu
 - Eliminating false positives in vulnerability detection
 - Handling large scan results
 
-# **References**
+# **References** 📚
 - [Nmap_Documentation] ()
 - [Shodan_Documentation] ()
 - [Scapy_Docs] ()
