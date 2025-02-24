@@ -3,11 +3,11 @@
 
 
 ## Overview
-This document contains research on existing scanning tools, network and web vulnerabilities and CVE Detection.
+This document contains my research on existing scanning tools, network and web vulnerabilities and CVE Detection.
 
 
 
-## **Network Scanning**
+<span style="color:red">Network scanning</span>
 
 
 
@@ -32,7 +32,7 @@ It is commonly used for security audits. It is opensource and uses Npcap system 
 It is a search engine for all devices on the internet.
 
 ### Features
-Majority of the data collected is from banners but the sad thing is that it is paid. So, I can't use the shodan API. Would have been cool though to passively scan the network using showdan and then moving on to active scanning.
+Majority of the data collected is from banners but the sad thing is that it is paid. So, I can't use the shodan API. Would have been cool though to passively scan the network using shodan and then moving on to active scanning.
 
 
 
@@ -43,7 +43,7 @@ Majority of the data collected is from banners but the sad thing is that it is p
 This is a python library for intercepting network traffic. It performs sniffing, crafting and sending packets and also manipulates them. 
 
 
-Fun Fact 🎈 (Learned it the hard way) : Scapy uses a function sniff() to capture packets and this function works just fine on Linux/Mac but windows like always has a problem with it. Which is why you need a system driver like npcap or winpcap(outdated now) to be able to capture packets. Whereas Linuc/Mac allow direct raw socket access. So scapy directly interacts  with network interfaces using raw sockets (AF_INET). Whatever!😏
+Fun Fact 🎈 (Learned it the hard way) : Scapy uses a function sniff() to capture packets and this function works just fine on Linux/Mac but windows like always has a problem with it. Which is why you need a system driver like npcap or winpcap(outdated now) to be able to capture packets. Whereas Linux/Mac allow direct raw socket access. So scapy directly interacts  with network interfaces using raw sockets (AF_INET). Whatever!😏
 
 
 
