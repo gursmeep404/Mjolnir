@@ -7,7 +7,7 @@ This document contains my research on existing scanning tools, network and web v
 
 
 
-<span style="color:red">Network scanning</span>
+<h2 style="color:red">Network scanning</h2>
 
 
 
