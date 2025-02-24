@@ -6,17 +6,15 @@
 This document contains my research on existing scanning tools, network and web vulnerabilities and CVE Detection.
 
 
-
-<h2 style="color:red">Network scanning</h2>
-
+# **Network Scanning**
 
 
-# Nmap 🔍
+## Nmap 🔍
 
-## About
+### About
 It is commonly used for security audits. It is opensource and uses Npcap system driver to capture traffic. It uses probes like ICMP echo requests, TCP/UDP packets, ARP requests, etc.
 
-## Features
+### Features
 - **Port Scanning:** It sends specially crafted packets to the hosts and analyzes their response. Ports can be in either of the following states - Open, Closed, filtered or unfiltered or it could be a combination of two.Open ports are those which have an applicatin running on the target listening on them. Closed ports don't have any such application listening. We can recognise this by sending a SYN packet. If a SYN-ACK is recieved meaning port is open. If RST then it is closed. Filtered status we get when firewall blocks the Nmap probe and unfiltered when probes are not blocked but the target is unresponsive to them. In both cases we can't determine whether the port is open or closed.
 
 - **OS Fingerprinting:** It performs fingerprinting of the TCP/IP Stack since every OS implements network protocols differently. This then helps identify the OS on the target machine
@@ -26,9 +24,9 @@ It is commonly used for security audits. It is opensource and uses Npcap system 
 
 
 
-# Shodan 🌍
+## Shodan 🌍
 
-## About
+### About
 It is a search engine for all devices on the internet.
 
 ### Features
@@ -37,9 +35,9 @@ Majority of the data collected is from banners but the sad thing is that it is p
 
 
 
-# Scapy ⚙️
+## Scapy ⚙️
 
-## About
+### About
 This is a python library for intercepting network traffic. It performs sniffing, crafting and sending packets and also manipulates them. 
 
 
