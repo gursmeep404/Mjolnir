@@ -1,6 +1,6 @@
 <h1 align="center"> Research Documentation 📃</h1>
 
-This document contains my research on existing scanning tools, network and web vulnerabilities and CVE detection.
+This document contains my research on existing scanning tools and libraries, network and web vulnerabilities and CVE detection.
 
 
 # **Network Scanning**
@@ -51,7 +51,7 @@ Windows I feel is like Gollum. Starts out with good intentions but you don't kno
 
 # **Web scanning**
 
-## Nikto 
+## Nikto 💎
 
 ### About
 It is an open source web server scanner. Scans servers for misconfigurations, dangerous files and programs and even reveals outdated servers.
@@ -65,7 +65,7 @@ It is an open source web server scanner. Scans servers for misconfigurations, da
 - nikto -h IP_addr/domain_name
 
 
-## OWASP ZAP
+## OWASP ZAP 🤖
 
 ### About
 It is a web application scanner developed by OWASP. It performs both active and passive scanning of the application.
@@ -77,6 +77,35 @@ It is a web application scanner developed by OWASP. It performs both active and 
 
 ### Basic Command
 - zaproxy : Opens the GUI for ZAP. You enter the URL you wish to scan and hit attack. It gives you an active scan and shows all the alerts.
+
+
+## BeautifulSoup 🍲
+
+### About 
+It is a python library used for web scraping (extracting data from websites). It parses HTML and XML documents.
+
+### Features
+- Extracts data using tags, attributes, classes, IDs
+- Capable of navigating the DOM and modifying HTML
+- It uses tools called parsers to read and understand HTML and XML. Most commomn are html5lib and lxml
+- Latest version at the time I am writing this is beautifulsoup 4.13.2
+
+## Requests 🧲
+
+### About
+It is a python library used to send HTTP requests and interact with websites and APIs
+
+### Features
+- It uses GET request to fetch data and POST to send data.
+- It can also send headers and parameters
+- It works with beautiful soup where it fetches webpages that are then analysed and parsed by beautifulsoup
+
+
+## SQLMap
+
+
+## XSStrike
+
 
 
 # **Web Vulnerabilities**
@@ -93,11 +122,15 @@ It is a web application scanner developed by OWASP. It performs both active and 
 - Eliminating false positives in vulnerability detection
 - Handling large scan results
 
+Just for my refernce : Most commonly used file formats are csv(table structure), json(key-value pairs), XML (tags), md(documentation on github), txt(normal text) 
+
 # **References** 📚
 - [Nmap Documentation](https://nmap.org/book/man.html)
 - [Shodan Documentation](https://help.shodan.io/the-basics/what-is-shodan)
 - [Scapy Documentation](https://scapy.readthedocs.io/en/latest/)
 - [Nikto](https://cirt.net/nikto2)
 - [OWASP ZAP](https://www.zaproxy.org/getting-started/)
+- [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/)
+- [Requests](https://requests.readthedocs.io/en/latest/)
 - [NIST National vulnerability Database](https://nvd.nist.gov/)
 - [Exploit Database](https://www.exploit-db.com/?author=11688)
