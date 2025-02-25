@@ -110,13 +110,13 @@ It is a python library used to send HTTP requests and interact with websites and
 
 # **CVE Mapping and Exploit Detection**
 
-## NIST NVD
+## NIST NVD 🗃️
 
 ### About
 It is a publicly available database managed by NIST. It stores CVE details.
 
 
-## Exploit-DB
+## Exploit-DB 🪬
 
 ### About
 It is a database which stores public exploits for known vulnerabilities.
