@@ -30,7 +30,7 @@ It is commonly used for security audits. It is opensource and uses Npcap system 
 It is a search engine for all devices on the internet.
 
 ### Features
-Majority of the data collected is from banners but the sad thing is that it is paid 💵. So if you are not a broke college student,buy it but I won't. Would have been cool though to passively scan the network using shodan and then moving on to active scanning.
+Majority of the data collected is from banners but the sad thing is that it is paid 💵. So if you are not a broke college student,buy it. I won't. Would have been cool though to passively scan the network using shodan and then moving on to active scanning.
 
 
 ## Scapy ⚙️
@@ -108,21 +108,29 @@ It is a python library used to send HTTP requests and interact with websites and
 - Zap to perform active scanning and detect SQLi, XSS, etc
 
 
-# **Web Vulnerabilities**
-
-## SQLi
-
-## XSS
-
-## LFI
-
 # **CVE Mapping and Exploit Detection**
+
+## NIST NVD
+
+### About
+It is a publicly available database managed by NIST. It stores CVE details.
+
+
+## Exploit-DB
+
+### About
+It is a database which stores public exploits for known vulnerabilities.
+
+
+## What will I use?
+- NVD API to get a CVE list and severity of it for the versions detected
+- Exploit-DB to query it and see if an exploit is available for the CVE
 
 # **Challenges**
 - Eliminating false positives in vulnerability detection
 - Handling large scan results
 
-Just for my refernce : Most commonly used file formats are csv(table structure), json(key-value pairs), XML (tags), md(documentation on github), txt(normal text) 
+Just for my reference : Most commonly used file formats are csv(table structure), json(key-value pairs), XML (tags), md(documentation on github), txt(normal text) 
 
 # **References** 📚
 - [Nmap Documentation](https://nmap.org/book/man.html)
