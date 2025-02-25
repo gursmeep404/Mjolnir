@@ -45,7 +45,7 @@ Windows I feel is like Gollum. Starts out with good intentions but you don't kno
 
 
 ## What will I use?
-- Nmap for active scanning of ports, OS and services: It would be beneficial to use Nmap's large database for such detection.
+- Python-nmap /Nmap for active scanning of ports, OS and services: It would be beneficial to use Nmap's large database for such detection.
 - Scapy for stealth scanning: It can craft raw packets to bypass firewalls and IDS if required.
 
 
@@ -96,16 +96,16 @@ It is a python library used for web scraping (extracting data from websites). It
 It is a python library used to send HTTP requests and interact with websites and APIs
 
 ### Features
-- It uses GET request to fetch data and POST to send data.
+- It uses GET request to fetch data and POST to send data
 - It can also send headers and parameters
 - It works with beautiful soup where it fetches webpages that are then analysed and parsed by beautifulsoup
 
 
-## SQLMap
-
-
-## XSStrike
-
+## What will I use?
+- Requests to fetch webpages and analyze responses
+- BeautifulSoup for web scraping
+- Nikto to scan for vulnerabilities and misconfigurations in web servers
+- Zap to perform active scanning and detect SQLi, XSS, etc
 
 
 # **Web Vulnerabilities**
