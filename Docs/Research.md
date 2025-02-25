@@ -142,3 +142,54 @@ Just for my reference : Most commonly used file formats are csv(table structure)
 - [Requests](https://requests.readthedocs.io/en/latest/)
 - [NIST National vulnerability Database](https://nvd.nist.gov/)
 - [Exploit Database](https://www.exploit-db.com/?author=11688)
+
+### Temporary
+Phase 1 : Build the core scanner (network scanner, web scanner, CVE and exploit mapping) -----Python
+
+Phase 2 : Build the web dashboard 
+- Frontend: Main page(start scan- network, web, full), Results page (table + charts), Vulnerability details page (CVEs and fixes), Reports page (Download Scan results)
+- Backend: API to trigger scans and retrieve results, database to store results (SQLite, PostgreSQL)
+
+Phase 3 : Testing and advancement
+
+Phase 4 : Final look on Github
+
+vuln_scanner/
+│── backend/
+│   ├── scanner/
+│   │   ├── network_scanner.py      # Uses Nmap & Scapy for network scanning
+│   │   ├── web_scanner.py          # Uses OWASP ZAP, Nikto, Requests, BeautifulSoup
+│   │   ├── cve_checker.py          # Maps detected versions to CVEs using NIST NVD
+│   │   ├── exploit_lookup.py       # Checks Exploit-DB for known exploits
+│   │   ├── utils.py                # Common helper functions
+│   │   └── __init__.py
+│   ├── api/
+│   │   ├── api.py                   # Flask API to communicate with frontend
+│   │   ├── database.py               # Handles saving scan results to a database
+│   │   ├── models.py                 # Defines data structure for scan results
+│   │   └── __init__.py
+│   ├── config.py                     # Configuration file (API keys, database settings)
+│   └── requirements.txt               # List of Python dependencies
+│
+│── frontend/
+│   ├── static/
+│   │   ├── styles.css                 # Styling for UI
+│   │   ├── scripts.js                  # JavaScript for interactivity
+│   ├── templates/
+│   │   ├── index.html                  # Main UI page
+│   │   ├── results.html                 # Page to display scan results
+│   │   ├── report.html                  # Page to download reports
+│   ├── app.py                           # Flask/Django backend for the web UI
+│
+│── docs/
+│   ├── README.md                        # Project documentation
+│   ├── research_paper.md                # Your research documentation
+│   ├── API_docs.md                       # API documentation
+│
+│── scripts/
+│   ├── install_dependencies.sh           # Script to install necessary tools
+│   ├── run_scanner.sh                    # Script to run the scanner
+│
+└── .gitignore                            # Ignore unnecessary files for Git
+
+
