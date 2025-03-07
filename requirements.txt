@@ -1,4 +1,2 @@
-scapy
-requests
-beautifulsoup4
 python-nmap
+scapy
