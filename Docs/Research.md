@@ -192,4 +192,28 @@ vuln_scanner/
 │
 └── .gitignore                            # Ignore unnecessary files for Git
 
+Mjolnir
+Only for the Worthy – Not everyone can wield Mjolnir. Your scanner will be a powerful tool in the hands of those who know how to use it.
 
+Frontend: React + Tailwind
+Backend: Flask
+Database: Postgres
+
+
+npm create vite@latest . --template react-------------initialises project structure using vite. otherwise you have to manually create all these files and folders
+
+inside the directory which contains package.json file--------npm install --------installs all dependencies listed in package.json and node_modules folder is created.
+
+vite------build tool that makes development faster. Starts a local development server. Only recompiles that file which is changed and doesnt rebuild the entire set of files. React doesnt work proberly without vite dev server which compile the jsx files into plain html and js that the browsers can understand. No bundling during development but during production you bundle it all into a dist folder and then only one server is running that is the flask server which uses files from this dist folder. 
+
+building --- compiling+bundling+dist folder creation
+
+Hence you need vite for browser to be able to process jsx
+
+python dependencies go in requirements.txt but frontend dependencies are there in package.json file
+
+index.html loads main.jsx cause browser cant directly run jsx files
+
+main.jsx is the first file to be executed. it loads react app to index.html file
+
+app.jsx contains the actual ui code
