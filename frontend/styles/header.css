@@ -1,0 +1,105 @@
+/* Main Header */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+}
+
+.header {
+  position: fixed;
+  top: 2rem;
+  left: 0;
+  width: 100%;
+  height: 9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* background: rgba(0, 0, 0, 0.9); */
+  padding: 0rem 12rem;
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+.header.hide {
+  transform: translateY(-100%);
+}
+
+.header.show {
+  transform: translateY(0);
+}
+
+/* LOGO BOX (Independent Size) */
+.logo-box {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto; 
+}
+.logo-img {
+    height: 8rem;
+    width: auto;
+    
+}
+
+/* NAVIGATION BOX (Centered) */
+.nav-box {
+  display: flex;
+  position: relative;
+  top: -0.5rem;
+  flex-grow: 1;
+  justify-content: center;
+  gap: 4.5rem;
+}
+
+.nav-box a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+  /* font-family: "poppins"; */
+  /* font-weight: bold; */
+}
+
+.nav-item {
+  position: relative;
+  text-decoration: none; /* Remove default underline */
+  color: white; /* Adjust text color */
+  padding: 10px 15px; /* Add spacing */
+  font-size: 16px;
+}
+
+
+.nav-item::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px; /* Controls the distance of the line from text */
+  width: 0;
+  height: 2px;
+  background-color: #E34853;
+  transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+.nav-item:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+.bordered-btn {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  padding: 0.8rem 3rem;
+  font-size: 1.2rem;
+  position: relative;
+  top: -0.3rem;
+  /* font-weight: bold; */
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.bordered-btn:hover {
+  background: white;
+  color: black;
+}
+

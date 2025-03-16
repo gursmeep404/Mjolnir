@@ -3,15 +3,4 @@ html, body {
   margin: 0;
   padding: 0;
 }
-.logo-container {
-    position: fixed;
-    top: 10px;
-    left: 20px;
-    z-index: 1000;
-}
 
-.logo-container img {
-    height: 6rem; /* Adjust as needed */
-    width: auto;
-    cursor: pointer;
-}
