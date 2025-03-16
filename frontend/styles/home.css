@@ -1,9 +1,10 @@
+
 .home-container {
   position: relative;
   text-align: center;
   height: 100vh;
   overflow: hidden;
-  background: radial-gradient(circle, rgb(237, 235, 235) 30%, rgb(179, 178, 178) 80%);
+  background-color: rgb(16,14,30); 
 }
 
 /* Lightning effect */

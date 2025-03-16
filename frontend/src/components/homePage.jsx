@@ -18,10 +18,10 @@ export default function Home() {
 
   return (
     <div className="home-container">
-      {/* Lightning Effect */}
+      
       {lightning && <div className="lightning"></div>}
 
-      {/* Ravens */}
+      {/* Ravens
       <motion.img
         src="../../public/animal.png"
         className="raven raven-left"
@@ -35,7 +35,7 @@ export default function Home() {
         transition={{ repeat: Infinity, duration: 6 }}
       />
 
-      {/* Mjolnir */}
+      
       <motion.img
         src="/mjolnir.png"
         className="mjolnir"
@@ -43,7 +43,7 @@ export default function Home() {
         transition={{ duration: 0.5 }}
       />
 
-      {/* Title & Scan Button */}
+      
       <h1 className="title">⚡ Mjolnir Scanner ⚡</h1>
       <p className="subtitle">
         "Strike down vulnerabilities like Thor's hammer!"
@@ -56,7 +56,7 @@ export default function Home() {
         whileTap={{ scale: 0.9 }}
       >
         Start Scan
-      </motion.button>
+      </motion.button> */}
     </div>
   );
 }
