@@ -9,9 +9,9 @@ export default function Intro() {
   
   useEffect(() => {
     const timers = [
-      setTimeout(() => setStep(1), 2000), // Show Norse text after 2s
-      setTimeout(() => setStep(2), 4000), // Show "Let the hunt begin" after 4s
-      setTimeout(() => navigate("/home"), 6000),
+      setTimeout(() => setStep(1), 6000), // Show Norse text after 2s
+      setTimeout(() => setStep(2), 12000), // Show "Let the hunt begin" after 4s
+      setTimeout(() => navigate("/home"), 16000),
     ];
     return () => timers.forEach(clearTimeout); // Cleanup timers
   }, []);
@@ -30,13 +30,13 @@ export default function Intro() {
           exit={{ opacity: 0 }}
           transition={{ duration: 1.5 }}
         >
-          ⚡ MJOLNIR ⚡
+          MJOLNIR
         </motion.h1>
       )}
 
       {step === 1 && (
         <motion.h2
-          className="welcome-text"
+          className="norse-text"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -53,7 +53,7 @@ export default function Intro() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.5 }}
         >
-          🔥 Let the hunt begin. 🔥
+          Let the hunt begin ! 
         </motion.h3>
       )}
     </div>
