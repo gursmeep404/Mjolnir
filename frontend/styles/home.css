@@ -3,7 +3,7 @@
   text-align: center;
   height: 100vh;
   overflow: hidden;
-  background: radial-gradient(circle, rgba(10,10,10,1) 30%, rgba(5,5,5,1) 80%);
+  background: radial-gradient(circle, rgb(237, 235, 235) 30%, rgb(179, 178, 178) 80%);
 }
 
 /* Lightning effect */
