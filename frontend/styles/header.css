@@ -85,6 +85,11 @@ body {
   left: 0;
 }
 
+.button-box {
+    display: flex;
+    margin: 0 1.5rem;
+}
+
 .bordered-btn {
   background: transparent;
   color: white;
@@ -99,7 +104,9 @@ body {
 }
 
 .bordered-btn:hover {
-  background: white;
-  color: black;
+  background: #E34853;
+  color: white;
+   border: 2px solid #E34853;
+/* font-weight: bold; */
 }
 
