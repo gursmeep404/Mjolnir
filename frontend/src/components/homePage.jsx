@@ -1,62 +1,50 @@
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 import "../../styles/home.css";
 
 export default function Home() {
-  const [lightning, setLightning] = useState(false);
-  const [scanActive, setScanActive] = useState(false);
+  const secondSectionRef = useRef(null);
 
-  const handleScanClick = () => {
-    setLightning(true);
-    setScanActive(true);
-    setTimeout(() => {
-      setLightning(false);
-      setScanActive(false);
-    }, 800);
+  const handleScroll = () => {
+    secondSectionRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <div className="home-container">
-      
-      {lightning && <div className="lightning"></div>}
 
-      {/* Ravens
-      <motion.img
-        src="../../public/animal.png"
-        className="raven raven-left"
-        animate={{ x: [0, 60, -60, 0], y: [0, 25, -25, 0] }}
-        transition={{ repeat: Infinity, duration: 6 }}
-      />
-      <motion.img
-        src="../../public/nature.png"
-        className="raven raven-right"
-        animate={{ x: [0, -60, 60, 0], y: [0, -25, 25, 0] }}
-        transition={{ repeat: Infinity, duration: 6 }}
-      />
+      {/* Hero Section */}
+      <section className="hero">
+        <div className="hero-text">
+          <h1>Welcome to Mjolnir Scanner</h1>
+          <p>
+            Discover vulnerabilities with the power of Thor’s hammer. Unleash
+            the might of scanning with precision and speed.
+          </p>
+          <div className="buttons">
+            <Link to="/learn-more" className="learn-more-btn">
+              Learn More →
+            </Link>
+            <button className="get-started-btn" onClick={handleScroll}>
+              Get Started
+            </button>
+          </div>
+        </div>
+        <div className="hero-image">
+          <img src="/images/vector.png" alt="Vector Illustration" />
+        </div>
+      </section>
 
-      
-      <motion.img
-        src="/mjolnir.png"
-        className="mjolnir"
-        animate={scanActive ? { rotate: [0, -10, 10, 0], y: [0, -20, 0] } : {}}
-        transition={{ duration: 0.5 }}
-      />
+      {/* Second Section */}
+      <section ref={secondSectionRef} className="second-section">
+        <h2>Deep Dive into Scanning</h2>
+        <p>Explore the features and capabilities of Mjolnir Scanner.</p>
+      </section>
 
-      
-      <h1 className="title">⚡ Mjolnir Scanner ⚡</h1>
-      <p className="subtitle">
-        "Strike down vulnerabilities like Thor's hammer!"
-      </p>
-
-      <motion.button
-        className="scan-button"
-        onClick={handleScanClick}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-      >
-        Start Scan
-      </motion.button> */}
+      {/* Third Section */}
+      <section className="third-section">
+        <h2>Advanced Security Insights</h2>
+        <p>Gain powerful insights into cybersecurity threats.</p>
+      </section>
     </div>
   );
 }

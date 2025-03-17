@@ -217,3 +217,5 @@ index.html loads main.jsx cause browser cant directly run jsx files
 main.jsx is the first file to be executed. it loads react app to index.html file
 
 app.jsx contains the actual ui code
+
+package-lock.json ---------locks the exacat versions of installed dependencies

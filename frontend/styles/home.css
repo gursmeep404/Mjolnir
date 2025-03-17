@@ -75,3 +75,136 @@
 .scan-button:hover {
   box-shadow: 0 0 20px yellow;
 }
+
+
+
+body {
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #0d0d1f;
+  color: #fff;
+  scroll-behavior: smooth;
+  overflow-y: auto; /* Ensures page scrolling */
+}
+
+.home-container {
+  min-height: 200vh; /* Makes sure there is enough content to scroll */
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background-color: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ff4b4b;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.nav-links a:hover {
+  color: #ff4b4b;
+}
+
+.codex-btn {
+  padding: 8px 15px;
+  border: 2px solid #fff;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.codex-btn:hover {
+  background: #ff4b4b;
+  border-color: #ff4b4b;
+}
+
+/* Hero Section */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 80px 40px;
+  gap: 50px;
+}
+
+.hero-text {
+  max-width: 500px;
+}
+
+.hero-text h1 {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.hero-text p {
+  font-size: 18px;
+  margin: 10px 0 20px;
+}
+
+.buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.learn-more-btn {
+  text-decoration: none;
+  color: #ff4b4b;
+  font-weight: bold;
+}
+
+.get-started-btn {
+  padding: 10px 20px;
+  background-color: #ff4b4b;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.get-started-btn:hover {
+  background-color: #e63e3e;
+}
+
+/* Hero Image */
+.hero-image img {
+  max-width: 400px;
+}
+
+/* Second & Third Sections */
+.second-section, .third-section {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.second-section h2, .third-section h2 {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.second-section p, .third-section p {
+  font-size: 18px;
+  max-width: 600px;
+  margin: 10px auto;
+}
