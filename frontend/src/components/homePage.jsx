@@ -11,14 +11,15 @@ export default function Home() {
 
   return (
     <div className="home-container">
-
       {/* Hero Section */}
       <section className="hero">
         <div className="hero-text">
-          <h1>Welcome to Mjolnir Scanner</h1>
+          <h1> THE WEB IS A BATTLEFIELD, ARM YOURSELF</h1>
           <p>
-            Discover vulnerabilities with the power of Thor’s hammer. Unleash
-            the might of scanning with precision and speed.
+            Map your attack surface, probe for known CVEs, and eliminate blind
+            spots in your security posture. With real-time reporting and
+            actionable recommendations, Mjolnir helps you harden your
+            defenses before adversaries strike.
           </p>
           <div className="buttons">
             <Link to="/learn-more" className="learn-more-btn">
@@ -29,9 +30,9 @@ export default function Home() {
             </button>
           </div>
         </div>
-        {/* <div className="hero-image">
-          <img src="/Cyber attack-pana.png" alt="Vector Illustration" />
-        </div> */}
+        <div className="hero-image">
+          <img src="network.png" alt="Vector Illustration" />
+        </div>
       </section>
 
       {/* Second Section */}
