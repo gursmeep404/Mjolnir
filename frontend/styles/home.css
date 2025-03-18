@@ -206,6 +206,22 @@ body {
   max-width: 30rem;
 }
 
+.second-section, .third-section {
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.second-section, .third-section {
+  scroll-snap-align: start;
+}
+
+html {
+  scroll-snap-type: y mandatory; /* Enables smooth section snapping */
+  overflow-y: scroll;
+}
 /* Second & Third Sections */
 .second-section, .third-section {
   text-align: center;
@@ -222,4 +238,62 @@ body {
   font-size: 18px;
   max-width: 600px;
   margin: 10px auto;
+}
+.second-section {
+  text-align: center;
+  padding: 80px 20px;
+  /* background: #0a0f1d; */
+  color: white;
+}
+
+.scan-cards {
+  display: flex;
+  justify-content: center;
+  gap: 5rem;
+  margin-top: 30px;
+}
+
+.scan-card {
+  background: linear-gradient(135deg, #141e30 0%, #243b55 100%);
+  padding: 20px;
+  border-radius: 12px;
+  width: 30rem;
+  text-align: center;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.scan-card h3 {
+  font-size: 20px;
+  margin: 10px 0;
+  margin-bottom: 1.5rem;
+}
+
+.scan-card p {
+  font-size: 14px;
+  color: #b0b0b0;
+}
+
+.scan-btn {
+  display: inline-block;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding: 0.7rem 2rem;
+  background: linear-gradient(90deg, #ff5f6d 0%, #ffc371 100%);
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.scan-btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(90deg, #ff9966 0%, #ff5e62 100%);
+}
+.scan-icon {
+  width: 10rem;
+  height: 10rem;
+  margin: 2rem auto;
 }
