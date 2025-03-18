@@ -31,7 +31,7 @@ export default function Home() {
           </div>
         </div>
         <div className="hero-image">
-          <img src="network.png" alt="Vector Illustration" />
+          <img src="data-analytics.png" alt="Vector Illustration" />
         </div>
       </section>
 

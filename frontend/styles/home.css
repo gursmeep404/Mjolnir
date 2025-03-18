@@ -202,10 +202,8 @@ body {
 }
 
 
-
-
 .hero-image img {
-  max-width: 400px;
+  max-width: 30rem;
 }
 
 /* Second & Third Sections */
