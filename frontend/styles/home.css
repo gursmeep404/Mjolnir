@@ -292,6 +292,8 @@ html {
   transform: scale(1.05);
   background: linear-gradient(90deg, #ff9966 0%, #ff5e62 100%);
 }
+
+
 .scan-icon {
   width: 10rem;
   height: 10rem;
