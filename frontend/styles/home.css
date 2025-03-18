@@ -1,96 +1,50 @@
+body {
+   
+  /* filter: blur(8px); */
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+  /* background-color: #020d24; */
+  color: #fff;
+  scroll-behavior: smooth;
+  overflow-y: auto; /* Ensures page scrolling */
+  background-attachment: fixed; /* Ensures it stays in place */
+  position: relative;
+}
+
 
 .home-container {
   position: relative;
-  text-align: center;
-  height: 100vh;
+  min-height: 200vh; /* Ensures scrollability */
   overflow: hidden;
-  background-color: rgb(16,14,30); 
 }
 
-/* Lightning effect */
-.lightning {
+/* Background Image */
+.home-container::before {
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.8);
-  z-index: 100;
-  animation: flash 0.2s ease-out;
+  background: url('/homeBackground.jpg') center/cover no-repeat;
+  background-attachment: fixed; /* Keeps it fixed while scrolling */
+  z-index: -2;
 }
 
-@keyframes flash {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
-/* Ravens */
-.raven {
+/* Dark Overlay with Adjustable Opacity */
+.home-container::after {
+  content: "";
   position: absolute;
-  width: 150px;
-  opacity: 0.8;
-}
-
-.raven-left {
-  top: 10%;
-  left: 10%;
-}
-
-.raven-right {
-  top: 15%;
-  right: 10%;
-}
-
-/* Mjolnir */
-.mjolnir {
-  width: 200px;
-  margin-top: 100px;
-}
-
-/* Title & Scan Button */
-.title {
-  font-size: 2.5rem;
-  text-transform: uppercase;
-  text-shadow: 0 0 10px cyan;
-  margin-top: 20px;
-}
-
-.subtitle {
-  font-size: 1.2rem;
-  color: gray;
-}
-
-.scan-button {
-  margin-top: 20px;
-  padding: 15px 40px;
-  font-size: 1.2rem;
-  border: none;
-  background: linear-gradient(45deg, #ff0000, #ff7300);
-  color: white;
-  cursor: pointer;
-  box-shadow: 0 0 10px red;
-  transition: all 0.3s;
-}
-
-.scan-button:hover {
-  box-shadow: 0 0 20px yellow;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.); 
+  z-index: -1;
 }
 
 
-
-body {
-  font-family: "Arial", sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #0d0d1f;
-  color: #fff;
-  scroll-behavior: smooth;
-  overflow-y: auto; /* Ensures page scrolling */
-}
-
-.home-container {
-  min-height: 200vh; /* Makes sure there is enough content to scroll */
-}
 
 /* Navbar */
 .navbar {
@@ -148,6 +102,7 @@ body {
   height: 100vh;
   padding: 80px 40px;
   gap: 50px;
+  z-index: 1;
 }
 
 .hero-text {
@@ -196,6 +151,7 @@ body {
 .second-section, .third-section {
   text-align: center;
   padding: 80px 20px;
+  z-index: 1;
 }
 
 .second-section h2, .third-section h2 {

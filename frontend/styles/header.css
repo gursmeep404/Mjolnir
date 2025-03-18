@@ -76,7 +76,7 @@ body {
   bottom: -5px; /* Controls the distance of the line from text */
   width: 0;
   height: 2px;
-  background-color: #E34853;
+  background-color: #00D9FF;
   transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
 }
 
@@ -89,24 +89,22 @@ body {
     display: flex;
     margin: 0 1.5rem;
 }
-
-.bordered-btn {
-  background: transparent;
-  color: white;
-  border: 2px solid white;
-  padding: 0.8rem 3rem;
-  font-size: 1.2rem;
-  position: relative;
-  top: -0.3rem;
-  /* font-weight: bold; */
-  cursor: pointer;
+.gradient-btn {
+   background: linear-gradient(135deg, rgba(0, 20, 40, 0.8), rgba(0, 50, 100, 0.8)); /* Subtle blue tint */
+  border: 1px solid rgba(0, 174, 255, 0.8); 
+  color: #00d9ff; /* Neon blue text */
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 10px rgba(0, 174, 255, 0.4);
   transition: all 0.3s ease-in-out;
 }
 
-.bordered-btn:hover {
-  background: #E34853;
-  color: white;
-   border: 2px solid #E34853;
-/* font-weight: bold; */
+.gradient-btn:hover {
+   box-shadow: 0 0 15px rgba(0, 174, 255, 0.6); /* Stronger glow */
+  transform: scale(1.04);
+  background: linear-gradient(135deg, rgba(0, 40, 80, 0.9), rgba(0, 80, 160, 0.9));
 }
-

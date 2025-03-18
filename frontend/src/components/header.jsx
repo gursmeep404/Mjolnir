@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import logo from "../../public/ha.svg";
+import logo from "../../public/logo.svg";
 import "../../styles/header.css";
 
 export default function Header() {
@@ -47,9 +47,8 @@ export default function Header() {
         </Link>
       </nav>
 
-      {/* Button Box */}
       <div className="button-box">
-        <button className="bordered-btn">The Codex</button>
+        <button className="gradient-btn">The Codex</button>
       </div>
     </header>
   );

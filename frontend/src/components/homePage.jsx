@@ -29,9 +29,9 @@ export default function Home() {
             </button>
           </div>
         </div>
-        <div className="hero-image">
-          <img src="/images/vector.png" alt="Vector Illustration" />
-        </div>
+        {/* <div className="hero-image">
+          <img src="/Cyber attack-pana.png" alt="Vector Illustration" />
+        </div> */}
       </section>
 
       {/* Second Section */}
