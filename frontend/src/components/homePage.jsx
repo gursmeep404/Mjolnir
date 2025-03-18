@@ -71,8 +71,47 @@ export default function Home() {
 
       {/* Third Section */}
       <section ref={thirdSectionRef} className="third-section">
-        <h2>Advanced Security Insights</h2>
-        <p>Gain powerful insights into cybersecurity threats.</p>
+        {/* Caution Message */}
+        <div className="caution-box">
+          <h2>⚠️ Ethical Hacking Disclaimer</h2>
+          <p>
+            This tool is designed for security professionals and ethical
+            hackers. Unauthorized scanning of networks or websites without
+            consent is illegal.
+          </p>
+          <p>
+            Always ensure you have explicit permission before running any scans.
+            Misuse could lead to severe legal consequences.
+          </p>
+        </div>
+
+        {/* Fun Hacker Ending */}
+        <div className="ascii-art">
+          <pre>
+            {`
+      .-"      "-.
+     /            \\
+    |              |
+    |,  .-.  .-.  ,|
+    | )(_o/  \\o_)( |
+    |/     /\\     \\|
+    (_     ^^     _)
+     \\__|IIIIII|__/
+      | \\IIIIII/ |
+      \\          /
+       \`--------\`
+      `}
+          </pre>
+          <p className="hacker-quote">
+            By the beard of Odin, I shall smite thee!
+          </p>
+        </div>
+
+        {/* Footer */}
+        <footer className="footer">
+          <p>© 2024 Mjolnir | Version 1.0.0 | All rights reserved</p>
+          <p>Developed by <span>Gursmeep Kaur</span></p>
+        </footer>
       </section>
     </div>
   );

@@ -299,3 +299,82 @@ html {
   height: 10rem;
   margin: 2rem auto;
 }
+.third-section {
+    /* background-color: #0a0a0a; */
+    flex-grow: 1;
+    color: #00ffcc;
+    text-align: center;
+    padding: 60px 20px;
+    font-family: "Courier New", monospace;
+}
+
+/* ⚠️ CAUTION BOX */
+.caution-box {
+    background: rgba(20, 20, 20, 0.9);
+    border: 2px solid #e94343;
+    border-radius: 6px;
+    padding: 18px;
+    max-width: 600px;
+    margin: 7rem auto 30px auto;
+    box-shadow: 0px 0px 12px rgba(255, 0, 0, 0.4);
+}
+
+.caution-box h2 {
+    color: #ff0800;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-shadow: 0px 0px 8px #ff0000;
+}
+
+.caution-box p {
+    color: #cccccc;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-top: 10px;
+}
+
+/* ⚡ ASCII ART */
+.ascii-art pre {
+    color: #00ff66;
+    font-size: 16px;
+    font-family: "Courier New", monospace;
+    margin-top: 4rem;
+    text-shadow: 0px 0px 12px #00ff66;
+}
+
+.hacker-quote {
+    color: #ffffff;
+    font-style: italic;
+    margin-top: 8px;
+    text-shadow: 0px 0px 8px #ffffff;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding: 15px 0;
+  background: #111; 
+  color: #32cd32; /* Hacker green */
+  font-size: 14px;
+  font-family: "Courier New", monospace;
+  /* border-top: 2px solid #444; */
+  display: flex;
+  /* flex-direction: column; */
+  align-items: end; /* Centers the text */
+  justify-content:space-between; /* Ensures vertical centering */
+}
+
+
+.footer p {
+  gap: 3rem;
+  /* margin: 5px 5rem; */
+  /* text-transform: uppercase; */
+  /* letter-spacing: 1px; */
+  /* text-align: center; */
+}
+
+.footer p span {
+  color: #e58f8f;
+  font-weight: bold;
+}
