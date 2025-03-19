@@ -308,12 +308,11 @@ html {
     font-family: "Courier New", monospace;
 }
 
-/* ⚠️ CAUTION BOX */
 .caution-box {
     background: rgba(20, 20, 20, 0.9);
     border: 2px solid #e94343;
     border-radius: 6px;
-    padding: 18px;
+    padding: 1rem 2rem 2rem 2rem;
     max-width: 600px;
     margin: 7rem auto 30px auto;
     box-shadow: 0px 0px 12px rgba(255, 0, 0, 0.4);
@@ -331,6 +330,7 @@ html {
     font-size: 16px;
     line-height: 1.5;
     margin-top: 10px;
+    margin-bottom: 1rem;
 }
 
 /* ⚡ ASCII ART */
@@ -355,7 +355,7 @@ html {
   text-align: center;
   padding: 15px 0;
   background: #111; 
-  color: #32cd32; /* Hacker green */
+  color: #ffffff; 
   font-size: 14px;
   font-family: "Courier New", monospace;
   /* border-top: 2px solid #444; */
@@ -375,6 +375,6 @@ html {
 }
 
 .footer p span {
-  color: #e58f8f;
+  color: #c3eeff;
   font-weight: bold;
 }
