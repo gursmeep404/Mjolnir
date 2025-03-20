@@ -2,26 +2,12 @@ from scapy.all import IP, TCP, UDP, ICMP, Ether, ARP, sr, sr1, srp
 import socket
 import threading
 import time
-import sqlite3
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from database.db_handler import store_fingerprint
 
-def setup_database():
-    """Sets up the OS fingerprint database."""
-    conn = sqlite3.connect("fingerprints.db")
-    cursor = conn.cursor()
-    cursor.execute('''CREATE TABLE IF NOT EXISTS os_fingerprints (
-                        ttl INT,
-                        window_size INT,
-                        os_guess TEXT)''')
-    conn.commit()
-    conn.close()
 
-def store_fingerprint(ttl, window_size, os_guess):
-    """Stores OS fingerprints in the database."""
-    conn = sqlite3.connect("fingerprints.db")
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO os_fingerprints VALUES (?, ?, ?)", (ttl, window_size, os_guess))
-    conn.commit()
-    conn.close()
 
 def arp_scan(network):
     """Performs an ARP scan to detect live hosts in a local network."""
@@ -87,7 +73,11 @@ def os_detection(host):
         ttl = response[IP].ttl
         window_size = response[TCP].window if response.haslayer(TCP) else 0
         os_guess = "Linux/Unix" if ttl <= 64 else "Windows" if 64 < ttl <= 128 else "Unknown"
-        store_fingerprint(ttl, window_size, os_guess)
+        store_fingerprint(host,ttl, window_size, os_guess)
+        print(f"[+] OS likely {os_guess} (TTL={ttl}, Window={window_size})")
+
+         # Store in database
+        store_fingerprint(host, ttl, window_size, os_guess)
         print(f"[+] OS likely {os_guess} (TTL={ttl}, Window={window_size})")
 
 def banner_grab(host, port):
@@ -104,7 +94,6 @@ def banner_grab(host, port):
         print(f"[!] No banner from {host}:{port}: {e}")
 
 def main():
-    setup_database()
     target = input("Enter target IP or network: ")
     
     if "/" in target:
