@@ -31,13 +31,13 @@ def tcp_syn_scan(host, ports):
 
         if response and response.haslayer(TCP):
             if response[TCP].flags == 0x12: 
-                print(f"[+] Port {port} is OPEN")
+                # print(f"[+] Port {port} is OPEN")
                 open_ports.append(port)
                 sr1(IP(dst=host) / TCP(dport=port, flags="R"), timeout=1, verbose=0)  
-            elif response[TCP].flags == 0x14: 
-                print(f"[-] Port {port} is CLOSED")
-        else:
-            print(f"[!] Port {port} is FILTERED (No response)")
+        #     elif response[TCP].flags == 0x14: 
+        #         print(f"[-] Port {port} is CLOSED")
+        # else:
+        #     print(f"[!] Port {port} is FILTERED (No response)")
 
     return open_ports
 
@@ -45,14 +45,20 @@ def tcp_syn_scan(host, ports):
 
 # Scanning for UDP ports
 def udp_scan(host, ports):
+    open_ports = []  
+
     for port in ports:
         pkt = IP(dst=host) / UDP(dport=port)
         response = sr1(pkt, timeout=3, verbose=0)
         
         if response is None:
-            print(f"[?] UDP Port {port} is OPEN or FILTERED")
-        elif response.haslayer(ICMP) and response[ICMP].type == 3:
-            print(f"[-] UDP Port {port} is CLOSED")
+            # print(f"[?] UDP Port {port} is OPEN or FILTERED")
+            open_ports.append(port) 
+        # elif response.haslayer(ICMP) and response[ICMP].type == 3:
+        #     print(f"[-] UDP Port {port} is CLOSED")
+
+    return open_ports  
+
 
 
 
@@ -234,6 +240,7 @@ def main():
     for t in threads:
         t.join()
     
+    print (t1, t2)
     print("[+] Scanning complete!")
 
 if __name__ == "__main__":
