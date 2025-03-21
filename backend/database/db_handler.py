@@ -158,3 +158,25 @@ def get_scan_results(host):
 
     conn.close()
     return results
+
+# Store packet summary
+def store_packet_summary(host_id, packet_summary):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO packets (host_id, packet_summary) 
+        VALUES (?, ?)
+    """, (host_id, packet_summary))
+    conn.commit()
+    conn.close()
+
+# delete old packet summary
+def clear_old_packets(host_id):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='packets';")
+    if cursor.fetchone(): 
+        cursor.execute("DELETE FROM packets WHERE host_id = ?", (host_id,))
+        conn.commit()
+
+    conn.close()

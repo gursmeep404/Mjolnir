@@ -7,14 +7,20 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from database.db_handler import get_or_create_host, store_arp_results, store_tcp_results, store_udp_results,store_icmp_results,store_os_results,store_firewall_results
+from database.db_handler import get_or_create_host, store_arp_results, store_tcp_results, store_udp_results,store_icmp_results,store_os_results,store_firewall_results, clear_old_packets, store_packet_summary
 
 sniffer = None
 sniffer_lock = threading.Lock()
 
 
 def process_packet(packet):
-    print(f"Captured packet: {packet.summary()}")
+    packet_summary = packet.summary()
+    # print(f"Captured packet: {packet_summary}")
+
+    global host_id  
+    if host_id is not None:
+        store_packet_summary(host_id, packet_summary)
+
 
 # Starting asynchronous packet sniffer
 def start_sniffer():
@@ -283,9 +289,15 @@ def detect_firewall(host):
 
 
 def main():
+
+    global host_id
+
     target = input("Enter target IP or network: ")
 
     host_id = get_or_create_host(target) 
+
+    clear_old_packets(host_id)
+
     print(f"[+] Stored target '{target}' in database (host_id: {host_id})")
     
     if "/" in target:
