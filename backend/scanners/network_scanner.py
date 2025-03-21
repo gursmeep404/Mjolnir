@@ -42,6 +42,8 @@ def arp_scan(network):
 
 # TCP SYN packets are sent to check which ports are open
 def tcp_syn_scan(host, ports):
+    global host_id
+
     open_ports = []
     closed_ports = []
     filtered_ports = []
@@ -60,7 +62,7 @@ def tcp_syn_scan(host, ports):
             elif response[TCP].flags == 0x14: 
                 closed_ports.append(port)
 
-    host_id = get_or_create_host(host) 
+
     store_tcp_results(host_id, open_ports, closed_ports, filtered_ports)
     print(f"[+] Stored TCP scan results for {host}")
     
@@ -68,6 +70,8 @@ def tcp_syn_scan(host, ports):
 
 # Scanning for UDP ports
 def udp_scan(host, ports):
+    global host_id
+
     open_ports = []
     closed_ports = []
     filtered_ports = []
@@ -86,7 +90,6 @@ def udp_scan(host, ports):
             else:
                 filtered_ports.append(port)
 
-    host_id = get_or_create_host(host) 
     store_udp_results(host_id, open_ports, closed_ports, filtered_ports)
     print(f"[+] Stored UDP scan results for {host}")
     
@@ -97,6 +100,8 @@ def udp_scan(host, ports):
 
 #ICMP echo, timestamp and address mask requests 
 def icmp_scan(host):
+    global host_id
+
     packets = [IP(dst=host)/ICMP(), IP(dst=host)/ICMP(type=13), IP(dst=host)/ICMP(type=17)]
     responses, _ = sr(packets, timeout=2, verbose=0)
     
@@ -173,7 +178,7 @@ def icmp_scan(host):
                     response_details['description'] = 'Unknown ICMP response received'
 
                 results.append(response_details)
-    host_id = get_or_create_host(host) 
+
     store_icmp_results(host_id, results)
     print(f"[+] Stored ICMP scan results for {host}")
     
@@ -182,6 +187,8 @@ def icmp_scan(host):
 
 # OS detection based on TTL and TCP window size
 def os_detection(host):
+    global host_id
+
     pkt = IP(dst=host) / TCP(dport=80, flags="S")
     response = sr1(pkt, timeout=2, verbose=0)
 
@@ -209,7 +216,7 @@ def os_detection(host):
 
         print(f"[+] OS likely {os_guess} (TTL={ttl}, Window={window_size})")
 
-    host_id = get_or_create_host(host) 
+    
     store_os_results(host_id, ttl, window_size, os_guess)
     print(f"[+] Stored OS scan results for {host}")
     
@@ -218,6 +225,8 @@ def os_detection(host):
  
 # Firewall detection 
 def detect_firewall(host):
+    global host_id
+
     results = {
         'host': host,
         'tcp_syn_responses': [],
@@ -254,7 +263,7 @@ def detect_firewall(host):
     else:
         results['conclusion'] = "No firewall detected on port 80; host responded to TCP SYN."
 
-    host_id = get_or_create_host(host) 
+
     store_firewall_results(host_id, results['tcp_syn_responses'], results['icmp_response'], results['port_443_response'], results['conclusion'])
     print(f"[+] Stored firewall scan results for {host}")
 
