@@ -4,19 +4,24 @@ import json
 DB_PATH = "database/results.db"
 
 # Store results in the database
-def store_scan_results(host, ttl, window_size, os_guess, firewall_status, icmp_responses, 
-                       tcp_open, tcp_closed, tcp_filtered, udp_open, udp_closed, udp_filtered):
-    conn = sqlite3.connect(DB_PATH)
+def store_scan_results(host, scan_type, results):
+    """Store scan results in the database."""
+    conn = sqlite3.connect("scan_results.db")
     cursor = conn.cursor()
-
+    
     cursor.execute("""
-        INSERT INTO scan_results (host, ttl, window_size, os_guess, firewall_status, icmp_responses, 
-                                  tcp_open, tcp_closed, tcp_filtered, udp_open, udp_closed, udp_filtered)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (host, ttl, window_size, os_guess, firewall_status, 
-          json.dumps(icmp_responses), json.dumps(tcp_open), json.dumps(tcp_closed), json.dumps(tcp_filtered),
-          json.dumps(udp_open), json.dumps(udp_closed), json.dumps(udp_filtered)))
-
+        CREATE TABLE IF NOT EXISTS scan_results (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            host TEXT,
+            scan_type TEXT,
+            results TEXT,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    
+    cursor.execute("INSERT INTO scan_results (host, scan_type, results) VALUES (?, ?, ?)", 
+                   (host, scan_type, str(results)))
+    
     conn.commit()
     conn.close()
 

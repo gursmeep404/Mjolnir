@@ -4,14 +4,11 @@ import threading
 import time
 import os
 import sys
-import queue
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from database.db_handler import store_fingerprint
+from database.db_handler import store_scan_results
 
-
-result_queue = queue.Queue()
 
 # ARP Scan for live hosts in a network
 def arp_scan(network):
@@ -21,6 +18,9 @@ def arp_scan(network):
     broadcast = Ether(dst="ff:ff:ff:ff:ff:ff")
     packet = broadcast / arp_request
     answered, _ = srp(packet, timeout=3, verbose=0)
+
+    results = [recv.psrc for _, recv in answered]
+    store_scan_results(network, "ARP Scan", results)
     return [recv.psrc for _, recv in answered]
 
 
@@ -44,7 +44,8 @@ def tcp_syn_scan(host, ports):
             elif response[TCP].flags == 0x14: 
                 closed_ports.append(port)
 
-    return open_ports, closed_ports, filtered_ports
+    results = {"open": open_ports, "closed": closed_ports, "filtered": filtered_ports}
+    store_scan_results(host, "TCP SYN Scan", results)
 
 
 # Scanning for UDP ports
@@ -67,7 +68,8 @@ def udp_scan(host, ports):
             else:
                 filtered_ports.append(port)
 
-    return open_ports, closed_ports, filtered_ports
+    results = {"open": open_ports, "closed": closed_ports, "filtered": filtered_ports}
+    store_scan_results(host, "UDP Scan", results)
 
 
 
@@ -150,8 +152,8 @@ def icmp_scan(host):
                     response_details['description'] = 'Unknown ICMP response received'
 
                 results.append(response_details)
-
-    return results
+    store_scan_results(host, "ICMP Scan", results)
+    
 
 
 
@@ -184,8 +186,7 @@ def os_detection(host):
 
         print(f"[+] OS likely {os_guess} (TTL={ttl}, Window={window_size})")
 
-        # Store in database
-        store_fingerprint(host, ttl, window_size, os_guess)
+        store_scan_results(host, "OS Detection", {"ttl": ttl, "window_size": window_size, "os_guess": os_guess})
 
 
  
@@ -227,21 +228,22 @@ def detect_firewall(host):
     else:
         results['conclusion'] = "No firewall detected on port 80; host responded to TCP SYN."
 
-    return results
+    store_scan_results(host, "Firewall Detection", results)
 
 
-def banner_grab(host, port):
-    """Attempts to grab banners from open ports using different payloads."""
-    try:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.settimeout(3)
-        sock.connect((host, port))
-        sock.sendall(b"HEAD / HTTP/1.1\r\nHost: target\r\n\r\n")
-        banner = sock.recv(1024).decode(errors="ignore")
-        sock.close()
-        print(f"[+] Banner on {host}:{port}: {banner.strip()}")
-    except Exception as e:
-        print(f"[!] No banner from {host}:{port}: {e}")
+# def banner_grab(host, port):
+#     """Attempts to grab banners from open ports using different payloads."""
+#     try:
+#         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#         sock.settimeout(3)
+#         sock.connect((host, port))
+#         sock.sendall(b"HEAD / HTTP/1.1\r\nHost: target\r\n\r\n")
+#         banner = sock.recv(1024).decode(errors="ignore")
+#         sock.close()
+#         print(f"[+] Banner on {host}:{port}: {banner.strip()}")
+#     except Exception as e:
+#         print(f"[!] No banner from {host}:{port}: {e}")
+
 
 def main():
     target = input("Enter target IP or network: ")
