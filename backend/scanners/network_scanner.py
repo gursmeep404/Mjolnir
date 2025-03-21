@@ -1,5 +1,5 @@
 from scapy.all import IP, TCP, UDP, ICMP, Ether, ARP, sr, sr1, srp
-import socket
+from scapy.sendrecv import AsyncSniffer
 import threading
 import time
 import os
@@ -9,6 +9,30 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from database.db_handler import get_or_create_host, store_arp_results, store_tcp_results, store_udp_results,store_icmp_results,store_os_results,store_firewall_results
 
+sniffer = None
+sniffer_lock = threading.Lock()
+
+
+def process_packet(packet):
+    print(f"Captured packet: {packet.summary()}")
+
+# Starting asynchronous packet sniffer
+def start_sniffer():
+    global sniffer
+    with sniffer_lock: 
+        if sniffer is None:
+            print("[+] Starting sniffer...")
+            sniffer = AsyncSniffer(prn=process_packet, store=False)
+            sniffer.start()
+
+# Stopping the sniffer
+def stop_sniffer():
+    global sniffer
+    with sniffer_lock:
+        if sniffer is not None:
+            print("[+] Stopping sniffer safely...")
+            sniffer.stop()
+            sniffer = None
 
 # ARP Scan for live hosts in a network
 def arp_scan(network):
@@ -273,6 +297,8 @@ def main():
     print(f"[+] Stored {len(scanned_ips)} ARP results in database")
     # print(f"[*] Found {len(hosts)} host(s): {', '.join(hosts)}")
     
+    start_sniffer()
+
     threads = []
     for host in scanned_ips:
         print(f"\n[*] Scanning {host}")
@@ -286,6 +312,8 @@ def main():
     
     for t in threads:
         t.join()
+
+    stop_sniffer()    
     
     print("[+] Scanning complete!")
 
