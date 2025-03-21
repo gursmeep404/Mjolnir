@@ -1,11 +1,11 @@
 import sqlite3
 import json
 
-DB_PATH = "database/fingerprints.db"
+DB_PATH = "database/results.db"
 
+# Store results in the database
 def store_scan_results(host, ttl, window_size, os_guess, firewall_status, icmp_responses, 
                        tcp_open, tcp_closed, tcp_filtered, udp_open, udp_closed, udp_filtered):
-    """Stores all scan results in the database."""
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -20,8 +20,9 @@ def store_scan_results(host, ttl, window_size, os_guess, firewall_status, icmp_r
     conn.commit()
     conn.close()
 
+
+# Fetch results from database
 def get_scan_results():
-    """Retrieves all stored scan results."""
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 

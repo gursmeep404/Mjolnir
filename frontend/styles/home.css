@@ -338,8 +338,9 @@ html {
     color: #00ff66;
     font-size: 16px;
     font-family: "Courier New", monospace;
-    margin-top: 4rem;
+    margin-top: 3rem;
     text-shadow: 0px 0px 12px #00ff66;
+    
 }
 
 .hacker-quote {

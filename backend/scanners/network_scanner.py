@@ -4,11 +4,14 @@ import threading
 import time
 import os
 import sys
+import queue
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from database.db_handler import store_fingerprint
 
+
+result_queue = queue.Queue()
 
 # ARP Scan for live hosts in a network
 def arp_scan(network):

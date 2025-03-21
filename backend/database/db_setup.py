@@ -1,9 +1,8 @@
 import sqlite3
 
-DB_PATH = "database/fingerprints.db"
+DB_PATH = "database/results.db"
 
 def setup_database():
-    """Creates the database table if it doesn't exist."""
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -29,6 +28,5 @@ def setup_database():
     conn.commit()
     conn.close()
 
-# Run this once to initialize the database
 if __name__ == "__main__":
     setup_database()

@@ -75,7 +75,7 @@ export default function Home() {
         <div className="caution-box">
           <h2>⚠️ Ethical Hacking Disclaimer</h2>
           <p>
-            This tool is designed to identify vulnerabilities and is to be used for penetration testing. Unauthorized scanning of networks or websites without
+            This tool is designed to identify vulnerabilities and is to be used for security analysis and penetration testing. Unauthorized scanning of networks or websites without
             consent is illegal.
           </p>
           <p>
@@ -84,7 +84,6 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Fun Hacker Ending */}
         <div className="ascii-art">
           <pre>
             {`
