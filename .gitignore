@@ -26,3 +26,4 @@ dist-ssr
 venv/
 .venv/
 cheatsheet.md
+results.db

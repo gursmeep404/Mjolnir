@@ -4,6 +4,7 @@ import threading
 import time
 import os
 import sys
+from concurrent.futures import ThreadPoolExecutor
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -33,17 +34,19 @@ def start_sniffer():
 
 # Stopping the sniffer
 def stop_sniffer():
-  global sniffer
-  if sniffer is not None and sniffer.running:
-        print("[+] Stopping sniffer safely...")
-        try:
-            sniffer.stop()
-        except Exception as e:
-            print(f"[-] Error stopping sniffer: {e}")
-        finally:
-            sniffer = None
-  else:
-        print("[!] Sniffer was not running or already stopped!")
+    global sniffer
+    with sniffer_lock:
+        if sniffer is not None and sniffer.running:
+            print("[+] Stopping sniffer safely...")
+            try:
+                sniffer.stop()  # Stop safely
+            except Exception as e:
+                print(f"[-] Error stopping sniffer: {e}")
+            finally:
+                sniffer = None  # Ensure it's cleared
+        else:
+            print("[!] Sniffer was not running or already stopped!")
+
 
 # ARP Scan for live hosts in a network
 def arp_scan(network):
@@ -292,15 +295,20 @@ def detect_firewall(host):
 #     except Exception as e:
 #         print(f"[!] No banner from {host}:{port}: {e}")
 
+def scan_host(host):
+    print(f"\n[*] Scanning {host}")
+    icmp_scan(host)
+    os_detection(host)
+    detect_firewall(host)
+    tcp_syn_scan(host, range(1, 1025))
+    udp_scan(host, range(1, 1025))
 
 def main():
-
     global host_id
 
     target = input("Enter target IP or network: ")
 
     host_id = get_or_create_host(target) 
-
     clear_old_packets(host_id)
 
     print(f"[+] Stored target '{target}' in database (host_id: {host_id})")
@@ -312,25 +320,14 @@ def main():
     
     store_arp_results(host_id, scanned_ips)
     print(f"[+] Stored {len(scanned_ips)} ARP results in database")
-    # print(f"[*] Found {len(hosts)} host(s): {', '.join(hosts)}")
-    
+
     start_sniffer()
 
-    threads = []
-    for host in scanned_ips:
-        print(f"\n[*] Scanning {host}")
-        t1 = threading.Thread(target=icmp_scan, args=(host,))
-        t2 = threading.Thread(target=os_detection, args=(host,))
-        t3 = threading.Thread(target=detect_firewall, args=(host,))
-        t4 = threading.Thread(target=tcp_syn_scan, args=(host, range(1, 1025)))
-        t5 = threading.Thread(target=udp_scan, args=(host, range(1, 1025)))
-        t1.start(), t2.start(), t3.start(), t4.start(), t5.start()
-        threads.extend([t1, t2, t3, t4, t5])
-    
-    for t in threads:
-        t.join()
+    # Use ThreadPoolExecutor for scanning
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        executor.map(scan_host, scanned_ips)  # Runs scan_host() concurrently
 
-    stop_sniffer()    
+    stop_sniffer()
     
     print("[+] Scanning complete!")
 
