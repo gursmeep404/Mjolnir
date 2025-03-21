@@ -1,5 +1,4 @@
-from scapy.all import IP, TCP, UDP, ICMP, Ether, ARP, sr, sr1, srp
-from scapy.sendrecv import AsyncSniffer
+from scapy.all import IP, TCP, UDP, ICMP, Ether, ARP, sr, sr1, srp, sniff
 import threading
 import time
 import os
@@ -23,29 +22,9 @@ def process_packet(packet):
         store_packet_summary(host_id, packet_summary)
 
 
-# Starting asynchronous packet sniffer
-def start_sniffer():
-    global sniffer
-    with sniffer_lock: 
-        if sniffer is None:
-            print("[+] Starting sniffer...")
-            sniffer = AsyncSniffer(prn=process_packet, store=False)
-            sniffer.start()
-
-# Stopping the sniffer
-def stop_sniffer():
-    global sniffer
-    with sniffer_lock:
-        if sniffer is not None and sniffer.running:
-            print("[+] Stopping sniffer safely...")
-            try:
-                sniffer.stop()  # Stop safely
-            except Exception as e:
-                print(f"[-] Error stopping sniffer: {e}")
-            finally:
-                sniffer = None  # Ensure it's cleared
-        else:
-            print("[!] Sniffer was not running or already stopped!")
+# capturing packets in real time
+def capture_packets():
+    sniff(prn=process_packet, store=False)
 
 
 # ARP Scan for live hosts in a network
@@ -321,13 +300,13 @@ def main():
     store_arp_results(host_id, scanned_ips)
     print(f"[+] Stored {len(scanned_ips)} ARP results in database")
 
-    start_sniffer()
+    sniffer_thread = threading.Thread(target=capture_packets, daemon=True)
+    sniffer_thread.start()
 
-    # Use ThreadPoolExecutor for scanning
+# Scan host() function run side by side for hosts 
     with ThreadPoolExecutor(max_workers=5) as executor:
-        executor.map(scan_host, scanned_ips)  # Runs scan_host() concurrently
+        executor.map(scan_host, scanned_ips) 
 
-    stop_sniffer()
     
     print("[+] Scanning complete!")
 
