@@ -7,7 +7,7 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from database.db_handler import store_scan_results
+from database.db_handler import get_or_create_host, store_arp_results, store_tcp_results, store_udp_results,store_icmp_results,store_os_results,store_firewall_results
 
 
 # ARP Scan for live hosts in a network
@@ -20,7 +20,6 @@ def arp_scan(network):
     answered, _ = srp(packet, timeout=3, verbose=0)
 
     results = [recv.psrc for _, recv in answered]
-    store_scan_results(network, "ARP Scan", results)
     return [recv.psrc for _, recv in answered]
 
 
@@ -44,8 +43,10 @@ def tcp_syn_scan(host, ports):
             elif response[TCP].flags == 0x14: 
                 closed_ports.append(port)
 
-    results = {"open": open_ports, "closed": closed_ports, "filtered": filtered_ports}
-    store_scan_results(host, "TCP SYN Scan", results)
+    host_id = get_or_create_host(host) 
+    store_tcp_results(host_id, open_ports, closed_ports, filtered_ports)
+    print(f"[+] Stored TCP scan results for {host}")
+    
 
 
 # Scanning for UDP ports
@@ -68,8 +69,11 @@ def udp_scan(host, ports):
             else:
                 filtered_ports.append(port)
 
-    results = {"open": open_ports, "closed": closed_ports, "filtered": filtered_ports}
-    store_scan_results(host, "UDP Scan", results)
+    host_id = get_or_create_host(host) 
+    store_udp_results(host_id, open_ports, closed_ports, filtered_ports)
+    print(f"[+] Stored UDP scan results for {host}")
+    
+    
 
 
 
@@ -152,7 +156,9 @@ def icmp_scan(host):
                     response_details['description'] = 'Unknown ICMP response received'
 
                 results.append(response_details)
-    store_scan_results(host, "ICMP Scan", results)
+    host_id = get_or_create_host(host) 
+    store_icmp_results(host_id, results)
+    print(f"[+] Stored ICMP scan results for {host}")
     
 
 
@@ -186,7 +192,10 @@ def os_detection(host):
 
         print(f"[+] OS likely {os_guess} (TTL={ttl}, Window={window_size})")
 
-        store_scan_results(host, "OS Detection", {"ttl": ttl, "window_size": window_size, "os_guess": os_guess})
+    host_id = get_or_create_host(host) 
+    store_os_results(host_id, ttl, window_size, os_guess)
+    print(f"[+] Stored OS scan results for {host}")
+    
 
 
  
@@ -228,7 +237,11 @@ def detect_firewall(host):
     else:
         results['conclusion'] = "No firewall detected on port 80; host responded to TCP SYN."
 
-    store_scan_results(host, "Firewall Detection", results)
+    host_id = get_or_create_host(host) 
+    store_firewall_results(host_id, results['tcp_syn_responses'], results['icmp_response'], results['port_443_response'], results['conclusion'])
+    print(f"[+] Stored firewall scan results for {host}")
+
+    
 
 
 # def banner_grab(host, port):
@@ -247,16 +260,21 @@ def detect_firewall(host):
 
 def main():
     target = input("Enter target IP or network: ")
+
+    host_id = get_or_create_host(target) 
+    print(f"[+] Stored target '{target}' in database (host_id: {host_id})")
     
     if "/" in target:
-        hosts = arp_scan(target)
+        scanned_ips = arp_scan(target)
     else:
-        hosts = [target]
+        scanned_ips = [target]
     
-    print(f"[*] Found {len(hosts)} host(s): {', '.join(hosts)}")
+    store_arp_results(host_id, scanned_ips)
+    print(f"[+] Stored {len(scanned_ips)} ARP results in database")
+    # print(f"[*] Found {len(hosts)} host(s): {', '.join(hosts)}")
     
     threads = []
-    for host in hosts:
+    for host in scanned_ips:
         print(f"\n[*] Scanning {host}")
         t1 = threading.Thread(target=icmp_scan, args=(host,))
         t2 = threading.Thread(target=os_detection, args=(host,))

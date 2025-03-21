@@ -1,6 +1,6 @@
 import sqlite3
 
-DB_PATH = "database/results.db"
+DB_PATH = "results.db"
 
 def setup_database():
     conn = sqlite3.connect(DB_PATH)
