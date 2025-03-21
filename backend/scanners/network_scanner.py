@@ -33,12 +33,17 @@ def start_sniffer():
 
 # Stopping the sniffer
 def stop_sniffer():
-    global sniffer
-    with sniffer_lock:
-        if sniffer is not None:
-            print("[+] Stopping sniffer safely...")
+  global sniffer
+  if sniffer is not None and sniffer.running:
+        print("[+] Stopping sniffer safely...")
+        try:
             sniffer.stop()
+        except Exception as e:
+            print(f"[-] Error stopping sniffer: {e}")
+        finally:
             sniffer = None
+  else:
+        print("[!] Sniffer was not running or already stopped!")
 
 # ARP Scan for live hosts in a network
 def arp_scan(network):
