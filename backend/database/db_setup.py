@@ -99,6 +99,21 @@ def setup_database():
         )
     """)
 
+    
+    # Table to store packet summary
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS packets (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            host_id INTEGER,
+            timestamp TEXT DEFAULT CURRENT_TIMESTAMP,
+            source_ip TEXT,
+            destination_ip TEXT,
+            protocol TEXT,
+            packet_summary TEXT,
+            FOREIGN KEY (host_id) REFERENCES hosts (host_id) ON DELETE CASCADE
+        )
+    """)
+
     conn.commit()
     conn.close()
 
