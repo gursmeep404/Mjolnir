@@ -50,7 +50,14 @@ const Dashboard = () => {
 
     fetchData();
   }, []);
-
+  // Ensure previous chart instances are destroyed
+  useEffect(() => {
+    return () => {
+      tcpChartRef.current?.destroy();
+      udpChartRef.current?.destroy();
+      icmpChartRef.current?.destroy();
+    };
+  }, []);
   // Chart Data
   const tcpChartData = useMemo(
     () => ({
@@ -121,65 +128,64 @@ const Dashboard = () => {
           </ul>
         </div>
 
-       
-          <div className="panel tcp-results">
-            <h2>🌍 TCP Port Scan Results</h2>
-            <div className="port-grid">
-              {tcpResults.length > 0 ? (
-                tcpResults.map((result, index) => {
-                  const openPorts = JSON.parse(result.tcp_open || "[]");
-                  const filteredPorts = JSON.parse(result.tcp_filtered || "[]");
-                  const closedPorts = JSON.parse(result.tcp_closed || "[]");
+        <div className="panel tcp-results">
+          <h2>🌍 TCP Port Scan Results</h2>
+          <div className="port-grid">
+            {tcpResults.length > 0 ? (
+              tcpResults.map((result, index) => {
+                const openPorts = JSON.parse(result.tcp_open || "[]");
+                const filteredPorts = JSON.parse(result.tcp_filtered || "[]");
+                const closedPorts = JSON.parse(result.tcp_closed || "[]");
 
-                  return (
-                    <div key={index} className="port-box">
-                      <h3>Host {result.host_id}</h3>
+                return (
+                  <div key={index} className="port-box">
+                    <h3>Host {result.host_id}</h3>
 
-                      {/* Open Ports Section */}
-                      <div className="port-section">
-                        <h4 className="open-title">🟢 Open Ports</h4>
-                        <div className="port-tiles open">
-                          {openPorts.map((port) => (
-                            <div
-                              key={port}
-                              className="tile open"
-                              title={`Port ${port} is open.`}
-                            >
-                              {port}
-                            </div>
-                          ))}
-                        </div>
+                    {/* Open Ports Section */}
+                    <div className="port-section">
+                      <h4 className="open-title">🟢 Open Ports</h4>
+                      <div className="port-tiles open">
+                        {openPorts.map((port) => (
+                          <div
+                            key={port}
+                            className="tile open"
+                            title={`Port ${port} is open.`}
+                          >
+                            {port}
+                          </div>
+                        ))}
                       </div>
-
-                      {/* Filtered Ports Section */}
-                      <div className="port-section">
-                        <h4 className="filtered-title">🟣 Filtered Ports</h4>
-                        <div className="port-tiles filtered">
-                          {filteredPorts.map((port) => (
-                            <div
-                              key={port}
-                              className="tile filtered"
-                              title={`Port ${port} is filtered.`}
-                            >
-                              {port}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Closed Ports Summary */}
-                      <p className="closed-summary">
-                        🔴 {closedPorts.length} ports are closed.
-                      </p>
                     </div>
-                  );
-                })
-              ) : (
-                <p>No TCP results available</p>
-              )}
-            </div>
+
+                    {/* Filtered Ports Section */}
+                    <div className="port-section">
+                      <h4 className="filtered-title">🟣 Filtered Ports</h4>
+                      <div className="port-tiles filtered">
+                        {filteredPorts.map((port) => (
+                          <div
+                            key={port}
+                            className="tile filtered"
+                            title={`Port ${port} is filtered.`}
+                          >
+                            {port}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Closed Ports Summary */}
+                    <p className="closed-summary">
+                      🔴 {closedPorts.length} ports are closed.
+                    </p>
+                  </div>
+                );
+              })
+            ) : (
+              <p>No TCP results available</p>
+            )}
           </div>
-  
+        </div>
+
         <div className="panel chart">
           <h2>🛡️ UDP Scan Results</h2>
           <Pie data={udpChartData} options={{ maintainAspectRatio: false }} />
