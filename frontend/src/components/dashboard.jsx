@@ -1,6 +1,18 @@
 import React, { useEffect, useState } from "react";
 import'../../styles/dashboard.css';
-
+import {
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  Tooltip,
+  LineChart,
+  Line,
+  Legend,
+} from "recharts";
 const Dashboard = () => {
   const [data, setData] = useState({
     hosts: [],
@@ -40,103 +52,136 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="dashboard">
+      <div className="dashboard">
       <h1>Network Scan Results</h1>
-
-      <div className="card">
-        <h2>Hosts</h2>
-        <ul>
-          {data.hosts.map((host, index) => (
-            <li key={index}>
-              {host.host} (Last Scanned: {host.last_scanned})
-            </li>
-          ))}
-        </ul>
+    <div className="card">
+      <h2>TCP Scan Results</h2>
+      <PieChart width={400} height={400}>
+        <Pie
+          data={[
+            {
+              name: "Open",
+              value: data.tcp_results?.reduce(
+                (acc, res) => acc + (res?.tcp_open?.length || 0),
+                0
+              ),
+              color: "#00FFFF", // Neon Cyan
+            },
+            {
+              name: "Closed",
+              value: data.tcp_results?.reduce(
+                (acc, res) => acc + (res?.tcp_closed?.length || 0),
+                0
+              ),
+              color: "#D100D1", // Neon Purple
+            },
+            {
+              name: "Filtered",
+              value: data.tcp_results?.reduce(
+                (acc, res) => acc + (res?.tcp_filtered?.length || 0),
+                0
+              ),
+              color: "#FF007F", // Electric Pink
+            },
+          ]}
+          dataKey="value"
+          nameKey="name"
+          cx="50%"
+          cy="50%"
+          outerRadius={120}
+          fill="#8884d8"
+          label
+        >
+          <Cell fill="#00FFFF" /> {/* Neon Cyan */}
+          <Cell fill="#D100D1" /> {/* Neon Purple */}
+          <Cell fill="#FF007F" /> {/* Electric Pink */}
+        </Pie>
+        <Tooltip />
+        <Legend />
+      </PieChart>
       </div>
-
-      <div className="card">
-        <h2>ARP Scan Results</h2>
-        <ul>
-          {data.arp_results.map((result, index) => (
-            <li key={index}>
-              {result.scanned_ip} (Scanned At: {result.scan_time})
-            </li>
-          ))}
-        </ul>
       </div>
-
-      <div className="card">
-        <h2>TCP Scan Results</h2>
-        <ul>
-          {data.tcp_results.map((result, index) => (
-            <li key={index}>
-              Open: {result.tcp_open} | Closed: {result.tcp_closed} | Filtered:{" "}
-              {result.tcp_filtered}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="card">
-        <h2>UDP Scan Results</h2>
-        <ul>
-          {data.udp_results.map((result, index) => (
-            <li key={index}>
-              Open: {result.udp_open} | Closed: {result.udp_closed} | Filtered:{" "}
-              {result.udp_filtered}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="card">
-        <h2>ICMP Responses</h2>
-        <ul>
-          {data.icmp_results.map((result, index) => (
-            <li key={index}>
-              {result.icmp_responses} (Scanned At: {result.scan_time})
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="card">
-        <h2>OS Detection</h2>
-        <ul>
-          {data.os_results.map((result, index) => (
-            <li key={index}>
-              TTL: {result.ttl} | Window Size: {result.window_size} | OS Guess:{" "}
-              {result.os_guess}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="card">
-        <h2>Firewall Detection</h2>
-        <ul>
-          {data.firewall_results.map((result, index) => (
-            <li key={index}>
-              TCP Responses: {result.tcp_syn_responses} | ICMP:{" "}
-              {result.icmp_response} | Conclusion: {result.conclusion}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="card">
-        <h2>Packet Summary</h2>
-        <ul>
-          {data.packets.map((packet, index) => (
-            <li key={index}>
-              {packet.timestamp} - {packet.source_ip} → {packet.destination_ip}{" "}
-              ({packet.protocol})
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
   );
-};
+      };
 
 export default Dashboard;
+
+// <div className="card">
+//   <h2>TCP Scan Results</h2>
+//   <ul>
+//     {data.tcp_results?.map((result, index) => (
+//       <li key={index}>
+//         Open: {result?.tcp_open?.length || 0} | Closed:{" "}
+//         {result?.tcp_closed?.length || 0} | Filtered:{" "}
+//         {result?.tcp_filtered?.length || 0}
+//       </li>
+//     ))}
+//   </ul>
+// </div>
+
+// {/* UDP Scan Bar Chart */}
+// <div className="card">
+//   <h2>UDP Scan Results</h2>
+//   <BarChart
+//     width={500}
+//     height={300}
+//     data={[
+//       {
+//         name: "UDP",
+//         Open: data.udp_results[0]?.udp_open?.length || 0,
+//         Closed: data.udp_results[0]?.udp_closed?.length || 0,
+//       },
+//     ]}
+//   >
+//     <XAxis dataKey="name" />
+//     <YAxis />
+//     <Tooltip />
+//     <Legend />
+//     <Bar dataKey="Open" fill="#82ca9d" />
+//     <Bar dataKey="Closed" fill="#8884d8" />
+//   </BarChart>
+// </div>
+
+{
+  /* ICMP Responses Pie Chart */
+}
+{
+  /* <div className="card">
+        <h2>ICMP Responses</h2>
+        <PieChart width={400} height={300}>
+          <Pie
+            data={[
+              {
+                name: "ICMP Responses",
+                value: data.icmp_results[0]?.icmp_responses?.length || 0,
+              },
+            ]}
+            cx="50%"
+            cy="50%"
+            outerRadius={80}
+            fill="#ffc658"
+            label
+          >
+            {data.icmp_results[0]?.icmp_responses?.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
+            ))}
+          </Pie>
+          <Tooltip />
+        </PieChart>
+      </div> */
+}
+
+// {/* Packet Summary Line Chart */}
+// <div className="card">
+//   <h2>Packet Summary</h2>
+//   <LineChart width={500} height={300} data={data.packets}>
+//     <XAxis dataKey="timestamp" />
+//     <YAxis />
+//     <Tooltip />
+//     <Legend />
+//     <Line type="monotone" dataKey="protocol" stroke="#8884d8" />
+//   </LineChart>
+// </div>
