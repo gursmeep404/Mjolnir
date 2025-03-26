@@ -51,53 +51,6 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  // // Chart Data
-  // const tcpChartData = useMemo(
-  //   () => ({
-  //     labels: tcpResults.map((p) => p.port || "Unknown"),
-  //     datasets: [
-  //       {
-  //         label: "Open TCP Ports",
-  //         data: tcpResults.map((p) => p.count || 1),
-  //         backgroundColor: "rgba(30, 144, 255, 0.7)",
-  //       },
-  //     ],
-  //   }),
-  //   [tcpResults]
-  // );
-
-  // const udpChartData = useMemo(
-  //   () => ({
-  //     labels: ["Open", "Closed", "Filtered"],
-  //     datasets: [
-  //       {
-  //         data: [
-  //           udpResults.filter((p) => p.status === "open").length,
-  //           udpResults.filter((p) => p.status === "closed").length,
-  //           udpResults.filter((p) => p.status === "filtered").length,
-  //         ],
-  //         backgroundColor: ["#4CAF50", "#FF5733", "#FFC107"],
-  //       },
-  //     ],
-  //   }),
-  //   [udpResults]
-  // );
-
-  // const icmpChartData = useMemo(
-  //   () => ({
-  //     labels: icmpResults.map((i) => i.ip || "Unknown"),
-  //     datasets: [
-  //       {
-  //         label: "Ping Response Time (ms)",
-  //         data: icmpResults.map((i) => i.response_time || 0),
-  //         borderColor: "#ff00ff",
-  //         fill: false,
-  //       },
-  //     ],
-  //   }),
-  //   [icmpResults]
-  // );
-
   return (
     <div className="dashboard">
       <header className="title-bar">
@@ -240,22 +193,47 @@ const Dashboard = () => {
 
         <div className="panel chart">
           <h2>📡 ICMP Responses</h2>
-          {/* <Line data={icmpChartData} options={{ maintainAspectRatio: false }} /> */}
+          {icmpResults.length > 0 ? (
+            <ul>
+              {icmpResults.map((icmp, index) => {
+                // Parse the JSON string inside icmp_responses
+                let responses = [];
+                try {
+                  responses = JSON.parse(icmp.icmp_responses);
+                } catch (error) {
+                  console.error("Error parsing ICMP responses:", error);
+                }
+
+                return responses.map((response, i) => (
+                  <li key={`${index}-${i}`}>
+                    <strong>Host:</strong> {response.host} |
+                    <strong> Type:</strong> {response.type} |
+                    <strong> Code:</strong> {response.code} |
+                    <strong> Description:</strong> {response.description}
+                  </li>
+                ));
+              })}
+            </ul>
+          ) : (
+            <p>No ICMP responses detected</p>
+          )}
         </div>
 
         <div className="panel os">
           <h2>💻 OS Fingerprinting</h2>
-          <ul>
-            {osResults.length > 0 ? (
-              osResults.map((os, index) => (
+          {osResults.length > 0 ? (
+            <ul>
+              {osResults.map((os, index) => (
                 <li key={index}>
-                  {os.ip || "Unknown"} - {os.os_name || "Unknown"}
+                  <strong>OS Guess:</strong> {os.os_guess || "Unknown"} |
+                  <strong> Window Size:</strong> {os.window_size || "N/A"} |
+                  <strong> TTL:</strong> {os.ttl || "N/A"}
                 </li>
-              ))
-            ) : (
-              <p>No OS data available</p>
-            )}
-          </ul>
+              ))}
+            </ul>
+          ) : (
+            <p>No OS data available</p>
+          )}
         </div>
 
         <div className="panel terminal">
@@ -264,8 +242,9 @@ const Dashboard = () => {
             {packets.length > 0 ? (
               packets.slice(0, 10).map((pkt, index) => (
                 <p key={index}>
-                  {pkt.src_ip || "Unknown"} ➜ {pkt.dst_ip || "Unknown"} [
-                  {pkt.protocol || "Unknown"}]
+                  <strong>#{pkt.id || index}</strong> |
+                  {pkt.packet_summary || "No summary available"} | ⏱{" "}
+                  {pkt.timestamp || "Unknown"}
                 </p>
               ))
             ) : (
