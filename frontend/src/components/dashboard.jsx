@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { Line, Pie, Bar } from "react-chartjs-2";
-import { Chart } from "chart.js/auto";
 import "../../styles/dashboard.css";
 
 const API_BASE = "http://localhost:5000/api";
@@ -17,40 +16,35 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const responses = await Promise.all([
+          axios.get(`${API_BASE}/hosts`),
+          axios.get(`${API_BASE}/tcp_results`),
+          axios.get(`${API_BASE}/udp_results`),
+          axios.get(`${API_BASE}/icmp_results`),
+          axios.get(`${API_BASE}/os_results`),
+          axios.get(`${API_BASE}/packets`),
+        ]);
+
         const [hostsRes, tcpRes, udpRes, icmpRes, osRes, packetsRes] =
-          await Promise.all([
-            axios.get(`${API_BASE}/hosts`),
-            axios.get(`${API_BASE}/tcp_results`),
-            axios.get(`${API_BASE}/udp_results`),
-            axios.get(`${API_BASE}/icmp_results`),
-            axios.get(`${API_BASE}/os_results`),
-            axios.get(`${API_BASE}/packets`),
-          ]);
+          responses.map((res) => res.data);
 
-        // Debugging
-        console.log("Hosts Response:", hostsRes);
-        console.log("TCP Response:", tcpRes);
-        console.log("UDP Response:", udpRes);
-        console.log("ICMP Response:", icmpRes);
-        console.log("OS Response:", osRes);
-        console.log("Packets Response:", packetsRes);
+        console.log("Fetched Data:", {
+          hostsRes,
+          tcpRes,
+          udpRes,
+          icmpRes,
+          osRes,
+          packetsRes,
+        });
 
-        // Debugging
-        console.log("Hosts Data:", hostsRes.data);
-        console.log("TCP Data:", tcpRes.data);
-        console.log("UDP Data:", udpRes.data);
-        console.log("ICMP Data:", icmpRes.data);
-        console.log("OS Data:", osRes.data);
-        console.log("Packets Data:", packetsRes.data);
-
-        setHosts(hostsRes.data);
-        setTcpResults(tcpRes.data);
-        setUdpResults(udpRes.data);
-        setIcmpResults(icmpRes.data);
-        setOsResults(osRes.data);
-        setPackets(packetsRes.data);
+        setHosts(hostsRes || []);
+        setTcpResults(tcpRes || []);
+        setUdpResults(udpRes || []);
+        setIcmpResults(icmpRes || []);
+        setOsResults(osRes || []);
+        setPackets(packetsRes || []);
       } catch (error) {
-        console.error("Error fetching data", error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -60,11 +54,11 @@ const Dashboard = () => {
   // Chart Data
   const tcpChartData = useMemo(
     () => ({
-      labels: tcpResults.map((p) => p.port),
+      labels: tcpResults.map((p) => p.port || "Unknown"),
       datasets: [
         {
           label: "Open TCP Ports",
-          data: tcpResults.map(() => 1),
+          data: tcpResults.map((p) => p.count || 1),
           backgroundColor: "rgba(30, 144, 255, 0.7)",
         },
       ],
@@ -91,11 +85,11 @@ const Dashboard = () => {
 
   const icmpChartData = useMemo(
     () => ({
-      labels: icmpResults.map((i) => i.ip),
+      labels: icmpResults.map((i) => i.ip || "Unknown"),
       datasets: [
         {
           label: "Ping Response Time (ms)",
-          data: icmpResults.map((i) => i.response_time),
+          data: icmpResults.map((i) => i.response_time || 0),
           borderColor: "#ff00ff",
           fill: false,
         },
@@ -115,19 +109,77 @@ const Dashboard = () => {
           <h2>🖥️ Hosts Detected</h2>
           <p>{hosts.length} Hosts Found</p>
           <ul>
-            {hosts.map((host, index) => (
-              <li key={index}>
-                {host.ip} - {host.mac}
-              </li>
-            ))}
+            {hosts.length > 0 ? (
+              hosts.map((host, index) => (
+                <li key={index}>
+                  {host.ip || "Unknown"} - {host.mac || "Unknown"}
+                </li>
+              ))
+            ) : (
+              <p>No hosts detected</p>
+            )}
           </ul>
         </div>
 
-        <div className="panel chart">
-          <h2>🌐 Open TCP Ports</h2>
-          <Bar data={tcpChartData} options={{ maintainAspectRatio: false }} />
-        </div>
+       
+          <div className="panel tcp-results">
+            <h2>🌍 TCP Port Scan Results</h2>
+            <div className="port-grid">
+              {tcpResults.length > 0 ? (
+                tcpResults.map((result, index) => {
+                  const openPorts = JSON.parse(result.tcp_open || "[]");
+                  const filteredPorts = JSON.parse(result.tcp_filtered || "[]");
+                  const closedPorts = JSON.parse(result.tcp_closed || "[]");
 
+                  return (
+                    <div key={index} className="port-box">
+                      <h3>Host {result.host_id}</h3>
+
+                      {/* Open Ports Section */}
+                      <div className="port-section">
+                        <h4 className="open-title">🟢 Open Ports</h4>
+                        <div className="port-tiles open">
+                          {openPorts.map((port) => (
+                            <div
+                              key={port}
+                              className="tile open"
+                              title={`Port ${port} is open.`}
+                            >
+                              {port}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Filtered Ports Section */}
+                      <div className="port-section">
+                        <h4 className="filtered-title">🟣 Filtered Ports</h4>
+                        <div className="port-tiles filtered">
+                          {filteredPorts.map((port) => (
+                            <div
+                              key={port}
+                              className="tile filtered"
+                              title={`Port ${port} is filtered.`}
+                            >
+                              {port}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Closed Ports Summary */}
+                      <p className="closed-summary">
+                        🔴 {closedPorts.length} ports are closed.
+                      </p>
+                    </div>
+                  );
+                })
+              ) : (
+                <p>No TCP results available</p>
+              )}
+            </div>
+          </div>
+  
         <div className="panel chart">
           <h2>🛡️ UDP Scan Results</h2>
           <Pie data={udpChartData} options={{ maintainAspectRatio: false }} />
@@ -141,22 +193,31 @@ const Dashboard = () => {
         <div className="panel os">
           <h2>💻 OS Fingerprinting</h2>
           <ul>
-            {osResults.map((os, index) => (
-              <li key={index}>
-                {os.ip} - {os.os_name}
-              </li>
-            ))}
+            {osResults.length > 0 ? (
+              osResults.map((os, index) => (
+                <li key={index}>
+                  {os.ip || "Unknown"} - {os.os_name || "Unknown"}
+                </li>
+              ))
+            ) : (
+              <p>No OS data available</p>
+            )}
           </ul>
         </div>
 
         <div className="panel terminal">
           <h2>📡 Packet Capture (Live)</h2>
           <div className="terminal-feed">
-            {packets.slice(0, 10).map((pkt, index) => (
-              <p key={index}>
-                {pkt.src_ip} ➜ {pkt.dst_ip} [{pkt.protocol}]
-              </p>
-            ))}
+            {packets.length > 0 ? (
+              packets.slice(0, 10).map((pkt, index) => (
+                <p key={index}>
+                  {pkt.src_ip || "Unknown"} ➜ {pkt.dst_ip || "Unknown"} [
+                  {pkt.protocol || "Unknown"}]
+                </p>
+              ))
+            ) : (
+              <p>No packets captured</p>
+            )}
           </div>
         </div>
       </div>
