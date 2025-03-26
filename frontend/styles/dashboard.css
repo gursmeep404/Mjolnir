@@ -5,6 +5,10 @@
   color: white;
   min-height: 100vh;
   padding: 20px;
+  background: url('/homeBackground.jpg') center/cover no-repeat;
+  background-attachment: fixed; 
+  z-index: -2;
+  /* position: absolute; */
 }
 
 /* Title Bar */
