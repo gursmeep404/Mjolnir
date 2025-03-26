@@ -27,6 +27,22 @@ const Dashboard = () => {
             axios.get(`${API_BASE}/packets`),
           ]);
 
+        // Debugging
+        console.log("Hosts Response:", hostsRes);
+        console.log("TCP Response:", tcpRes);
+        console.log("UDP Response:", udpRes);
+        console.log("ICMP Response:", icmpRes);
+        console.log("OS Response:", osRes);
+        console.log("Packets Response:", packetsRes);
+
+        // Debugging
+        console.log("Hosts Data:", hostsRes.data);
+        console.log("TCP Data:", tcpRes.data);
+        console.log("UDP Data:", udpRes.data);
+        console.log("ICMP Data:", icmpRes.data);
+        console.log("OS Data:", osRes.data);
+        console.log("Packets Data:", packetsRes.data);
+
         setHosts(hostsRes.data);
         setTcpResults(tcpRes.data);
         setUdpResults(udpRes.data);
