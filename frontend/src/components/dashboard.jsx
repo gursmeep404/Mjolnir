@@ -53,9 +53,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <header className="title-bar">
-        <h1>Cyberpunk Network Scanner</h1>
-      </header>
+     
 
       <div className="grid-container">
         <div className="panel hosts">

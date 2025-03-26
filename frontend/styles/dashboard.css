@@ -11,22 +11,14 @@
   /* position: absolute; */
 }
 
-/* Title Bar */
-.title-bar {
-  text-align: center;
-  font-size: 24px;
-  margin-bottom: 20px;
-  background: #3a3a58;
-  padding: 10px;
-  border-radius: 8px;
-}
 
 /* Grid Layout */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+  gap: 7rem;
   padding: 10px;
+  margin-top: 10rem;
 }
 
 /* Panel Styling */
