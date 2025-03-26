@@ -130,41 +130,6 @@ def store_firewall_results(host, tcp_syn_responses, icmp_response, port_443_resp
     ))
 
 
-# Function to retrieve scan results for a specific host
-def get_scan_results(host):
-    
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-
-    results = {"host": host, "scan_results": {}}
-
-    # Fetch ARP results
-    cursor.execute("SELECT scanned_ip, scan_time FROM arp_results WHERE host_id = ?", (host,))
-    results["scan_results"]["arp"] = cursor.fetchall()
-
-    # Fetch TCP results
-    cursor.execute("SELECT tcp_open, tcp_closed, tcp_filtered, scan_time FROM tcp_results WHERE host_id = ?", (host,))
-    results["scan_results"]["tcp"] = cursor.fetchall()
-
-    # Fetch UDP results
-    cursor.execute("SELECT udp_open, udp_closed, udp_filtered, scan_time FROM udp_results WHERE host_id = ?", (host,))
-    results["scan_results"]["udp"] = cursor.fetchall()
-
-    # Fetch ICMP results
-    cursor.execute("SELECT icmp_responses, scan_time FROM icmp_results WHERE host_id = ?", (host,))
-    results["scan_results"]["icmp"] = cursor.fetchall()
-
-    # Fetch OS results
-    cursor.execute("SELECT ttl, window_size, os_guess, scan_time FROM os_results WHERE host_id = ?", (host,))
-    results["scan_results"]["os"] = cursor.fetchall()
-
-    # Fetch Firewall results
-    cursor.execute("SELECT tcp_syn_responses, icmp_response, port_443_response, conclusion, scan_time FROM firewall_results WHERE host_id = ?", (host,))
-    results["scan_results"]["firewall"] = cursor.fetchall()
-
-    conn.close()
-    return results
-
 # Store packet summary
 def store_packet_summary(host_id, packet_summary):
     conn = sqlite3.connect(DB_PATH)
@@ -189,10 +154,10 @@ def clear_old_packets(host_id):
 
     import sqlite3
 
+# To fetch results from a particular table
 def get_results(table_name):
-    """Fetch all data from a given table."""
     conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row  # To return dict-like rows
+    conn.row_factory = sqlite3.Row 
     cursor = conn.cursor()
 
     query = f"SELECT * FROM {table_name}"
@@ -202,35 +167,35 @@ def get_results(table_name):
     conn.close()
     return results
 
+
 def get_hosts():
-    """Fetch all hosts with their last scanned timestamp."""
     return get_results("hosts")
 
 def get_arp_results():
-    """Fetch ARP scan results."""
+    
     return get_results("arp_results")
 
 def get_tcp_results():
-    """Fetch TCP scan results."""
+    
     return get_results("tcp_results")
 
 def get_udp_results():
-    """Fetch UDP scan results."""
+    
     return get_results("udp_results")
 
 def get_icmp_results():
-    """Fetch ICMP scan results."""
+    
     return get_results("icmp_results")
 
 def get_os_results():
-    """Fetch OS detection results."""
+    
     return get_results("os_results")
 
 def get_firewall_results():
-    """Fetch firewall detection results."""
+    
     return get_results("firewall_results")
 
 def get_packets():
-    """Fetch network packet summary."""
+    
     return get_results("packets")
 

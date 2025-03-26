@@ -8,7 +8,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from database.db_handler import get_results
 
 app = Flask(__name__)
-CORS(app)  # Allow cross-origin requests
+CORS(app) 
 
 def safe_get_results(category):
     try:
@@ -17,7 +17,7 @@ def safe_get_results(category):
             return jsonify({"error": f"No data found for {category}"}), 404
         return jsonify(data)
     except Exception as e:
-        print(f"Error fetching {category}: {e}")  # Prints error in Flask console
+        print(f"Error fetching {category}: {e}")  
         return jsonify({"error": "Internal Server Error"}), 500
 
 @app.route("/api/hosts")
