@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Line, Pie, Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import "../../styles/dashboard.css";
 
 const API_BASE = "http://localhost:5000/api";
@@ -50,60 +50,53 @@ const Dashboard = () => {
 
     fetchData();
   }, []);
-  // Ensure previous chart instances are destroyed
-  useEffect(() => {
-    return () => {
-      tcpChartRef.current?.destroy();
-      udpChartRef.current?.destroy();
-      icmpChartRef.current?.destroy();
-    };
-  }, []);
-  // Chart Data
-  const tcpChartData = useMemo(
-    () => ({
-      labels: tcpResults.map((p) => p.port || "Unknown"),
-      datasets: [
-        {
-          label: "Open TCP Ports",
-          data: tcpResults.map((p) => p.count || 1),
-          backgroundColor: "rgba(30, 144, 255, 0.7)",
-        },
-      ],
-    }),
-    [tcpResults]
-  );
 
-  const udpChartData = useMemo(
-    () => ({
-      labels: ["Open", "Closed", "Filtered"],
-      datasets: [
-        {
-          data: [
-            udpResults.filter((p) => p.status === "open").length,
-            udpResults.filter((p) => p.status === "closed").length,
-            udpResults.filter((p) => p.status === "filtered").length,
-          ],
-          backgroundColor: ["#4CAF50", "#FF5733", "#FFC107"],
-        },
-      ],
-    }),
-    [udpResults]
-  );
+  // // Chart Data
+  // const tcpChartData = useMemo(
+  //   () => ({
+  //     labels: tcpResults.map((p) => p.port || "Unknown"),
+  //     datasets: [
+  //       {
+  //         label: "Open TCP Ports",
+  //         data: tcpResults.map((p) => p.count || 1),
+  //         backgroundColor: "rgba(30, 144, 255, 0.7)",
+  //       },
+  //     ],
+  //   }),
+  //   [tcpResults]
+  // );
 
-  const icmpChartData = useMemo(
-    () => ({
-      labels: icmpResults.map((i) => i.ip || "Unknown"),
-      datasets: [
-        {
-          label: "Ping Response Time (ms)",
-          data: icmpResults.map((i) => i.response_time || 0),
-          borderColor: "#ff00ff",
-          fill: false,
-        },
-      ],
-    }),
-    [icmpResults]
-  );
+  // const udpChartData = useMemo(
+  //   () => ({
+  //     labels: ["Open", "Closed", "Filtered"],
+  //     datasets: [
+  //       {
+  //         data: [
+  //           udpResults.filter((p) => p.status === "open").length,
+  //           udpResults.filter((p) => p.status === "closed").length,
+  //           udpResults.filter((p) => p.status === "filtered").length,
+  //         ],
+  //         backgroundColor: ["#4CAF50", "#FF5733", "#FFC107"],
+  //       },
+  //     ],
+  //   }),
+  //   [udpResults]
+  // );
+
+  // const icmpChartData = useMemo(
+  //   () => ({
+  //     labels: icmpResults.map((i) => i.ip || "Unknown"),
+  //     datasets: [
+  //       {
+  //         label: "Ping Response Time (ms)",
+  //         data: icmpResults.map((i) => i.response_time || 0),
+  //         borderColor: "#ff00ff",
+  //         fill: false,
+  //       },
+  //     ],
+  //   }),
+  //   [icmpResults]
+  // );
 
   return (
     <div className="dashboard">
@@ -119,7 +112,8 @@ const Dashboard = () => {
             {hosts.length > 0 ? (
               hosts.map((host, index) => (
                 <li key={index}>
-                  {host.ip || "Unknown"} - {host.mac || "Unknown"}
+                  {host.host || "Unknown IP"} - Last Scanned:{" "}
+                  {host.last_scanned || "Unknown Time"}
                 </li>
               ))
             ) : (
@@ -188,12 +182,65 @@ const Dashboard = () => {
 
         <div className="panel chart">
           <h2>🛡️ UDP Scan Results</h2>
-          <Pie data={udpChartData} options={{ maintainAspectRatio: false }} />
+          <div className="port-grid">
+            {udpResults.length > 0 ? (
+              udpResults.map((result, index) => {
+                const openPorts = JSON.parse(result.udp_open || "[]");
+                const filteredPorts = JSON.parse(result.udp_filtered || "[]");
+                const closedPorts = JSON.parse(result.udp_closed || "[]");
+
+                return (
+                  <div key={index} className="port-box">
+                    <h3>Host {result.host_id}</h3>
+
+                    {/* Open Ports Section */}
+                    <div className="port-section">
+                      <h4 className="open-title">🟢 Open Ports</h4>
+                      <div className="port-tiles open">
+                        {openPorts.map((port) => (
+                          <div
+                            key={port}
+                            className="tile open"
+                            title={`Port ${port} is open.`}
+                          >
+                            {port}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Filtered Ports Section */}
+                    <div className="port-section">
+                      <h4 className="filtered-title">🟣 Filtered Ports</h4>
+                      <div className="port-tiles filtered">
+                        {filteredPorts.map((port) => (
+                          <div
+                            key={port}
+                            className="tile filtered"
+                            title={`Port ${port} is filtered.`}
+                          >
+                            {port}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Closed Ports Summary */}
+                    <p className="closed-summary">
+                      🔴 {closedPorts.length} ports are closed.
+                    </p>
+                  </div>
+                );
+              })
+            ) : (
+              <p>No UDP results available</p>
+            )}
+          </div>
         </div>
 
         <div className="panel chart">
           <h2>📡 ICMP Responses</h2>
-          <Line data={icmpChartData} options={{ maintainAspectRatio: false }} />
+          {/* <Line data={icmpChartData} options={{ maintainAspectRatio: false }} /> */}
         </div>
 
         <div className="panel os">
