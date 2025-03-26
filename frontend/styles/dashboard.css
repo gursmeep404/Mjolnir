@@ -1,38 +1,37 @@
-body {
-  background-color: #121212;
-  color: white;
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 20px;
+.dashboard {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
 }
 
 h1 {
-  text-align: center;
-  font-size: 24px;
+    text-align: center;
+    color: #4CAF50;
 }
 
-/* Chart Styling */
-.chart-container {
-  background-color: #1e1e1e;
-  padding: 20px;
-  margin: 20px 0;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+.card {
+    background: #222;
+    color: white;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 }
 
-.chart-title {
-  font-size: 18px;
-  margin-bottom: 10px;
-  text-align: center;
+.card h2 {
+    border-bottom: 2px solid #4CAF50;
+    padding-bottom: 5px;
 }
 
-/* Recharts Styling */
-.recharts-wrapper {
-  overflow: hidden;
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background: #333;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
 }

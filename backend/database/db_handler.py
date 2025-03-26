@@ -186,3 +186,51 @@ def clear_old_packets(host_id):
         conn.commit()
 
     conn.close()
+
+    import sqlite3
+
+def get_results(table_name):
+    """Fetch all data from a given table."""
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row  # To return dict-like rows
+    cursor = conn.cursor()
+
+    query = f"SELECT * FROM {table_name}"
+    cursor.execute(query)
+    results = [dict(row) for row in cursor.fetchall()]
+
+    conn.close()
+    return results
+
+def get_hosts():
+    """Fetch all hosts with their last scanned timestamp."""
+    return get_results("hosts")
+
+def get_arp_results():
+    """Fetch ARP scan results."""
+    return get_results("arp_results")
+
+def get_tcp_results():
+    """Fetch TCP scan results."""
+    return get_results("tcp_results")
+
+def get_udp_results():
+    """Fetch UDP scan results."""
+    return get_results("udp_results")
+
+def get_icmp_results():
+    """Fetch ICMP scan results."""
+    return get_results("icmp_results")
+
+def get_os_results():
+    """Fetch OS detection results."""
+    return get_results("os_results")
+
+def get_firewall_results():
+    """Fetch firewall detection results."""
+    return get_results("firewall_results")
+
+def get_packets():
+    """Fetch network packet summary."""
+    return get_results("packets")
+
