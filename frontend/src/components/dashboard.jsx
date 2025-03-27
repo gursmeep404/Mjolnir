@@ -83,21 +83,28 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="grid-container">
-        <div className="panel hosts">
-          <h2>🖥️ Hosts Detected</h2>
-          <p>{hosts.length} Hosts Found</p>
-          <ul>
+        <div className="panel host-card">
+          <div className="host-header">
+            <span className="icon">⚠️</span>
+            <p>Hosts Detected</p>
+          </div>
+
+          <h1>{hosts.length}</h1>
+
+          <div className="host-list">
             {hosts.length > 0 ? (
               hosts.map((host, index) => (
-                <li key={index}>
-                  {host.host || "Unknown IP"} - Last Scanned:{" "}
-                  {host.last_scanned || "Unknown Time"}
-                </li>
+                <div key={index} className="host-item">
+                  <p>
+                    📍 <strong>{host.host || "Unknown IP"}</strong>
+                  </p>
+                  <p>⏳ {host.last_scanned || "Unknown Time"}</p>
+                </div>
               ))
             ) : (
-              <p>No hosts detected</p>
+              <p className="no-hosts">No hosts detected</p>
             )}
-          </ul>
+          </div>
         </div>
 
         <div className="panel tcp-results">
@@ -141,7 +148,7 @@ const Dashboard = () => {
                             styles={buildStyles({
                               textColor: "#fff",
                               pathColor: "white", // White arc to represent percentage
-                              trailColor: "black", 
+                              trailColor: "black",
                               strokeLinecap: "butt",
                             })}
                           />
