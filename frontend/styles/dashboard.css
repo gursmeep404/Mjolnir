@@ -154,3 +154,75 @@ h1 {
   font-size: 14px;
   opacity: 0.7;
 }
+
+.chart {
+  background: #14171f;
+  padding: 20px;
+  border-radius: 12px;
+  color: white;
+  width: 400px;
+}
+
+.icmp-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.icmp-bar {
+  position: relative;
+  background: rgba(255, 255, 255, 0.1);
+  height: 60px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8px;
+  overflow: hidden;
+}
+
+.icmp-details {
+  font-size: 13px;
+  color: #bbb;
+  margin-bottom: 5px;
+}
+
+.icmp-fill {
+  height: 40px;
+  border-radius: 20px;
+  color: black;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 50%;
+  font-size: 14px;
+}
+
+/* Dynamic Colors */
+.icmp-bar:nth-child(1) .icmp-fill {
+  background: #00a8ff;
+  width: 60%;
+}
+
+.icmp-bar:nth-child(2) .icmp-fill {
+  background: #ff4d6d;
+  width: 50%;
+}
+
+.icmp-bar:nth-child(3) .icmp-fill {
+  background: #9b5de5;
+  width: 40%;
+}
+
+.icmp-bar:nth-child(4) .icmp-fill {
+  background: #fcbf49;
+  width: 70%;
+}
+
+.icmp-bar:nth-child(5) .icmp-fill {
+  background: #00c897;
+  width: 55%;
+}

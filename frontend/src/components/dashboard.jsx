@@ -278,11 +278,10 @@ const Dashboard = () => {
         </div>
 
         <div className="panel chart">
-          <h2>📡 ICMP Responses</h2>
+          <h2>📡 ICMP RESPONSES</h2>
           {icmpResults.length > 0 ? (
-            <ul>
+            <div className="icmp-bars">
               {icmpResults.map((icmp, index) => {
-                // Parse the JSON string inside icmp_responses
                 let responses = [];
                 try {
                   responses = JSON.parse(icmp.icmp_responses);
@@ -291,15 +290,19 @@ const Dashboard = () => {
                 }
 
                 return responses.map((response, i) => (
-                  <li key={`${index}-${i}`}>
-                    <strong>Host:</strong> {response.host} |
-                    <strong> Type:</strong> {response.type} |
-                    <strong> Code:</strong> {response.code} |
-                    <strong> Description:</strong> {response.description}
-                  </li>
+                  <div key={`${index}-${i}`} className="icmp-bar">
+                    {/* Host, Type, and Code appear ABOVE the bar */}
+                    <div className="icmp-details">
+                      <strong>Host:</strong> {response.host} |
+                      <strong> Type:</strong> {response.type} |
+                      <strong> Code:</strong> {response.code}
+                    </div>
+                    {/* Description inside the bar */}
+                    <div className="icmp-fill">{response.description}</div>
+                  </div>
                 ));
               })}
-            </ul>
+            </div>
           ) : (
             <p>No ICMP responses detected</p>
           )}
