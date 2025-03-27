@@ -1,6 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
-import { Line } from "react-chartjs-2";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 import "../../styles/dashboard.css";
 
 const API_BASE = "http://localhost:5000/api";
@@ -51,10 +58,27 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
+  // Get unique packet summaries
+  const uniquePackets = useMemo(() => {
+    const seen = new Set();
+    return packets.filter((pkt) => {
+      if (!seen.has(pkt.packet_summary)) {
+        seen.add(pkt.packet_summary);
+        return true;
+      }
+      return false;
+    });
+  }, [packets]);
+
+  // Transform packets into data format for graph
+  const graphData = packets.map((pkt, index) => ({
+    id: pkt.id || index,
+    value: pkt.size || Math.random() * 100, // Replace 'size' with an actual numerical value
+    timestamp: pkt.timestamp || index,
+  }));
+
   return (
     <div className="dashboard">
-     
-
       <div className="grid-container">
         <div className="panel hosts">
           <h2>🖥️ Hosts Detected</h2>
@@ -234,20 +258,53 @@ const Dashboard = () => {
           )}
         </div>
 
-        <div className="panel terminal">
+        {/* Packet Capture Panel */}
+        <div className="panel packet-capture">
           <h2>📡 Packet Capture (Live)</h2>
-          <div className="terminal-feed">
-            {packets.length > 0 ? (
-              packets.slice(0, 10).map((pkt, index) => (
-                <p key={index}>
-                  <strong>#{pkt.id || index}</strong> |
-                  {pkt.packet_summary || "No summary available"} | ⏱{" "}
-                  {pkt.timestamp || "Unknown"}
-                </p>
+          <div className="packet-grid">
+            {uniquePackets.length > 0 ? (
+              uniquePackets.map((pkt, index) => (
+                <div key={index} className="packet-box">
+                  <h3>Packet {pkt.id || index}</h3>
+
+                  {/* Packet Summary Section */}
+                  <div className="packet-section">
+                    <h4 className="summary-title">📜 Summary</h4>
+                    <p className="packet-summary">
+                      {pkt.packet_summary || "No summary available"}
+                    </p>
+                  </div>
+
+                  {/* Timestamp Section */}
+                  <div className="packet-section">
+                    <h4 className="timestamp-title">⏱ Timestamp</h4>
+                    <p className="packet-timestamp">
+                      {pkt.timestamp || "Unknown"}
+                    </p>
+                  </div>
+                </div>
               ))
             ) : (
               <p>No packets captured</p>
             )}
+          </div>
+
+          {/* Graph Visualization */}
+          <div className="graph-container">
+            <ResponsiveContainer width="100%" height={200}>
+              <LineChart data={graphData}>
+                <XAxis dataKey="timestamp" tick={false} />
+                <YAxis />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#8A2BE2"
+                  strokeWidth={2}
+                  dot={false}
+                />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
         </div>
       </div>
