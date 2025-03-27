@@ -8,6 +8,9 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+
 import "../../styles/dashboard.css";
 
 const API_BASE = "http://localhost:5000/api";
@@ -106,46 +109,100 @@ const Dashboard = () => {
                 const filteredPorts = JSON.parse(result.tcp_filtered || "[]");
                 const closedPorts = JSON.parse(result.tcp_closed || "[]");
 
+                const totalPorts = Math.max(
+                  openPorts.length + filteredPorts.length + closedPorts.length,
+                  1
+                );
+
+                const openPercentage = (
+                  (openPorts.length / totalPorts) *
+                  100
+                ).toFixed(2);
+                const filteredPercentage = (
+                  (filteredPorts.length / totalPorts) *
+                  100
+                ).toFixed(2);
+                const closedPercentage = (
+                  (closedPorts.length / totalPorts) *
+                  100
+                ).toFixed(2);
+
                 return (
                   <div key={index} className="port-box">
                     <h3>Host {result.host_id}</h3>
 
-                    {/* Open Ports Section */}
-                    <div className="port-section">
-                      <h4 className="open-title">🟢 Open Ports</h4>
-                      <div className="port-tiles open">
-                        {openPorts.map((port) => (
-                          <div
-                            key={port}
-                            className="tile open"
-                            title={`Port ${port} is open.`}
-                          >
-                            {port}
-                          </div>
-                        ))}
+                    <div className="progress-container">
+                      {/* Open Ports */}
+                      <div className="progress-item">
+                        <div className="progress-wrapper bar1">
+                          <CircularProgressbar
+                            value={openPercentage}
+                            text={`${openPercentage}%`}
+                            styles={buildStyles({
+                              textColor: "#fff",
+                              pathColor: "white", // White arc to represent percentage
+                              trailColor: "black", 
+                              strokeLinecap: "butt",
+                            })}
+                          />
+                        </div>
+                        <p>🟢 Open Ports</p>
+                        <div className="port-list">
+                          {openPorts.length > 0
+                            ? openPorts.map((port) => (
+                                <span key={port} className="port-tag">
+                                  {port}
+                                </span>
+                              ))
+                            : "None"}
+                        </div>
+                      </div>
+
+                      {/* Filtered Ports */}
+                      <div className="progress-item">
+                        <div className="progress-wrapper bar2">
+                          <CircularProgressbar
+                            value={filteredPercentage}
+                            text={`${filteredPercentage}%`}
+                            styles={buildStyles({
+                              textColor: "#fff",
+                              pathColor: "white",
+                              trailColor: "black",
+                              strokeLinecap: "butt",
+                            })}
+                          />
+                        </div>
+                        <p>🟣 Filtered Ports</p>
+                        <div className="port-list">
+                          {filteredPorts.length > 0
+                            ? filteredPorts.map((port) => (
+                                <span key={port} className="port-tag">
+                                  {port}
+                                </span>
+                              ))
+                            : "None"}
+                        </div>
+                      </div>
+
+                      {/* Closed Ports */}
+                      <div className="progress-item">
+                        <div className="progress-wrapper bar3">
+                          <CircularProgressbar
+                            value={closedPercentage}
+                            text={`${closedPercentage}%`}
+                            styles={buildStyles({
+                              textColor: "#fff",
+                              pathColor: "white", // White arc representing percentage
+                              trailColor: "black",
+                              strokeLinecap: "butt",
+                              rotation: 0.75,
+                            })}
+                          />
+                        </div>
+                        <p>🔴 Closed Ports</p>
+                        <p>{closedPorts.length} ports closed</p>
                       </div>
                     </div>
-
-                    {/* Filtered Ports Section */}
-                    <div className="port-section">
-                      <h4 className="filtered-title">🟣 Filtered Ports</h4>
-                      <div className="port-tiles filtered">
-                        {filteredPorts.map((port) => (
-                          <div
-                            key={port}
-                            className="tile filtered"
-                            title={`Port ${port} is filtered.`}
-                          >
-                            {port}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Closed Ports Summary */}
-                    <p className="closed-summary">
-                      🔴 {closedPorts.length} ports are closed.
-                    </p>
                   </div>
                 );
               })

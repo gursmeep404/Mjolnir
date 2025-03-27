@@ -62,3 +62,52 @@ h2 {
   font-weight: bold;
   box-shadow: 0 0 5px #ff00ff;
 }
+.progress-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+}
+
+.progress-item {
+  text-align: center;
+}
+
+.progress-wrapper {
+  /* background: rgba(255, 255, 255, 0.1); */
+  padding: 10px;
+  border-radius: 50%;
+   position: relative;
+     display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bar1 {
+ background-color: #787DE6;
+}
+
+.bar2 {
+  background-color: #F57B7D;
+}
+
+.bar3 {
+  background-color: #04dca6;
+}
+.port-list {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #ccc;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+}
+
+.port-tag {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-size: 12px;
+  color: #fff;
+}
