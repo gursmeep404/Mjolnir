@@ -107,9 +107,9 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="panel tcp-results">
-          <h2>🌍 TCP Port Scan Results</h2>
-          <div className="port-grid">
+        <div className="panel cyberpunk-tcp-results">
+          <h2 className="cyberpunk-heading">🌍 TCP Port Scan Results</h2>
+          <div className="cyberpunk-port-grid">
             {tcpResults.length > 0 ? (
               tcpResults.map((result, index) => {
                 const openPorts = JSON.parse(result.tcp_open || "[]");
@@ -135,29 +135,30 @@ const Dashboard = () => {
                 ).toFixed(2);
 
                 return (
-                  <div key={index} className="port-box">
-                    <h3>Host {result.host_id}</h3>
-
-                    <div className="progress-container">
+                  <div key={index} className="cyberpunk-port-box">
+                    <h3 className="cyberpunk-subheading">
+                      Host {result.host_id}
+                    </h3>
+                    <div className="cyberpunk-progress-container">
                       {/* Open Ports */}
-                      <div className="progress-item">
-                        <div className="progress-wrapper bar1">
+                      <div className="cyberpunk-progress-item">
+                        <div className="cyberpunk-progress-wrapper">
                           <CircularProgressbar
                             value={openPercentage}
                             text={`${openPercentage}%`}
                             styles={buildStyles({
-                              textColor: "#fff",
-                              pathColor: "white", // White arc to represent percentage
-                              trailColor: "black",
-                              strokeLinecap: "butt",
+                              textColor: "#0ff",
+                              pathColor: "#0ff",
+                              trailColor: "#222",
+                              strokeLinecap: "round",
                             })}
                           />
                         </div>
-                        <p>🟢 Open Ports</p>
-                        <div className="port-list">
+                        <p className="cyberpunk-label">🟢 Open Ports</p>
+                        <div className="cyberpunk-port-list">
                           {openPorts.length > 0
                             ? openPorts.map((port) => (
-                                <span key={port} className="port-tag">
+                                <span key={port} className="cyberpunk-port-tag">
                                   {port}
                                 </span>
                               ))
@@ -166,24 +167,24 @@ const Dashboard = () => {
                       </div>
 
                       {/* Filtered Ports */}
-                      <div className="progress-item">
-                        <div className="progress-wrapper bar2">
+                      <div className="cyberpunk-progress-item">
+                        <div className="cyberpunk-progress-wrapper">
                           <CircularProgressbar
                             value={filteredPercentage}
                             text={`${filteredPercentage}%`}
                             styles={buildStyles({
-                              textColor: "#fff",
-                              pathColor: "white",
-                              trailColor: "black",
-                              strokeLinecap: "butt",
+                              textColor: "#f0f",
+                              pathColor: "#f0f",
+                              trailColor: "#222",
+                              strokeLinecap: "round",
                             })}
                           />
                         </div>
-                        <p>🟣 Filtered Ports</p>
-                        <div className="port-list">
+                        <p className="cyberpunk-label">🟣 Filtered Ports</p>
+                        <div className="cyberpunk-port-list">
                           {filteredPorts.length > 0
                             ? filteredPorts.map((port) => (
-                                <span key={port} className="port-tag">
+                                <span key={port} className="cyberpunk-port-tag">
                                   {port}
                                 </span>
                               ))
@@ -192,33 +193,33 @@ const Dashboard = () => {
                       </div>
 
                       {/* Closed Ports */}
-                      <div className="progress-item">
-                        <div className="progress-wrapper bar3">
+                      <div className="cyberpunk-progress-item">
+                        <div className="cyberpunk-progress-wrapper">
                           <CircularProgressbar
                             value={closedPercentage}
                             text={`${closedPercentage}%`}
                             styles={buildStyles({
-                              textColor: "#fff",
-                              pathColor: "white", // White arc representing percentage
-                              trailColor: "black",
-                              strokeLinecap: "butt",
-                              rotation: 0.75,
+                              textColor: "#f00",
+                              pathColor: "#f00",
+                              trailColor: "#222",
+                              strokeLinecap: "round",
                             })}
                           />
                         </div>
-                        <p>🔴 Closed Ports</p>
-                        <p>{closedPorts.length} ports closed</p>
+                        <p className="cyberpunk-label">🔴 Closed Ports</p>
+                        <p className="cyberpunk-closed-text">
+                          {closedPorts.length} ports closed
+                        </p>
                       </div>
                     </div>
                   </div>
                 );
               })
             ) : (
-              <p>No TCP results available</p>
+              <p className="cyberpunk-no-results">No TCP results available</p>
             )}
           </div>
         </div>
-
         <div className="panel chart">
           <h2>🛡️ UDP Scan Results</h2>
           <div className="port-grid">
@@ -308,20 +309,24 @@ const Dashboard = () => {
           )}
         </div>
 
-        <div className="panel os">
-          <h2>💻 OS Fingerprinting</h2>
+        <div className="panel os-fingerprint">
+          <h2 className="title">💻 OS Fingerprinting</h2>
           {osResults.length > 0 ? (
-            <ul>
+            <div className="os-list">
               {osResults.map((os, index) => (
-                <li key={index}>
-                  <strong>OS Guess:</strong> {os.os_guess || "Unknown"} |
-                  <strong> Window Size:</strong> {os.window_size || "N/A"} |
-                  <strong> TTL:</strong> {os.ttl || "N/A"}
-                </li>
+                <div className="os-card" key={index}>
+                  <h3 className="os-guess">{os.os_guess || "Unknown"}</h3>
+                  <p className="details">
+                    <span>🖥️ Window Size:</span> {os.window_size || "N/A"}
+                  </p>
+                  <p className="details">
+                    <span>📡 TTL:</span> {os.ttl || "N/A"}
+                  </p>
+                </div>
               ))}
-            </ul>
+            </div>
           ) : (
-            <p>No OS data available</p>
+            <p className="no-data">No OS data available</p>
           )}
         </div>
 

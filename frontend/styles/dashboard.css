@@ -226,3 +226,141 @@ h1 {
   background: #00c897;
   width: 55%;
 }
+.os-fingerprint {
+  background: #0a0f1e;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+.title {
+  font-size: 1.8rem;
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff;
+  margin-bottom: 15px;
+}
+
+.os-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.os-card {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.2));
+  padding: 15px;
+  border: 1px solid #00ffff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  transition: transform 0.3s ease-in-out;
+}
+
+.os-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+}
+
+.os-guess {
+  font-size: 1.5rem;
+  color: #ff00ff;
+  text-shadow: 0 0 8px #ff00ff;
+  margin-bottom: 10px;
+}
+
+.details {
+  font-size: 1rem;
+  color: #00ffff;
+  text-shadow: 0 0 5px #00ffff;
+  margin: 5px 0;
+}
+
+.details span {
+  font-weight: bold;
+  color: #ff00ff;
+}
+
+.no-data {
+  color: #ff0000;
+  font-size: 1.2rem;
+  text-shadow: 0 0 10px #ff0000;
+  text-align: center;
+}
+.cyberpunk-tcp-results {
+  background: #050a0e;
+  padding: 20px;
+  border-radius: 10px;
+  /* box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.8); */
+  /* color: #0ff; */
+  /* font-family: "Orbitron", sans-serif; */
+}
+
+.cyberpunk-heading {
+  text-align: center;
+  font-size: 2rem;
+  /* text-shadow: 0 0 10px #0ff, 0 0 20px #0ff; */
+}
+
+/* .cyberpunk-port-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+} */
+
+/* .cyberpunk-port-box {
+  background: #111;
+  border: 2px solid #0ff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.6);
+  transition: transform 0.3s ease-in-out;
+} */
+/* 
+.cyberpunk-port-box:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 0px 20px rgba(0, 255, 255, 1);
+} */
+/* 
+.cyberpunk-subheading {
+  color: #0ff;
+  text-shadow: 0 0 10px #0ff;
+  text-align: center;
+} */
+
+.cyberpunk-progress-container {
+  display: flex;
+  justify-content: space-around;
+  gap: 15px;
+}
+
+.cyberpunk-progress-item {
+  text-align: center;
+}
+
+/* .cyberpunk-label {
+  font-weight: bold;
+  text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.8);
+} */
+
+/* .cyberpunk-port-list {
+  margin-top: 10px;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+} */
+
+.cyberpunk-port-tag {
+  background: #0ff;
+  color: black;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  box-shadow: 0px 0px 10px rgba(0, 255, 255, 0.8);
+}
+/* 
+.cyberpunk-no-results {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #f00;
+  text-shadow: 0 0 10px #f00;
+} */
