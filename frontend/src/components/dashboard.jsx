@@ -84,28 +84,26 @@ const Dashboard = () => {
     <div className="dashboard">
       <div className="grid-container">
         <div className="panel host-card">
-          <div className="host-header">
-            <span className="icon">⚠️</span>
-            <p>Hosts Detected</p>
+      <div className="host-header">
+        <span className="icon">⚠️</span>
+        <p>Hosts Detected</p>
+      </div>
+      <h1>{hosts.length}</h1>
+      <div className="host-list">
+        {hosts.length > 0 ? (
+          hosts.map((host, index) => (
+            <div key={index} className="host-item">
+              <p>
+                📍 <strong>{host.host || "Unknown IP"}</strong>
+              </p>
+              <p>⏳ {host.last_scanned || "Unknown Time"}</p>
+            </div>
+          ))
+        ) : (
+          <p className="no-hosts">No hosts detected</p>
+        )}
           </div>
-
-          <h1>{hosts.length}</h1>
-
-          <div className="host-list">
-            {hosts.length > 0 ? (
-              hosts.map((host, index) => (
-                <div key={index} className="host-item">
-                  <p>
-                    📍 <strong>{host.host || "Unknown IP"}</strong>
-                  </p>
-                  <p>⏳ {host.last_scanned || "Unknown Time"}</p>
-                </div>
-              ))
-            ) : (
-              <p className="no-hosts">No hosts detected</p>
-            )}
           </div>
-        </div>
 
         <div className="panel cyberpunk-tcp-results">
           <h2 className="cyberpunk-heading">🌍 TCP Port Scan Results</h2>
