@@ -128,7 +128,8 @@ def store_firewall_results(host, tcp_syn_responses, icmp_response, port_443_resp
         json.dumps(serialized_port_443), 
         conclusion
     ))
-
+    conn.commit()
+    conn.close()
 
 # Store packet summary
 def store_packet_summary(host_id, packet_summary):
@@ -152,7 +153,6 @@ def clear_old_packets(host_id):
 
     conn.close()
 
-    import sqlite3
 
 # To fetch results from a particular table
 def get_results(table_name):
