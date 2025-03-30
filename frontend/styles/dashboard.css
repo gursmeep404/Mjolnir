@@ -26,7 +26,8 @@ body {
 }
 
 .panel {
-  background: rgba(25, 25, 25, 0.8);
+background:  rgba(25, 25, 25, 0.7);
+
   border: 2px solid #ff00ff;
   padding: 20px;
   border-radius: 10px;
@@ -106,7 +107,7 @@ h2 {
 }
 
 .port-tag {
-  background: rgba(255, 255, 255, 0.1);
+  /* background: rgba(255, 255, 255, 0.1); */
   padding: 3px 8px;
   border-radius: 5px;
   font-size: 12px;
@@ -115,7 +116,7 @@ h2 {
 
 
 .host-card {
-  background: linear-gradient(135deg, #1a1f36, #2a2f48);
+  
   color: white;
   padding: 20px;
   border-radius: 12px;
@@ -145,7 +146,7 @@ h1 {
 }
 
 .host-item {
-  background: rgba(255, 255, 255, 0.1);
+  /* background: rgba(255, 255, 255, 0.1); */
   padding: 8px;
   border-radius: 8px;
   margin-bottom: 6px;
@@ -157,7 +158,7 @@ h1 {
 }
 
 .chart {
-  background: #14171f;
+  /* background: #14171f; */
   padding: 20px;
   border-radius: 12px;
   color: white;
@@ -228,7 +229,7 @@ h1 {
   width: 55%;
 }
 .os-fingerprint {
-  background: #0a0f1e;
+  /* background: #0a0f1e; */
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
@@ -287,7 +288,7 @@ h1 {
   text-align: center;
 }
 .cyberpunk-tcp-results {
-  background: #050a0e;
+  /* background: #050a0e; */
   padding: 20px;
   border-radius: 10px;
   /* box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.8); */
@@ -368,7 +369,7 @@ h1 {
 
   
         .host-card {
-          background: linear-gradient(135deg, rgba(10, 10, 30, 0.85), rgba(30, 10, 50, 0.85));
+          /* background: linear-gradient(135deg, rgba(10, 10, 30, 0.85), rgba(30, 10, 50, 0.85)); */
           border-radius: 20px;
           padding: 20px;
           border: 3px solid rgba(255, 0, 255, 0.9);
@@ -378,7 +379,7 @@ h1 {
           font-family: "Orbitron", sans-serif;
           position: relative;
           overflow: hidden;
-          backdrop-filter: blur(10px);
+          /* backdrop-filter: blur(10px); */
           text-transform: uppercase;
         }
 
