@@ -116,7 +116,43 @@ const Dashboard = () => {
         </div>
 
         <div className="panel chart">
-          <h2>🌍 TCP Port Scan Results</h2>
+          <h2>📡 ICMP RESPONSES</h2>
+          {icmpResults.length > 0 ? (
+            <div className="icmp-bars">
+              {icmpResults.flatMap((icmp, index) => {
+                let responses = [];
+                try {
+                  responses = JSON.parse(icmp.icmp_responses);
+                } catch (error) {
+                  console.error("Error parsing ICMP responses:", error);
+                }
+
+                return responses.map((response, i) => {
+                  const color =
+                    colors[(index * responses.length + i) % colors.length]; // Ensures every five bars get different colors
+
+                  return (
+                    <div key={`${index}-${i}`} className="icmp-bar">
+                      <div className="icmp-details">
+                        <strong>Host:</strong> {response.host} |
+                        <strong> Type:</strong> {response.type} |
+                        <strong> Code:</strong> {response.code}
+                      </div>
+                      <div className="icmp-fill" style={{ background: color }}>
+                        {response.description}
+                      </div>
+                    </div>
+                  );
+                });
+              })}
+            </div>
+          ) : (
+            <p>No ICMP responses detected</p>
+          )}
+        </div>
+
+        <div className="panel chart">
+          <h2>🌍 TCP Scan Results</h2>
           <div className="port-grid">
             {tcpResults.length > 0 ? (
               tcpResults.map((result, index) => {
@@ -229,42 +265,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="panel chart">
-          <h2>📡 ICMP RESPONSES</h2>
-          {icmpResults.length > 0 ? (
-            <div className="icmp-bars">
-              {icmpResults.flatMap((icmp, index) => {
-                let responses = [];
-                try {
-                  responses = JSON.parse(icmp.icmp_responses);
-                } catch (error) {
-                  console.error("Error parsing ICMP responses:", error);
-                }
-
-                return responses.map((response, i) => {
-                  const color =
-                    colors[(index * responses.length + i) % colors.length]; // Ensures every five bars get different colors
-
-                  return (
-                    <div key={`${index}-${i}`} className="icmp-bar">
-                      <div className="icmp-details">
-                        <strong>Host:</strong> {response.host} |
-                        <strong> Type:</strong> {response.type} |
-                        <strong> Code:</strong> {response.code}
-                      </div>
-                      <div className="icmp-fill" style={{ background: color }}>
-                        {response.description}
-                      </div>
-                    </div>
-                  );
-                });
-              })}
-            </div>
-          ) : (
-            <p>No ICMP responses detected</p>
-          )}
-        </div>
-
         <div className="panel firewall-container">
           <h2>🛑 Firewall Detection</h2>
           {firewallResults.length > 0 ? (
@@ -300,10 +300,10 @@ const Dashboard = () => {
                         : "firewall-safe"
                     }`}
                   >
-                    <p>
+                    <p >
                       {result.firewall_detected
                         ? "🚨 Firewall Detected"
-                        : "✅ No Firewall Detected"}
+                        : "❌ No Firewall Detected"}
                     </p>
                   </div>
                 </div>
