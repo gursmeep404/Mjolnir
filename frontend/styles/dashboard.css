@@ -20,9 +20,10 @@ body {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10rem;
-  margin-top: 10rem;
+  grid-template-columns: repeat(2, 0.7fr);
+  gap: 6rem;
+  margin:10rem;
+  /* margin-top: 10rem; */
 }
 
 .panel {
@@ -32,6 +33,7 @@ background:  rgba(25, 25, 25, 0.7);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px #ff00ff;
+
 }
 
 h2 {

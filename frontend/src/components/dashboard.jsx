@@ -116,111 +116,54 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="panel cyberpunk-tcp-results">
-          <h2 className="cyberpunk-heading">🌍 TCP Port Scan Results</h2>
-          <div className="cyberpunk-port-grid">
+        <div className="panel chart">
+          <h2>🌍 TCP Port Scan Results</h2>
+          <div className="port-grid">
             {tcpResults.length > 0 ? (
               tcpResults.map((result, index) => {
                 const openPorts = JSON.parse(result.tcp_open || "[]");
                 const filteredPorts = JSON.parse(result.tcp_filtered || "[]");
                 const closedPorts = JSON.parse(result.tcp_closed || "[]");
 
-                const totalPorts = Math.max(
-                  openPorts.length + filteredPorts.length + closedPorts.length,
-                  1
-                );
-
-                const openPercentage = (
-                  (openPorts.length / totalPorts) *
-                  100
-                ).toFixed(2);
-                const filteredPercentage = (
-                  (filteredPorts.length / totalPorts) *
-                  100
-                ).toFixed(2);
-                const closedPercentage = (
-                  (closedPorts.length / totalPorts) *
-                  100
-                ).toFixed(2);
-
                 return (
-                  <div key={index} className="cyberpunk-port-box">
-                    <h3 className="cyberpunk-subheading">
-                      Host {result.host_id}
-                    </h3>
-                    <div className="cyberpunk-progress-container">
-                      {/* Open Ports */}
-                      <div className="cyberpunk-progress-item">
-                        <div className="cyberpunk-progress-wrapper">
-                          <CircularProgressbar
-                            value={openPercentage}
-                            text={`${openPercentage}%`}
-                            styles={buildStyles({
-                              textColor: "#0ff",
-                              pathColor: "#0ff",
-                              trailColor: "#222",
-                              strokeLinecap: "round",
-                            })}
-                          />
-                        </div>
-                        <p className="cyberpunk-label">🟢 Open Ports</p>
-                        <div className="cyberpunk-port-list">
-                          {openPorts.length > 0
-                            ? openPorts.map((port) => (
-                                <span key={port} className="cyberpunk-port-tag">
-                                  {port}
-                                </span>
-                              ))
-                            : "None"}
-                        </div>
-                      </div>
-
-                      {/* Filtered Ports */}
-                      <div className="cyberpunk-progress-item">
-                        <div className="cyberpunk-progress-wrapper">
-                          <CircularProgressbar
-                            value={filteredPercentage}
-                            text={`${filteredPercentage}%`}
-                            styles={buildStyles({
-                              textColor: "#f0f",
-                              pathColor: "#f0f",
-                              trailColor: "#222",
-                              strokeLinecap: "round",
-                            })}
-                          />
-                        </div>
-                        <p className="cyberpunk-label">🟣 Filtered Ports</p>
-                        <div className="cyberpunk-port-list">
-                          {filteredPorts.length > 0
-                            ? filteredPorts.map((port) => (
-                                <span key={port} className="cyberpunk-port-tag">
-                                  {port}
-                                </span>
-                              ))
-                            : "None"}
-                        </div>
-                      </div>
-
-                      {/* Closed Ports */}
-                      <div className="cyberpunk-progress-item">
-                        <div className="cyberpunk-progress-wrapper">
-                          <CircularProgressbar
-                            value={closedPercentage}
-                            text={`${closedPercentage}%`}
-                            styles={buildStyles({
-                              textColor: "#f00",
-                              pathColor: "#f00",
-                              trailColor: "#222",
-                              strokeLinecap: "round",
-                            })}
-                          />
-                        </div>
-                        <p className="cyberpunk-label">🔴 Closed Ports</p>
-                        <p className="cyberpunk-closed-text">
-                          {closedPorts.length} ports closed
-                        </p>
+                  <div key={index} className="port-box">
+                    <h3>Host {result.host_id}</h3>
+                    {/* Open Ports Section */}
+                    <div className="port-section">
+                      <h4 className="open-title">🟢 Open Ports</h4>
+                      <div className="port-tiles open">
+                        {openPorts.map((port) => (
+                          <div
+                            key={port}
+                            className="tile open"
+                            title={`Port ${port} is open.`}
+                          >
+                            {port}
+                          </div>
+                        ))}
                       </div>
                     </div>
+
+                    {/* Filtered Ports Section */}
+                    <div className="port-section">
+                      <h4 className="filtered-title">🟣 Filtered Ports</h4>
+                      <div className="port-tiles filtered">
+                        {filteredPorts.map((port) => (
+                          <div
+                            key={port}
+                            className="tile filtered"
+                            title={`Port ${port} is filtered.`}
+                          >
+                            {port}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Closed Ports Summary */}
+                    <p className="closed-summary">
+                      🔴 {closedPorts.length} ports are closed.
+                    </p>
                   </div>
                 );
               })
@@ -332,7 +275,8 @@ const Dashboard = () => {
                       {result.tcp_syn_responses || "N/A"}
                     </p>
                     <p>
-                      <strong>ICMP Responses:</strong> {result.icmp_response || "N/A"}
+                      <strong>ICMP Responses:</strong>{" "}
+                      {result.icmp_response || "N/A"}
                     </p>
                     <p>
                       <strong>Port 443 Response:</strong>{" "}
@@ -388,33 +332,46 @@ const Dashboard = () => {
         </div>
 
         <div className="cyber-holo-container panel">
-      <h2 className="holo-title">📡 PACKET STREAM</h2>
+          <h2 className="holo-title">📡 PACKET STREAM</h2>
 
-      <div className="holo-log" ref={logRef}>
-        {uniquePackets.length > 0 ? (
-          uniquePackets.map((pkt, index) => (
-            <p key={index} className={`packet-entry ${pkt.type}`}>
-              <span className="packet-id">[{pkt.id || `#${index + 1}`}]</span>
-              <span className="packet-summary"> {pkt.packet_summary || "No data"} </span>
-              <span className="packet-timestamp">⏱ {pkt.timestamp || "Unknown"}</span>
-            </p>
-          ))
-        ) : (
-          <p className="no-packets">Waiting for packets...</p>
-        )}
-      </div>
+          <div className="holo-log" ref={logRef}>
+            {uniquePackets.length > 0 ? (
+              uniquePackets.map((pkt, index) => (
+                <p key={index} className={`packet-entry ${pkt.type}`}>
+                  <span className="packet-id">
+                    [{pkt.id || `#${index + 1}`}]
+                  </span>
+                  <span className="packet-summary">
+                    {" "}
+                    {pkt.packet_summary || "No data"}{" "}
+                  </span>
+                  <span className="packet-timestamp">
+                    ⏱ {pkt.timestamp || "Unknown"}
+                  </span>
+                </p>
+              ))
+            ) : (
+              <p className="no-packets">Waiting for packets...</p>
+            )}
+          </div>
 
-      <div className="holo-graph">
-        <ResponsiveContainer width="100%" height={150}>
-          <LineChart data={graphData}>
-            <XAxis dataKey="timestamp" tick={false} />
-            <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="value" stroke="#00ffff" strokeWidth={2} dot={false} />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-    </div>
+          <div className="holo-graph">
+            <ResponsiveContainer width="100%" height={150}>
+              <LineChart data={graphData}>
+                <XAxis dataKey="timestamp" tick={false} />
+                <YAxis />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#00ffff"
+                  strokeWidth={2}
+                  dot={false}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
       </div>
     </div>
   );
