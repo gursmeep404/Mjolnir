@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import axios from "axios";
 import {
   LineChart,
@@ -22,6 +22,9 @@ const Dashboard = () => {
   const [icmpResults, setIcmpResults] = useState([]);
   const [osResults, setOsResults] = useState([]);
   const [packets, setPackets] = useState([]);
+  const [firewallResults, setFirewallResults] = useState([]);
+   const logRef = useRef(null);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,9 +36,10 @@ const Dashboard = () => {
           axios.get(`${API_BASE}/icmp_results`),
           axios.get(`${API_BASE}/os_results`),
           axios.get(`${API_BASE}/packets`),
+          axios.get(`${API_BASE}/firewall_results`),
         ]);
 
-        const [hostsRes, tcpRes, udpRes, icmpRes, osRes, packetsRes] =
+        const [hostsRes, tcpRes, udpRes, icmpRes, osRes, packetsRes, firewallRes] =
           responses.map((res) => res.data);
 
         console.log("Fetched Data:", {
@@ -45,6 +49,7 @@ const Dashboard = () => {
           icmpRes,
           osRes,
           packetsRes,
+          firewallRes,
         });
 
         setHosts(hostsRes || []);
@@ -53,6 +58,7 @@ const Dashboard = () => {
         setIcmpResults(icmpRes || []);
         setOsResults(osRes || []);
         setPackets(packetsRes || []);
+        setFirewallResults(firewallRes || []);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -60,8 +66,13 @@ const Dashboard = () => {
 
     fetchData();
   }, []);
+  useEffect(() => {
+    // Get unique packet summaries
+    if (logRef.current) {
+      logRef.current.scrollTop = logRef.current.scrollHeight;
+    }
+  }, [packets]);
 
-  // Get unique packet summaries
   const uniquePackets = useMemo(() => {
     const seen = new Set();
     return packets.filter((pkt) => {
@@ -73,37 +84,37 @@ const Dashboard = () => {
     });
   }, [packets]);
 
-  // Transform packets into data format for graph
   const graphData = packets.map((pkt, index) => ({
     id: pkt.id || index,
-    value: pkt.size || Math.random() * 100, // Replace 'size' with an actual numerical value
+    value: pkt.size || Math.random() * 100,
     timestamp: pkt.timestamp || index,
   }));
+
 
   return (
     <div className="dashboard">
       <div className="grid-container">
         <div className="panel host-card">
-      <div className="host-header">
-        <span className="icon">⚠️</span>
-        <p>Hosts Detected</p>
-      </div>
-      <h1>{hosts.length}</h1>
-      <div className="host-list">
-        {hosts.length > 0 ? (
-          hosts.map((host, index) => (
-            <div key={index} className="host-item">
-              <p>
-                📍 <strong>{host.host || "Unknown IP"}</strong>
-              </p>
-              <p>⏳ {host.last_scanned || "Unknown Time"}</p>
-            </div>
-          ))
-        ) : (
-          <p className="no-hosts">No hosts detected</p>
-        )}
+          <div className="host-header">
+            <span className="icon">⚠️</span>
+            <p>Hosts Detected</p>
           </div>
+          <h1>{hosts.length}</h1>
+          <div className="host-list">
+            {hosts.length > 0 ? (
+              hosts.map((host, index) => (
+                <div key={index} className="host-item">
+                  <p>
+                    📍 <strong>{host.host || "Unknown IP"}</strong>
+                  </p>
+                  <p>⏳ {host.last_scanned || "Unknown Time"}</p>
+                </div>
+              ))
+            ) : (
+              <p className="no-hosts">No hosts detected</p>
+            )}
           </div>
+        </div>
 
         <div className="panel cyberpunk-tcp-results">
           <h2 className="cyberpunk-heading">🌍 TCP Port Scan Results</h2>
@@ -307,6 +318,54 @@ const Dashboard = () => {
           )}
         </div>
 
+        <div className="panel firewall-container">
+          <h2>🛑 Firewall Detection</h2>
+          {firewallResults.length > 0 ? (
+            <div className="firewall-grid">
+              {firewallResults.map((result, index) => (
+                <div key={index} className="firewall-box">
+                  <h3>Host {result.host_id}</h3>
+
+                  <div className="firewall-status">
+                    <p>
+                      <strong>TCP SYN Responses:</strong>{" "}
+                      {result.tcp_syn_responses || "N/A"}
+                    </p>
+                    <p>
+                      <strong>ICMP Responses:</strong> {result.icmp_response || "N/A"}
+                    </p>
+                    <p>
+                      <strong>Port 443 Response:</strong>{" "}
+                      {result.port_443_response || "N/A"}
+                    </p>
+                  </div>
+
+                  <div className="firewall-analysis">
+                    <h4>🔥 Analysis</h4>
+                    <p>{result.conclusion || "No analysis available"}</p>
+                  </div>
+
+                  <div
+                    className={`firewall-conclusion ${
+                      result.firewall_detected
+                        ? "firewall-alert"
+                        : "firewall-safe"
+                    }`}
+                  >
+                    <p>
+                      {result.firewall_detected
+                        ? "🚨 Firewall Detected"
+                        : "✅ No Firewall Detected"}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>No firewall results available</p>
+          )}
+        </div>
+
         <div className="panel os-fingerprint">
           <h2 className="title">💻 OS Fingerprinting</h2>
           {osResults.length > 0 ? (
@@ -328,55 +387,34 @@ const Dashboard = () => {
           )}
         </div>
 
-        {/* Packet Capture Panel */}
-        <div className="panel packet-capture">
-          <h2>📡 Packet Capture (Live)</h2>
-          <div className="packet-grid">
-            {uniquePackets.length > 0 ? (
-              uniquePackets.map((pkt, index) => (
-                <div key={index} className="packet-box">
-                  <h3>Packet {pkt.id || index}</h3>
+        <div className="cyber-holo-container panel">
+      <h2 className="holo-title">📡 PACKET STREAM</h2>
 
-                  {/* Packet Summary Section */}
-                  <div className="packet-section">
-                    <h4 className="summary-title">📜 Summary</h4>
-                    <p className="packet-summary">
-                      {pkt.packet_summary || "No summary available"}
-                    </p>
-                  </div>
+      <div className="holo-log" ref={logRef}>
+        {uniquePackets.length > 0 ? (
+          uniquePackets.map((pkt, index) => (
+            <p key={index} className={`packet-entry ${pkt.type}`}>
+              <span className="packet-id">[{pkt.id || `#${index + 1}`}]</span>
+              <span className="packet-summary"> {pkt.packet_summary || "No data"} </span>
+              <span className="packet-timestamp">⏱ {pkt.timestamp || "Unknown"}</span>
+            </p>
+          ))
+        ) : (
+          <p className="no-packets">Waiting for packets...</p>
+        )}
+      </div>
 
-                  {/* Timestamp Section */}
-                  <div className="packet-section">
-                    <h4 className="timestamp-title">⏱ Timestamp</h4>
-                    <p className="packet-timestamp">
-                      {pkt.timestamp || "Unknown"}
-                    </p>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p>No packets captured</p>
-            )}
-          </div>
-
-          {/* Graph Visualization */}
-          <div className="graph-container">
-            <ResponsiveContainer width="100%" height={200}>
-              <LineChart data={graphData}>
-                <XAxis dataKey="timestamp" tick={false} />
-                <YAxis />
-                <Tooltip />
-                <Line
-                  type="monotone"
-                  dataKey="value"
-                  stroke="#8A2BE2"
-                  strokeWidth={2}
-                  dot={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
+      <div className="holo-graph">
+        <ResponsiveContainer width="100%" height={150}>
+          <LineChart data={graphData}>
+            <XAxis dataKey="timestamp" tick={false} />
+            <YAxis />
+            <Tooltip />
+            <Line type="monotone" dataKey="value" stroke="#00ffff" strokeWidth={2} dot={false} />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
       </div>
     </div>
   );

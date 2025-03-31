@@ -425,3 +425,76 @@ h1 {
           font-style: italic;
           text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
         }
+
+        /* Cyberpunk Holo Theme */
+/* .cyber-holo-container {
+  background: #080808;
+  border: 2px solid #00ffff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px #00ffff;
+  font-family: "Courier New", monospace;
+  color: #00ffff;
+} */
+
+/* Holo Title */
+.holo-title {
+  font-size: 22px;
+  text-align: center;
+  text-shadow: 0 0 8px #00ffff;
+  /* border-bottom: 2px solid #00ffff; */
+  padding-bottom: 5px;
+}
+.holo-log {
+  background: rgba(10, 10, 20, 0.9); /* Dark neon background */
+  color: #00ff99; /* Neon green text */
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  padding: 15px;
+  border: 2px solid #00ff99; /* Neon border */
+  box-shadow: 0 0 15px rgba(0, 255, 153, 0.7);
+  overflow-y: auto;
+  max-height: 250px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE & Edge */
+}
+
+.holo-log::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome/Safari */
+}
+
+.packet-entry {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  border-bottom: 1px solid rgba(0, 255, 153, 0.3);
+  transition: all 0.3s ease-in-out;
+}
+
+.packet-entry:hover {
+  background: rgba(0, 255, 153, 0.1);
+}
+
+.packet-id {
+  color: #ff007f; /* Neon pink */
+  font-weight: bold;
+}
+
+.packet-summary {
+  flex-grow: 1;
+  text-align: left;
+  padding: 0 10px;
+  color: #00ccff; /* Neon blue */
+}
+
+.packet-timestamp {
+  color: #ffcc00; /* Neon yellow */
+}
+
+
+/* Holo Graph */
+.holo-graph {
+  margin:3rem auto;
+  /* border-radius: 8px; */
+  /* box-shadow: 0 0 15px #00ffff; */
+}
