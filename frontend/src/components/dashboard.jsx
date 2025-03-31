@@ -8,7 +8,6 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 import "../../styles/dashboard.css";
@@ -23,7 +22,8 @@ const Dashboard = () => {
   const [osResults, setOsResults] = useState([]);
   const [packets, setPackets] = useState([]);
   const [firewallResults, setFirewallResults] = useState([]);
-   const logRef = useRef(null);
+  const logRef = useRef(null);
+  const colors = ["#00a8ff", "#ff4d6d", "#9b5de5", "#fcbf49", "#00c897"];
 
 
   useEffect(() => {
@@ -67,7 +67,6 @@ const Dashboard = () => {
     fetchData();
   }, []);
   useEffect(() => {
-    // Get unique packet summaries
     if (logRef.current) {
       logRef.current.scrollTop = logRef.current.scrollHeight;
     }
@@ -234,7 +233,7 @@ const Dashboard = () => {
           <h2>📡 ICMP RESPONSES</h2>
           {icmpResults.length > 0 ? (
             <div className="icmp-bars">
-              {icmpResults.map((icmp, index) => {
+              {icmpResults.flatMap((icmp, index) => {
                 let responses = [];
                 try {
                   responses = JSON.parse(icmp.icmp_responses);
@@ -242,18 +241,23 @@ const Dashboard = () => {
                   console.error("Error parsing ICMP responses:", error);
                 }
 
-                return responses.map((response, i) => (
-                  <div key={`${index}-${i}`} className="icmp-bar">
-                    {/* Host, Type, and Code appear ABOVE the bar */}
-                    <div className="icmp-details">
-                      <strong>Host:</strong> {response.host} |
-                      <strong> Type:</strong> {response.type} |
-                      <strong> Code:</strong> {response.code}
+                return responses.map((response, i) => {
+                  const color =
+                    colors[(index * responses.length + i) % colors.length]; // Ensures every five bars get different colors
+
+                  return (
+                    <div key={`${index}-${i}`} className="icmp-bar">
+                      <div className="icmp-details">
+                        <strong>Host:</strong> {response.host} |
+                        <strong> Type:</strong> {response.type} |
+                        <strong> Code:</strong> {response.code}
+                      </div>
+                      <div className="icmp-fill" style={{ background: color }}>
+                        {response.description}
+                      </div>
                     </div>
-                    {/* Description inside the bar */}
-                    <div className="icmp-fill">{response.description}</div>
-                  </div>
-                ));
+                  );
+                });
               })}
             </div>
           ) : (
