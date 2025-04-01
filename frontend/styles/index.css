@@ -5,6 +5,7 @@ html, body {
 }
 body {
  background: url("/homeBackground.jpg") no-repeat center center fixed;
-  background-size: contain; 
+  background-size: cover; 
 }
+
 

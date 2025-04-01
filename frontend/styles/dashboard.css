@@ -1,11 +1,17 @@
-body {
-  background-color: #0d1117;
-  color: #39ff14;
+body::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+   
+  z-index: -1;
 }
-
 .dashboard {
   text-align: center;
   padding: 20px;
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .neon-title {
@@ -316,7 +322,7 @@ h1 {
 
 .service-container {
   padding: 20px;
-  background: #0a0f1e;
+  /* background: #0a0f1e; */
   border-radius: 10px;
   border: 2px solid #00f7ff;
   box-shadow: 0 0 10px #00f7ff;
@@ -337,14 +343,6 @@ h1 {
   color: #ff4d6d;
 }
 
-.host-card {
-  margin-bottom: 20px;
-  padding: 15px;
-  background: #07111e;
-  border-radius: 8px;
-  border-left: 4px solid #00f7ff;
-  box-shadow: 0 0 8px #00f7ff;
-}
 
 .host-title {
   font-size: 1.4rem;

@@ -33,8 +33,8 @@ export default function Header() {
         <Link to="/" className="nav-item">
           Home
         </Link>
-        <Link to="/Result" className="nav-item">
-          Results
+        <Link to="/dashboard" className="nav-item">
+          Dashboard
         </Link>
         <Link to="/Report" className="nav-item">
           Report

@@ -347,7 +347,7 @@ const Dashboard = () => {
           )}
         </div>
 
-        <div className="service-container">
+        <div className="service-container panel">
           <h2 className="title">🛠 Detected Services</h2>
           {Object.keys(groupedServices).length === 0 ? (
             <p className="no-data">No services detected.</p>
