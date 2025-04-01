@@ -154,6 +154,31 @@ def clear_old_packets(host_id):
     conn.close()
 
 
+# Store service
+def store_service_results(host_id, detected_services):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS service_results (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            host_id INTEGER,
+            port INTEGER,
+            service TEXT
+        )
+    """)
+
+    for service in detected_services:
+        cursor.execute("""
+            INSERT INTO service_results (host_id, port, service)
+            VALUES (?, ?, ?, ?)
+        """, (host_id, service['port'], service['service']))
+    
+    conn.commit()
+    conn.close()
+
+
+
 # To fetch results from a particular table
 def get_results(table_name):
     conn = sqlite3.connect(DB_PATH)

@@ -8,7 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from database.db_handler import get_or_create_host, store_arp_results, store_tcp_results, store_udp_results,store_icmp_results,store_os_results,store_firewall_results, clear_old_packets, store_packet_summary
+from database.db_handler import get_or_create_host, store_arp_results, store_tcp_results, store_udp_results,store_icmp_results,store_os_results,store_firewall_results, store_service_results,clear_old_packets, store_packet_summary
 
 sniffer = None
 sniffer_lock = threading.Lock()
@@ -279,8 +279,7 @@ SERVICE_FINGERPRINTS = {
     389: b"LDAP", 443: b"HTTPS", 500: b"IKE", 587: b"SMTP", 636: b"LDAPS", 
     873: b"RSYNC", 989: b"FTPS", 990: b"FTPS", 993: b"IMAPS", 995: b"POP3S"
 }
-def detect_service(host, port, protocol="TCP"):
-    print(f"[*] Detecting service on {host}:{port}/{protocol}")
+def detect_service(host, port):
 
     known_services = {
         21: "FTP",
@@ -312,7 +311,8 @@ def detect_service(host, port, protocol="TCP"):
     }
 
     service_name = known_services.get(port, "Unknown")
-    print(f"[+] {host}:{port}/{protocol} is running {service_name}")
+    store_service_results(host_id, service_name)
+
 
 def scan_host(host):
     print(f"\n[*] Scanning {host}")

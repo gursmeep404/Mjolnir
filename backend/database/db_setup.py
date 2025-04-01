@@ -114,6 +114,19 @@ def setup_database():
         )
     """)
 
+
+    # Table to store services
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS service_results (
+            host_id INTEGER,
+            port INTEGER,
+            service TEXT,
+            FOREIGN KEY (host_id) REFERENCES hosts (host_id) ON DELETE CASCADE
+        )
+    """)
+
+
+
     conn.commit()
     conn.close()
 
