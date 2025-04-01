@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import "../../styles/home.css";
 
@@ -6,12 +6,29 @@ export default function Home() {
   const secondSectionRef = useRef(null);
   const thirdSectionRef = useRef(null);
 
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control the modal visibility
+  const [ipAddress, setIpAddress] = useState(""); // State to hold the IP entered
+
   const handleScrollToSecond = () => {
     secondSectionRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleScrollToThird = () => {
-    thirdSectionRef.current.scrollIntoView({ behavior: "smooth" });
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleIpChange = (event) => {
+    setIpAddress(event.target.value);
+  };
+
+  const handleScan = () => {
+    // Handle the scan logic here with the IP address
+    console.log(`Scanning IP: ${ipAddress}`);
+    closeModal(); // Close the modal after scanning
   };
 
   return (
@@ -53,7 +70,9 @@ export default function Home() {
               services, and potential misconfigurations that could expose your
               network to attacks.
             </p>
-            <button className="scan-btn">Scan</button>
+            <button className="scan-btn" onClick={openModal}>
+              Scan
+            </button>
           </div>
           <div className="scan-card">
             <img src="/web.png" alt="Network Scan Icon" className="scan-icon" />
@@ -69,14 +88,40 @@ export default function Home() {
         </div>
       </section>
 
+      {/* IP Address Modal */}
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Enter IP Address for Network Scan</h2>
+            <input
+              type="text"
+              value={ipAddress}
+              onChange={handleIpChange}
+              placeholder="Enter IP Address or Network"
+            />
+            <p className="modal-note">
+              <strong>Note:</strong> To scan a single host, simply input the IP
+              address. For scanning a network, provide the subnet mask like:
+              <br />
+              <code>192.168.1.0/24</code>
+            </p>
+            <div className="modal-buttons">
+              <button onClick={handleScan}>Scan</button>
+              <button onClick={closeModal}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Third Section */}
       <section ref={thirdSectionRef} className="third-section">
         {/* Caution Message */}
         <div className="caution-box">
           <h2>⚠️ Ethical Hacking Disclaimer</h2>
           <p>
-            This tool is designed to identify vulnerabilities and is to be used for security analysis and penetration testing. Unauthorized scanning of networks or websites without
-            consent is illegal.
+            This tool is designed to identify vulnerabilities and is to be used
+            for security analysis and penetration testing. Unauthorized scanning
+            of networks or websites without consent is illegal.
           </p>
           <p>
             Always ensure you have explicit permission before running any scans.
@@ -108,7 +153,9 @@ export default function Home() {
         {/* Footer */}
         <footer className="footer">
           <p>© 2024 Mjolnir | Version 1.0.0 | All rights reserved</p>
-          <p>Developed by <span>Gursmeep Kaur</span></p>
+          <p>
+            Developed by <span>Gursmeep Kaur</span>
+          </p>
         </footer>
       </section>
     </div>

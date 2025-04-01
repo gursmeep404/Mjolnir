@@ -40,7 +40,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6); 
+  background: rgba(0, 0, 0, 0.5); 
   z-index: -1;
 }
 
@@ -161,9 +161,13 @@ body {
     color: white;
 }
 
+h2 {
+  color: white;
+}
+
 .get-started-btn {
     background: #0a0f1f; /* Dark background */
-    color: #00eaff; /* Neon cyan text */
+    color: #00eaff; 
     font-size: 16px;
     font-weight: bold;
     padding: 12px 28px;
@@ -379,4 +383,103 @@ html {
 .footer p span {
   color: #c3eeff;
   font-weight: bold;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal content */
+.modal-content {
+  background-color: #2b2b2b;
+  color: #00f9ff;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 2px solid #ff0077;
+  box-shadow: 0 0 15px rgba(255, 0, 119, 0.8);
+  width: 320px;
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+  animation: pop-in 0.5s ease-out;
+}
+
+/* Modal input */
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 1rem;
+  margin-bottom: 0.6rem;
+  background-color: #1e1e1e;
+  border: 1px solid #00f9ff;
+  color: #00f9ff;
+  font-size: 14px;
+  border-radius: 6px;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.modal-content input:focus {
+  border-color: #ff0077;
+}
+
+/* Modal note */
+.modal-note {
+  margin-top: 1rem;
+  font-size: 12px;
+  color: #a6ff00;
+  margin-bottom: 2rem;
+}
+
+
+.modal-buttons button {
+  margin: 1rem;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+
+}
+
+.modal-buttons button:first-child {
+  background-color: #00f9ff;
+  border: none;
+  color: black;
+}
+
+.modal-buttons button:first-child:hover {
+  background-color: #00c7c7;
+}
+
+.modal-buttons button:last-child {
+  background-color: #ff0077;
+  border: none;
+  color: black;
+}
+
+.modal-buttons button:last-child:hover {
+  background-color: #e6005c;
+}
+
+/* Modal pop-in animation */
+@keyframes pop-in {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
