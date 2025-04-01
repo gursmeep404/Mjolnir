@@ -155,7 +155,7 @@ def clear_old_packets(host_id):
 
 
 # Store service
-def store_service_results(host_id, detected_services):
+def store_service_results(host_id, port, service_name):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -168,11 +168,11 @@ def store_service_results(host_id, detected_services):
         )
     """)
 
-    for service in detected_services:
-        cursor.execute("""
+  
+    cursor.execute("""
             INSERT INTO service_results (host_id, port, service)
-            VALUES (?, ?, ?, ?)
-        """, (host_id, service['port'], service['service']))
+            VALUES (?, ?, ?)
+        """, (host_id, port, service_name))
     
     conn.commit()
     conn.close()
@@ -223,4 +223,8 @@ def get_firewall_results():
 def get_packets():
     
     return get_results("packets")
+
+def get_service_results():
+
+    return get_service_results("service_results")
 

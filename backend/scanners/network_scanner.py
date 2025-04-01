@@ -280,7 +280,7 @@ SERVICE_FINGERPRINTS = {
     873: b"RSYNC", 989: b"FTPS", 990: b"FTPS", 993: b"IMAPS", 995: b"POP3S"
 }
 def detect_service(host, port):
-
+    print(f'hi, i am {port} ');
     known_services = {
         21: "FTP",
         22: "SSH",
@@ -311,8 +311,8 @@ def detect_service(host, port):
     }
 
     service_name = known_services.get(port, "Unknown")
-    store_service_results(host_id, service_name)
-
+    store_service_results(host, port, service_name)
+    print(f"[+] Stored services results for {host}")
 
 def scan_host(host):
     print(f"\n[*] Scanning {host}")
@@ -323,10 +323,10 @@ def scan_host(host):
     udp_open_ports=udp_scan(host, range(1, 1025))
 
     for port in tcp_open_ports:
-        detect_service(host, port, protocol="TCP")
+        detect_service(host, port)
 
     for port in udp_open_ports:
-        detect_service(host, port, protocol="UDP")
+        detect_service(host, port)
 
 def main():
     global host_id

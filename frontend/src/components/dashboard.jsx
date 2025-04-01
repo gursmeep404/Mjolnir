@@ -22,6 +22,7 @@ const Dashboard = () => {
   const [osResults, setOsResults] = useState([]);
   const [packets, setPackets] = useState([]);
   const [firewallResults, setFirewallResults] = useState([]);
+  const [serviceResults, setServiceResults] = useState([]);
   const logRef = useRef(null);
   const colors = ["#00a8ff", "#ff4d6d", "#9b5de5", "#fcbf49", "#00c897"];
 
@@ -37,9 +38,10 @@ const Dashboard = () => {
           axios.get(`${API_BASE}/os_results`),
           axios.get(`${API_BASE}/packets`),
           axios.get(`${API_BASE}/firewall_results`),
+          axios.get(`${API_BASE}/service_results`),
         ]);
 
-        const [hostsRes, tcpRes, udpRes, icmpRes, osRes, packetsRes, firewallRes] =
+        const [hostsRes, tcpRes, udpRes, icmpRes, osRes, packetsRes, firewallRes, serviceRes] =
           responses.map((res) => res.data);
 
         console.log("Fetched Data:", {
@@ -50,6 +52,7 @@ const Dashboard = () => {
           osRes,
           packetsRes,
           firewallRes,
+          serviceRes,
         });
 
         setHosts(hostsRes || []);
@@ -59,6 +62,7 @@ const Dashboard = () => {
         setOsResults(osRes || []);
         setPackets(packetsRes || []);
         setFirewallResults(firewallRes || []);
+        setFirewallResults(serviceRes || []);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

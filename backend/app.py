@@ -52,5 +52,9 @@ def get_firewall_results():
 def get_packets():
     return safe_get_results("packets")
 
+@app.route("/api/service_results")
+def get_service_results():
+    return safe_get_results("service_results")
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
