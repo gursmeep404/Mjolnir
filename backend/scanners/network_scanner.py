@@ -1,6 +1,5 @@
 from scapy.all import IP, TCP, UDP, ICMP, Ether, ARP, sr, sr1, srp, sniff
 import threading
-import socket
 import time
 import os
 import sys
@@ -280,6 +279,8 @@ SERVICE_FINGERPRINTS = {
     873: b"RSYNC", 989: b"FTPS", 990: b"FTPS", 993: b"IMAPS", 995: b"POP3S"
 }
 def detect_service(host, port):
+
+    global host_id
     print(f'hi, i am {port} ');
     known_services = {
         21: "FTP",
@@ -311,7 +312,7 @@ def detect_service(host, port):
     }
 
     service_name = known_services.get(port, "Unknown")
-    store_service_results(host, port, service_name)
+    store_service_results(host_id, port, service_name)
     print(f"[+] Stored services results for {host}")
 
 def scan_host(host):

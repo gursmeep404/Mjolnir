@@ -118,6 +118,7 @@ def setup_database():
     # Table to store services
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS service_results (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             host_id INTEGER,
             port INTEGER,
             service TEXT,

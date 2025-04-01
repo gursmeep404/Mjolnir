@@ -313,3 +313,62 @@ h1 {
 .holo-graph {
   margin: 3rem auto;
 }
+
+.service-container {
+  padding: 20px;
+  background: #0a0f1e;
+  border-radius: 10px;
+  border: 2px solid #00f7ff;
+  box-shadow: 0 0 10px #00f7ff;
+  font-family: 'Orbitron', sans-serif;
+  color: #0ff;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.6rem;
+  text-shadow: 0 0 8px #00f7ff;
+  margin-bottom: 20px;
+}
+
+.no-data {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #ff4d6d;
+}
+
+.host-card {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #07111e;
+  border-radius: 8px;
+  border-left: 4px solid #00f7ff;
+  box-shadow: 0 0 8px #00f7ff;
+}
+
+.host-title {
+  font-size: 1.4rem;
+  color: #fcbf49;
+  text-shadow: 0 0 8px #fcbf49;
+  margin-bottom: 10px;
+}
+
+.service-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.service-table th, .service-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #00f7ff;
+}
+
+.service-table th {
+  background: #00a8ff;
+  color: #000;
+}
+
+.service-table tr:hover {
+  background: rgba(0, 248, 255, 0.2);
+}

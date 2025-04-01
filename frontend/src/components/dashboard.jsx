@@ -62,7 +62,7 @@ const Dashboard = () => {
         setOsResults(osRes || []);
         setPackets(packetsRes || []);
         setFirewallResults(firewallRes || []);
-        setFirewallResults(serviceRes || []);
+        setServiceResults(serviceRes || []);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -92,6 +92,14 @@ const Dashboard = () => {
     value: pkt.size || Math.random() * 100,
     timestamp: pkt.timestamp || index,
   }));
+
+   const groupedServices = serviceResults.reduce((acc, service) => {
+     if (!acc[service.host_id]) {
+       acc[service.host_id] = [];
+     }
+     acc[service.host_id].push(service);
+     return acc;
+   }, {});
 
 
   return (
@@ -133,7 +141,7 @@ const Dashboard = () => {
 
                 return responses.map((response, i) => {
                   const color =
-                    colors[(index * responses.length + i) % colors.length]; 
+                    colors[(index * responses.length + i) % colors.length];
 
                   return (
                     <div key={`${index}-${i}`} className="icmp-bar">
@@ -304,7 +312,7 @@ const Dashboard = () => {
                         : "firewall-safe"
                     }`}
                   >
-                    <p >
+                    <p>
                       {result.firewall_detected
                         ? "🚨 Firewall Detected"
                         : "❌ No Firewall Detected"}
@@ -336,6 +344,35 @@ const Dashboard = () => {
             </div>
           ) : (
             <p className="no-data">No OS data available</p>
+          )}
+        </div>
+
+        <div className="service-container">
+          <h2 className="title">🛠 Detected Services</h2>
+          {Object.keys(groupedServices).length === 0 ? (
+            <p className="no-data">No services detected.</p>
+          ) : (
+            Object.entries(groupedServices).map(([hostId, services]) => (
+              <div key={hostId} className="host-card">
+                <h3 className="host-title">🔗 Host ID: {hostId}</h3>
+                <table className="service-table">
+                  <thead>
+                    <tr>
+                      <th>Port</th>
+                      <th>Service</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {services.map(({ id, port, service }) => (
+                      <tr key={id}>
+                        <td>{port}</td>
+                        <td>{service}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ))
           )}
         </div>
 
