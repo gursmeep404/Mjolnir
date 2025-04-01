@@ -1,5 +1,6 @@
 from scapy.all import IP, TCP, UDP, ICMP, Ether, ARP, sr, sr1, srp, sniff
 import threading
+import socket
 import time
 import os
 import sys
@@ -57,7 +58,6 @@ def tcp_syn_scan(host, ports):
         elif response.haslayer(TCP):
             if response[TCP].flags == 0x12: 
                 open_ports.append(port)
-                # Send RST to close the connection
                 sr1(IP(dst=host) / TCP(dport=port, flags="R"), timeout=1, verbose=0)
             elif response[TCP].flags == 0x14: 
                 closed_ports.append(port)
@@ -65,6 +65,8 @@ def tcp_syn_scan(host, ports):
 
     store_tcp_results(host_id, open_ports, closed_ports, filtered_ports)
     print(f"[+] Stored TCP scan results for {host}")
+
+    return open_ports
     
 
 
@@ -81,7 +83,7 @@ def udp_scan(host, ports):
         response = sr1(pkt, timeout=3, verbose=0)
 
         if response is None:
-            open_ports.append(port)  # Treat as open or filtered
+            open_ports.append(port)  
         elif response.haslayer(ICMP):
             icmp_type = response[ICMP].type
             icmp_code = response[ICMP].code
@@ -93,7 +95,7 @@ def udp_scan(host, ports):
     store_udp_results(host_id, open_ports, closed_ports, filtered_ports)
     print(f"[+] Stored UDP scan results for {host}")
     
-    
+    return open_ports
 
 
 
@@ -267,29 +269,58 @@ def detect_firewall(host):
     store_firewall_results(host_id, results['tcp_syn_responses'], results['icmp_response'], results['port_443_response'], results['conclusion'])
     print(f"[+] Stored firewall scan results for {host}")
 
-    
 
 
-# def banner_grab(host, port):
-#     """Attempts to grab banners from open ports using different payloads."""
-#     try:
-#         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#         sock.settimeout(3)
-#         sock.connect((host, port))
-#         sock.sendall(b"HEAD / HTTP/1.1\r\nHost: target\r\n\r\n")
-#         banner = sock.recv(1024).decode(errors="ignore")
-#         sock.close()
-#         print(f"[+] Banner on {host}:{port}: {banner.strip()}")
-#     except Exception as e:
-#         print(f"[!] No banner from {host}:{port}: {e}")
+# Service Detection
+
+SERVICE_FINGERPRINTS = {
+    21: b"FTP", 22: b"SSH", 23: b"Telnet", 25: b"SMTP", 53: b"DNS", 80: b"HTTP", 
+    110: b"POP3", 123: b"NTP", 137: b"NetBIOS", 139: b"SMB", 143: b"IMAP", 161: b"SNMP", 
+    389: b"LDAP", 443: b"HTTPS", 500: b"IKE", 587: b"SMTP", 636: b"LDAPS", 
+    873: b"RSYNC", 989: b"FTPS", 990: b"FTPS", 993: b"IMAPS", 995: b"POP3S"
+}
+
+def detect_service(host, port, protocol="TCP"):
+    try:
+        if protocol == "TCP":
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        else:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+        sock.settimeout(3)
+        sock.connect((host, port))
+
+        # Generic probe
+        sock.sendall(b"\r\n")
+        response = sock.recv(1024).decode(errors="ignore")
+        sock.close()
+
+        for known_port, signature in SERVICE_FINGERPRINTS.items():
+            if known_port == port and signature in response.encode():
+                print(f"[+] {host}:{port}/{protocol} → {signature.decode()} detected")
+                return
+
+        if response.strip():
+            print(f"[+] {host}:{port}/{protocol} → Unknown service (Response: {response.strip()})")
+        else:
+            print(f"[!] {host}:{port}/{protocol} → No response detected")
+
+    except Exception as e:
+        print(f"[!] {host}:{port}/{protocol} → No response ({e})")
 
 def scan_host(host):
     print(f"\n[*] Scanning {host}")
     icmp_scan(host)
     os_detection(host)
     detect_firewall(host)
-    tcp_syn_scan(host, range(1, 1025))
-    udp_scan(host, range(1, 1025))
+    tcp_open_ports=tcp_syn_scan(host, range(1, 1025))
+    udp_open_ports=udp_scan(host, range(1, 1025))
+
+    for port in tcp_open_ports:
+        detect_service(host, port, protocol="TCP")
+
+    for port in udp_open_ports:
+        detect_service(host, port, protocol="UDP")
 
 def main():
     global host_id

@@ -129,7 +129,7 @@ const Dashboard = () => {
 
                 return responses.map((response, i) => {
                   const color =
-                    colors[(index * responses.length + i) % colors.length]; // Ensures every five bars get different colors
+                    colors[(index * responses.length + i) % colors.length]; 
 
                   return (
                     <div key={`${index}-${i}`} className="icmp-bar">
