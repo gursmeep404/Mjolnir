@@ -279,34 +279,40 @@ SERVICE_FINGERPRINTS = {
     389: b"LDAP", 443: b"HTTPS", 500: b"IKE", 587: b"SMTP", 636: b"LDAPS", 
     873: b"RSYNC", 989: b"FTPS", 990: b"FTPS", 993: b"IMAPS", 995: b"POP3S"
 }
-
 def detect_service(host, port, protocol="TCP"):
-    try:
-        if protocol == "TCP":
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        else:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    print(f"[*] Detecting service on {host}:{port}/{protocol}")
 
-        sock.settimeout(3)
-        sock.connect((host, port))
+    known_services = {
+        21: "FTP",
+        22: "SSH",
+        23: "Telnet",
+        25: "SMTP",
+        53: "DNS",
+        80: "HTTP",
+        110: "POP3",
+        119: "NNTP",
+        123: "NTP",
+        135: "MS RPC",
+        137: "NetBIOS",
+        139: "SMB",
+        143: "IMAP",
+        161: "SNMP",
+        389: "LDAP",
+        443: "HTTPS",
+        445: "Microsoft-DS",
+        500: "ISAKMP",
+        993: "IMAPS",
+        995: "POP3S",
+        1433: "MSSQL",
+        1521: "Oracle DB",
+        3306: "MySQL",
+        3389: "RDP",
+        5900: "VNC",
+        8080: "HTTP Proxy"
+    }
 
-        # Generic probe
-        sock.sendall(b"\r\n")
-        response = sock.recv(1024).decode(errors="ignore")
-        sock.close()
-
-        for known_port, signature in SERVICE_FINGERPRINTS.items():
-            if known_port == port and signature in response.encode():
-                print(f"[+] {host}:{port}/{protocol} → {signature.decode()} detected")
-                return
-
-        if response.strip():
-            print(f"[+] {host}:{port}/{protocol} → Unknown service (Response: {response.strip()})")
-        else:
-            print(f"[!] {host}:{port}/{protocol} → No response detected")
-
-    except Exception as e:
-        print(f"[!] {host}:{port}/{protocol} → No response ({e})")
+    service_name = known_services.get(port, "Unknown")
+    print(f"[+] {host}:{port}/{protocol} is running {service_name}")
 
 def scan_host(host):
     print(f"\n[*] Scanning {host}")
