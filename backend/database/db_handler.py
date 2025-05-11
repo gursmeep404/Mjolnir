@@ -1,8 +1,10 @@
 import sqlite3
 import json
 from datetime import datetime
+import os 
 
-DB_PATH = "database/results.db"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DB_PATH = os.path.join(BASE_DIR, 'database', 'results.db')
 
 # Utility function to get or insert host and return host_id
 def get_or_create_host(host):
