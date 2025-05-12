@@ -40,20 +40,27 @@ export default function Home() {
       });
 
       const result = await response.json();
-      console.log("Scan result:", result); // <-- you already have this
+      console.log("Scan result:", result);
 
-      if (response.ok && result.host_id) {
-        // ✅ Navigate to dashboard route with host_id
-        navigate(`/dashboard/${result.host_id}?ip=${ipAddress}`);
-
+      if (response.ok) {
+        if (result.status === "scanning") {
+          // If the scan is in progress, navigate to the dashboard
+          // Without `host_id`, but the data will update as the scan completes.
+          navigate(`/dashboard?ip=${ipAddress}`);
+        } else {
+          // If host_id exists immediately, navigate with the host_id
+          navigate(`/dashboard/${result.host_id}?ip=${ipAddress}`);
+        }
       } else {
-        alert("Scan failed or host not found.");
+        alert("Scan failed.");
       }
     } catch (error) {
       console.error("Error initiating scan:", error);
       alert("An error occurred while scanning.");
     }
   };
+  
+  
   
   
 

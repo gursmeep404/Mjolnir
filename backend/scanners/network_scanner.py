@@ -332,7 +332,11 @@ def scan_host(host):
 def main():
     global host_id
 
-    target = input("Enter target IP or network: ")
+    if len(sys.argv) < 2:
+        print("Usage: python network_scanner.py <target_ip_or_network>")
+        return
+
+    target = sys.argv[1]
 
     host_id = get_or_create_host(target) 
     clear_old_packets(host_id)
@@ -350,11 +354,10 @@ def main():
     sniffer_thread = threading.Thread(target=capture_packets, daemon=True)
     sniffer_thread.start()
 
-# Scan host() function run side by side for hosts 
+    # Scan host() function run side by side for hosts 
     with ThreadPoolExecutor(max_workers=5) as executor:
         executor.map(scan_host, scanned_ips) 
 
-    
     print("[+] Scanning complete!")
 
 if __name__ == "__main__":

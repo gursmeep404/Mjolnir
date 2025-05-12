@@ -2,6 +2,9 @@ import sqlite3
 import json
 from datetime import datetime
 import os 
+import subprocess
+import sys
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(BASE_DIR, 'database', 'results.db')
@@ -35,6 +38,20 @@ def get_or_create_host(host):
     conn.close()
     return host_id
 
+
+def ip_exists(ip_address):
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+        # Adjust index `1` based on actual column names if needed
+    cursor.execute("SELECT 1 FROM hosts WHERE host = ? LIMIT 1", (ip_address,))
+    result = cursor.fetchone()
+
+    conn.close()
+    if result:
+        return {"exists": True, "host_id": result[0]}
+    return {"exists": False}
+    
+      
 
 # Function to store ARP scan results
 def store_arp_results(host, scanned_ips):
@@ -192,16 +209,19 @@ def get_results(table_name, ip=None):
         host_row = cursor.fetchone()
         if not host_row:
             conn.close()
-            return None  # No such IP in hosts table
+            return {"status": "scanning"}  # IP not found
         host_id = host_row["host_id"]
         cursor.execute(f"SELECT * FROM {table_name} WHERE host_id = ?", (host_id,))
     else:
         cursor.execute(f"SELECT * FROM {table_name}")
 
-    results = [dict(row) for row in cursor.fetchall()]
+    rows = cursor.fetchall()
     conn.close()
-    return results
 
+    if ip and not rows:
+        return {"status": "scanning"}  # Data still being scanned
+
+    return [dict(row) for row in rows]
 
 
 def get_hosts():

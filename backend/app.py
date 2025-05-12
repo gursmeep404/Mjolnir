@@ -2,10 +2,12 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import sys
 import os
+import subprocess
+import threading
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from database.db_handler import get_results, get_or_create_host  # Added get_or_create_host import
+from database.db_handler import get_results, ip_exists 
 
 app = Flask(__name__)
 CORS(app) 
@@ -62,27 +64,38 @@ def get_service_results():
     return safe_get_results("service_results")
 
 
-# ✅ New route to receive IP from frontend
+def run_scanner(ip):
+    try:
+        # Full absolute path to Python interpreter (verified from your system)
+        python_path = r"C:\Users\HP\AppData\Local\Programs\Python\Python312\python.exe"
+
+        # Absolute path to the scanner script
+        script_path = os.path.join(os.path.dirname(__file__), 'scanners', 'network_scanner.py')
+
+        subprocess.run([python_path, script_path, ip], check=True)
+        print(f"[+] Scanner completed for {ip}")
+    except subprocess.CalledProcessError as e:
+        print(f"[!] Scanner failed for {ip}: {e}")
+
+
+
 @app.route("/api/scan", methods=["POST"])
 def scan_ip():
-    try:
-        data = request.get_json()
-        ip = data.get("ip")
-        if not ip:
-            return jsonify({"error": "IP address not provided"}), 400
+    data = request.get_json()
+    ip = data.get("ip")
+    if not ip:
+        return jsonify({"error": "IP address not provided"}), 400
 
-        print(f"Received IP to scan: {ip}")
+    print(f"[+] Received IP to scan: {ip}")
 
-        # Store or retrieve host ID (insert if new)
-        host_id = get_or_create_host(ip)
+    ip_check = ip_exists(ip)
+    if ip_check["exists"]:
+        print(f"[+] IP {ip} already exists in database.")
+        return jsonify({"host_id": ip_check["host_id"]})
 
-        # You can trigger your scanning logic here (e.g., Nmap, Scapy, etc.)
-        # For now, just acknowledging receipt
-        return jsonify({"message": f"Scan initiated for {ip}", "host_id": host_id})
-    except Exception as e:
-        print(f"Scan error: {e}")
-        return jsonify({"error": "Internal Server Error"}), 500
+    # If IP not in database, run scanner in a background thread
+    print(f"[~] IP {ip} not found in database. Starting scan.")
+    threading.Thread(target=run_scanner, args=(ip,)).start()
 
-
-if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    # Return a "scanning" status and no host_id until scan is complete
+    return jsonify({"status": "scanning"})
