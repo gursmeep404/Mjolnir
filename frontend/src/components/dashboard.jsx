@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import {
   LineChart,
@@ -15,6 +16,11 @@ import "../../styles/dashboard.css";
 const API_BASE = "http://localhost:5000/api";
 
 const Dashboard = () => {
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const ip = queryParams.get("ip");
+
   const [hosts, setHosts] = useState([]);
   const [tcpResults, setTcpResults] = useState([]);
   const [udpResults, setUdpResults] = useState([]);
@@ -26,25 +32,24 @@ const Dashboard = () => {
   const logRef = useRef(null);
   const colors = ["#00a8ff", "#ff4d6d", "#9b5de5", "#fcbf49", "#00c897"];
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const params = { params: { ip } };
+
+
         const responses = await Promise.all([
-          axios.get(`${API_BASE}/hosts`),
-          axios.get(`${API_BASE}/tcp_results`),
-          axios.get(`${API_BASE}/udp_results`),
-          axios.get(`${API_BASE}/icmp_results`),
-          axios.get(`${API_BASE}/os_results`),
-          axios.get(`${API_BASE}/packets`),
-          axios.get(`${API_BASE}/firewall_results`),
-          axios.get(`${API_BASE}/service_results`),
+          axios.get(`${API_BASE}/hosts`, params),
+          axios.get(`${API_BASE}/tcp_results`, params),
+          axios.get(`${API_BASE}/udp_results`, params),
+          axios.get(`${API_BASE}/icmp_results`, params),
+          axios.get(`${API_BASE}/os_results`, params),
+          axios.get(`${API_BASE}/packets`, params),
+          axios.get(`${API_BASE}/firewall_results`, params),
+          axios.get(`${API_BASE}/service_results`, params),
         ]);
 
-        const [hostsRes, tcpRes, udpRes, icmpRes, osRes, packetsRes, firewallRes, serviceRes] =
-          responses.map((res) => res.data);
-
-        console.log("Fetched Data:", {
+        const [
           hostsRes,
           tcpRes,
           udpRes,
@@ -53,7 +58,7 @@ const Dashboard = () => {
           packetsRes,
           firewallRes,
           serviceRes,
-        });
+        ] = responses.map((res) => res.data);
 
         setHosts(hostsRes || []);
         setTcpResults(tcpRes || []);
@@ -70,6 +75,7 @@ const Dashboard = () => {
 
     fetchData();
   }, []);
+
   useEffect(() => {
     if (logRef.current) {
       logRef.current.scrollTop = logRef.current.scrollHeight;
@@ -93,14 +99,13 @@ const Dashboard = () => {
     timestamp: pkt.timestamp || index,
   }));
 
-   const groupedServices = serviceResults.reduce((acc, service) => {
-     if (!acc[service.host_id]) {
-       acc[service.host_id] = [];
-     }
-     acc[service.host_id].push(service);
-     return acc;
-   }, {});
-
+  const groupedServices = serviceResults.reduce((acc, service) => {
+    if (!acc[service.host_id]) {
+      acc[service.host_id] = [];
+    }
+    acc[service.host_id].push(service);
+    return acc;
+  }, {});
 
   return (
     <div className="dashboard">

@@ -1,8 +1,12 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../../styles/home.css";
 
 export default function Home() {
+
+  const navigate = useNavigate();
+
   const secondSectionRef = useRef(null);
   const thirdSectionRef = useRef(null);
 
@@ -25,11 +29,33 @@ export default function Home() {
     setIpAddress(event.target.value);
   };
 
-  const handleScan = () => {
-    // Handle the scan logic here with the IP address
-    console.log(`Scanning IP: ${ipAddress}`);
-    closeModal(); // Close the modal after scanning
+  const handleScan = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/scan", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ ip: ipAddress }),
+      });
+
+      const result = await response.json();
+      console.log("Scan result:", result); // <-- you already have this
+
+      if (response.ok && result.host_id) {
+        // ✅ Navigate to dashboard route with host_id
+        navigate(`/dashboard/${result.host_id}?ip=${ipAddress}`);
+
+      } else {
+        alert("Scan failed or host not found.");
+      }
+    } catch (error) {
+      console.error("Error initiating scan:", error);
+      alert("An error occurred while scanning.");
+    }
   };
+  
+  
 
   return (
     <div className="home-container">

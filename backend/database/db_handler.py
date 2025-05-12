@@ -182,17 +182,26 @@ def store_service_results(host_id, port, service_name):
 
 
 # To fetch results from a particular table
-def get_results(table_name):
+def get_results(table_name, ip=None):
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row 
     cursor = conn.cursor()
 
-    query = f"SELECT * FROM {table_name}"
-    cursor.execute(query)
-    results = [dict(row) for row in cursor.fetchall()]
+    if ip:
+        cursor.execute("SELECT host_id FROM hosts WHERE host = ?", (ip,))
+        host_row = cursor.fetchone()
+        if not host_row:
+            conn.close()
+            return None  # No such IP in hosts table
+        host_id = host_row["host_id"]
+        cursor.execute(f"SELECT * FROM {table_name} WHERE host_id = ?", (host_id,))
+    else:
+        cursor.execute(f"SELECT * FROM {table_name}")
 
+    results = [dict(row) for row in cursor.fetchall()]
     conn.close()
     return results
+
 
 
 def get_hosts():
