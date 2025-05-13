@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useRef } from "react";
+import  { useEffect, useState, useMemo, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import {
@@ -400,7 +400,7 @@ const Dashboard = () => {
           </div>
 
           <div className="service-container panel">
-            <h2 className="title">🛠 Detected Services</h2>
+            <h2 className="title">🔧 Detected Services</h2>
             {Object.keys(groupedServices).length === 0 ? (
               <p className="no-data">No services detected.</p>
             ) : (
@@ -471,6 +471,10 @@ const Dashboard = () => {
           </div>
         </div>
       )}
+
+      <div className="generate-report-container">
+        <button className="gaming-button">Generate Report</button>
+      </div>
     </div>
   );
 };

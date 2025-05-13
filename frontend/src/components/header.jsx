@@ -30,7 +30,7 @@ export default function Header() {
 
       {/* Navigation Box */}
       <nav className="nav-box">
-        <Link to="/" className="nav-item">
+        <Link to="/home" className="nav-item">
           Home
         </Link>
         <Link to="/dashboard" className="nav-item">

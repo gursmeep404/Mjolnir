@@ -1,3 +1,5 @@
+
+
 body::after {
   content: "";
   position: absolute;
@@ -30,10 +32,10 @@ body::after {
 
 .panel {
   background: rgba(25, 25, 25, 0.7);
-  border: 2px solid #ff00ff;
+  border: 2px solid #96D3FF;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 0 10px #ff00ff;
+  box-shadow: 0 0 10px #96D3FF;
   max-width: 700px;
 }
 
@@ -90,11 +92,11 @@ body::after {
 .host-card {
   border-radius: 20px;
   padding: 20px;
-  border: 3px solid rgba(255, 0, 255, 0.9);
+  /* border: 3px solid rgba(255, 0, 255, 0.9); */
   /* box-shadow: 0 0 25px rgba(255, 0, 255, 0.7), 0 0 10px rgba(0, 255, 255, 0.5); */
   color: #fff;
   text-align: center;
-  font-family: "Orbitron", sans-serif;
+  /* font-family: "Orbitron", sans-serif; */
   position: relative;
   overflow: hidden;
   text-transform: uppercase;
@@ -104,10 +106,10 @@ body::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 1.5rem;
   font-weight: bold;
   color: #0ff;
-  text-shadow: 0 0 10px #0ff;
+  /* text-shadow: 0 0 10px #0ff; */
 }
 
 .host-header .icon {
@@ -209,7 +211,7 @@ h1 {
 .title {
   font-size: 1.8rem;
   color: #00ffff;
-  text-shadow: 0 0 10px #00ffff;
+  /* text-shadow: 0 0 10px #00ffff; */
   margin-bottom: 15px;
 }
 
@@ -247,7 +249,7 @@ h1 {
 .details {
   font-size: 1rem;
   color: #00ffff;
-  text-shadow: 0 0 5px #00ffff;
+  /* text-shadow: 0 0 5px #00ffff; */
   margin: 5px 0;
 }
 
@@ -266,7 +268,7 @@ h1 {
 .holo-title {
   font-size: 22px;
   text-align: center;
-  text-shadow: 0 0 8px #00ffff;
+  /* text-shadow: 0 0 8px #00ffff; */
   padding-bottom: 5px;
 }
 .holo-log {
@@ -324,16 +326,16 @@ h1 {
   padding: 20px;
   /* background: #0a0f1e; */
   border-radius: 10px;
-  border: 2px solid #00f7ff;
-  box-shadow: 0 0 10px #00f7ff;
-  font-family: 'Orbitron', sans-serif;
+  /* border: 2px solid #00f7ff; */
+  /* box-shadow: 0 0 10px #00f7ff; */
+  /* font-family: 'Orbitron', sans-serif; */
   color: #0ff;
 }
 
 .title {
   text-align: center;
   font-size: 1.6rem;
-  text-shadow: 0 0 8px #00f7ff;
+  /* text-shadow: 0 0 8px #00f7ff; */
   margin-bottom: 20px;
 }
 
@@ -396,6 +398,52 @@ h1 {
   animation: spin 1s linear infinite;
   margin-bottom: 20px;
 }
+
+.gaming-button {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1rem;
+  padding: 14px 36px;
+  color: #fff;
+  background: #1a1a1a;
+  border: 2px solid #e7dde5;
+  border-radius: 12px;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 6px rgba(255, 0, 128, 0.25), 0 0 12px rgba(0, 255, 255, 0.15);
+  margin-bottom:5rem;
+}
+
+.gaming-button::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(135deg, #ff00cc, #00ffff);
+  border-radius: 14px;
+  filter: blur(6px);
+  opacity: 0.4;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+.gaming-button:hover {
+  background: #ff00cc;
+  color: #000;
+  border-color: #dff5f5;
+  box-shadow: 0 0 10px #ff00cc, 0 0 20px #00ffff;
+  transform: scale(1.04);
+}
+
+.gaming-button:active {
+  transform: scale(0.96);
+  background: #aa0099;
+}
+
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
