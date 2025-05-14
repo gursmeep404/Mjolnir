@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import "../../styles/report.css";
 
 const Report = () => {
   const { state } = useLocation();
@@ -9,8 +10,8 @@ const Report = () => {
 
   useEffect(() => {
     const fetchReport = async () => {
-        try {
-            console.log("Data sent to backend:", state);
+      try {
+        console.log("Data sent to backend:", state);
 
         const response = await axios.post(
           "http://localhost:5000/api/generate_report",
@@ -28,28 +29,29 @@ const Report = () => {
   }, [state]);
 
   return (
-    <div className="report-container">
-      <h2>Vulnerability Report for {state?.ip}</h2>
-      {loading ? (
-        <p>Loading...</p>
-      ) : cveData.length > 0 ? (
-        <ul>
-          {cveData.map((cve, index) => (
-            <li key={index}>
+    <div className="report-wrapper">
+      <div className="report-card">
+        <h2>Vulnerability Report</h2>
+        <p>Target IP: {state?.ip}</p>
+        {loading ? (
+          <p>Loading...</p>
+        ) : cveData.length > 0 ? (
+          cveData.map((cve, index) => (
+            <div key={index} className="cve-entry">
               <a
                 href={`https://nvd.nist.gov/vuln/detail/${cve.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 {cve.id}
-              </a>{" "}
-              - {cve.summary}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No known vulnerabilities found.</p>
-      )}
+              </a>
+              <div className="cve-summary">{cve.summary}</div>
+            </div>
+          ))
+        ) : (
+          <p>No known vulnerabilities found.</p>
+        )}
+      </div>
     </div>
   );
 };

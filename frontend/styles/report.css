@@ -1,18 +1,74 @@
-.report-container {
-    padding: 2rem;
-    background: #111;
-    color: #eee;
-    font-family: "Fira Code", monospace;
+.report-wrapper {
+    display: flex;
+    justify-content: center;
+    padding-top: 120px;
+    padding-bottom: 40px;
+    background: linear-gradient(to bottom, #0a0f1c 0%, #000 100%);
+    min-height: 100vh;
+    color: #00f0ff;
+    background-image: url('/images/matrix-bg.gif'); /* Optional: Add animated background */
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-top:8rem;
   }
   
-  .report-container a {
-    color: #00bfff;
+  .report-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid #00f0ff20;
+    border-radius: 20px;
+    padding: 40px;
+    width: 80%;
+    max-width: 900px;
+    box-shadow: 0 0 30px #00f0ff30;
+  }
+  
+  .report-card h2 {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #00f0ff;
+    /* text-shadow: 0 0 5px #00f0ff; */
+    font-family: 'Orbitron', sans-serif;
+  }
+  
+  .report-card p {
+    text-align: center;
+    font-size: 1rem;
+    color: #bbb;
+    margin-bottom: 20px;
+  }
+  
+  .cve-entry {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid #00f0ff30;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 0 10px #00f0ff10;
+    transition: transform 0.2s, box-shadow 0.3s;
+  }
+  
+  .cve-entry:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 15px #00f0ff50;
+  }
+  
+  .cve-entry a {
+    color: #00f0ff;
+    font-weight: bold;
+    font-size: 1.1rem;
     text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
   }
   
-  .report-container li {
-    margin-bottom: 1rem;
-    border-left: 3px solid #444;
-    padding-left: 0.5rem;
+  .cve-entry a:hover {
+    text-decoration: underline;
+  }
+  
+  .cve-summary {
+    color: #ccc;
+    font-size: 0.95rem;
+    margin-top: 4px;
   }
   
