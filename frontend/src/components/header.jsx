@@ -36,7 +36,7 @@ export default function Header() {
         <Link to="/dashboard" className="nav-item">
           Dashboard
         </Link>
-        <Link to="/Report" className="nav-item">
+        <Link to="/report" className="nav-item">
           Report
         </Link>
         <Link to="/about" className="nav-item">

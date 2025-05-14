@@ -1,5 +1,5 @@
 import  { useEffect, useState, useMemo, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   LineChart,
@@ -16,6 +16,21 @@ import "../../styles/dashboard.css";
 const API_BASE = "http://localhost:5000/api";
 
 const Dashboard = () => {
+
+  const navigate = useNavigate();
+
+  const handleGenerateReport = () => {
+    navigate("/report", {
+      state: {
+        ip,
+        tcpResults,
+        udpResults,
+        osResults,
+        firewallResults,
+        icmpResults,
+      },
+    });
+  };
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -473,7 +488,9 @@ const Dashboard = () => {
       )}
 
       <div className="generate-report-container">
-        <button className="gaming-button">Generate Report</button>
+        <button className="gaming-button" onClick={handleGenerateReport}>
+          Generate Report
+        </button>
       </div>
     </div>
   );

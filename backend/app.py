@@ -4,13 +4,17 @@ import sys
 import os
 import subprocess
 import threading
+import json
+import httpx
+
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from database.db_handler import get_results, ip_exists 
 
 app = Flask(__name__)
-CORS(app) 
+CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
+
 
 
 # Utility to safely fetch results, with optional IP filter
@@ -99,3 +103,93 @@ def scan_ip():
 
     # Return a "scanning" status and no host_id until scan is complete
     return jsonify({"status": "scanning"})
+
+NVD_API_KEY = "7c992ab6-382f-4c2e-91f0-0c3e39e940cc"
+PORT_KEYWORD_MAP = {
+    "135": "rpc",
+    "137": "netbios",
+    "139": "netbios",
+    "445": "smb",
+    "80": "http",
+    "443": "https",
+    "21": "ftp",
+    "22": "ssh",
+    "23": "telnet"
+}
+
+def get_cve_for_keyword(keyword):
+    base_url = "https://services.nvd.nist.gov/rest/json/cves/2.0"
+    params = {
+        "keywordSearch": keyword,
+        "resultsPerPage": 10,
+        "startIndex": 0
+        # ✅ Removed "sortBy"
+    }
+
+    headers = {
+        "apiKey": NVD_API_KEY
+    }
+
+    try:
+        response = httpx.get(base_url, params=params, headers=headers)
+        print(f"🔗 NVD URL: {response.url}")
+        print("Response status:", response.status_code)
+        print("Response headers:", response.headers)
+        print("Response content:", response.text)
+
+        response.raise_for_status()
+
+        cves = response.json().get("vulnerabilities", [])
+        return [
+            {
+                "id": cve["cve"]["id"],
+                "summary": cve["cve"]["descriptions"][0]["value"]
+            }
+            for cve in cves
+        ]
+    except httpx.HTTPStatusError as e:
+        print(f"❌ NVD API error {response.status_code} for '{keyword}': {response.text}")
+    except Exception as e:
+        print(f"❌ NVD API general error for '{keyword}': {e}")
+
+    return []
+
+@app.route('/api/generate_report', methods=['POST'])
+def generate_report():
+    data = request.get_json()
+    keywords = set()
+
+    # Extract ports and map to service names
+    for entry in data.get("tcpResults", []):
+        for key in ["tcp_open", "tcp_filtered"]:
+            raw_ports = entry.get(key, "[]")
+            try:
+                port_list = json.loads(raw_ports) if isinstance(raw_ports, str) else raw_ports
+                for port in port_list:
+                    port_str = str(port)
+                    mapped_keyword = PORT_KEYWORD_MAP.get(port_str, port_str)
+                    keywords.add(mapped_keyword)
+            except Exception as e:
+                print(f"⚠️ Failed to parse ports from '{key}': {e}")
+
+    # Extract OS guess words
+    for entry in data.get("osResults", []):
+        guess = entry.get("os_guess", "")
+        for word in guess.split():
+            if word.isalpha():
+                keywords.add(word)
+
+    print("📌 Keywords for CVE search:", keywords)
+
+    # Filter and query CVEs
+    all_cves = []
+    for keyword in keywords:
+        if keyword.lower() in {"windows", "linux", "os", "unknown"}:
+            print(f"⚠️ Skipping generic keyword '{keyword}'")
+            continue
+
+        print(f"🔍 Querying CVEs for keyword: {keyword}")
+        cves = get_cve_for_keyword(keyword)
+        all_cves.extend(cves)
+
+    return jsonify({"cves": all_cves})

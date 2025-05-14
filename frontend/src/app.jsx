@@ -3,6 +3,7 @@ import Intro from "./components/intro";
 import Home from "./components/homePage";
 import Header from "./components/header";
 import Dashboard from "./components/dashboard";
+import Report from "./components/report"
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/dashboard/:hostId" element={<Dashboard />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/report" element={<Report />} />
       </Routes>
     </Router>
   );

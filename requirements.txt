@@ -1,5 +1,5 @@
 scapy
-pymetasploit3
 flask
 flask-cors
 pandas
+httpx

@@ -1,0 +1,18 @@
+.report-container {
+    padding: 2rem;
+    background: #111;
+    color: #eee;
+    font-family: "Fira Code", monospace;
+  }
+  
+  .report-container a {
+    color: #00bfff;
+    text-decoration: none;
+  }
+  
+  .report-container li {
+    margin-bottom: 1rem;
+    border-left: 3px solid #444;
+    padding-left: 0.5rem;
+  }
+  
