@@ -1,0 +1,79 @@
+/* About.css */
+.about-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 1rem;
+    min-height: 100vh;
+    color: #cfeaff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top:10rem;
+  }
+  
+  .about-card {
+    max-width: 900px;
+    padding: 2.5rem;
+    border-radius: 20px;
+    background: rgba(15, 25, 40, 0.85);
+    box-shadow: 0 0 30px rgba(0, 200, 255, 0.2);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 200, 255, 0.3);
+  }
+  
+  .about-title {
+    font-size: 2.5rem;
+    margin-bottom: 0.4rem;
+    color: #00eaff;
+    text-shadow: 0 0 10px rgba(0, 200, 255, 0.5);
+    text-align: center;
+  }
+  
+  .about-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #87d7ff;
+    font-style: italic;
+    opacity: 0.85;
+    text-align: center;
+  }
+  
+  .about-section {
+    margin-bottom: 2rem;
+  }
+  
+  .about-section h2 {
+    color: #00c9ff;
+    margin-bottom: 0.6rem;
+    font-size: 1.3rem;
+    border-left: 4px solid #00c9ff;
+    padding-left: 0.5rem;
+  }
+  
+  .about-section p,
+  .about-section ul {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #c0e7ff;
+  }
+  
+  .about-section ul {
+    list-style: none;
+    padding-left: 1rem;
+  }
+  
+  .about-section ul li::before {
+    content: '➤ ';
+    color: #00ffff;
+    margin-right: 0.4rem;
+  }
+  
+  .about-section a {
+    color: #6ad3ff;
+    text-decoration: none;
+  }
+  
+  .about-section a:hover {
+    text-decoration: underline;
+    color: #ffffff;
+  }
+  
