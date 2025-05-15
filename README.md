@@ -1,1 +1,1 @@
-API Key: 7c992ab6-382f-4c2e-91f0-0c3e39e940cc  
+![Project Logo](./frontend/public/MJOLNIR.png "scanner")
