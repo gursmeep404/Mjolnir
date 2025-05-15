@@ -76,7 +76,7 @@ export default function Header() {
                   <strong>Step 1:</strong> Click on <i>Get Started</i> button on the home page or scroll down to find the <i>Scan</i> button which would allow you to begin the scan.
                 </li>
                 <li>
-                  <strong>Step 2:</strong> Click on Scan and wait till the scanner runs and fetches the results for you. Every IP that you scan will be stored in the database and hence, next time you look up the results for the same IP scanner would not be run and data would directly be fetched from the database. If the IP is being scanned for the first time, please be patient. It might take a few minutes.
+                  <strong>Step 2:</strong> Click on Scan and wait till the scanner runs and fetches the results for you. Every IP that you scan will be stored in the database and hence, next time you look up the results for the same IP, scanner will not run and data would directly be fetched from the database. If the IP is being scanned for the first time, please be patient. It might take a few minutes.
                 </li>
                 <li>
                   <strong>Step 3:</strong>Results would be displayed on the screen once the scanning is complete. If you wish to see all the CVEs then click on <i>Generate Report</i> button present at the end of the page.

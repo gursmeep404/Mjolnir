@@ -10,6 +10,18 @@
     align-items: center;
     z-index: 1000;
     backdrop-filter: blur(6px);
+    padding: 1rem;
+    box-sizing: border-box;
+    overflow: auto;
+  }
+  
+  /* Hide scrollbar across browsers */
+  .codex-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .codex-scroll {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
   }
   
   .codex-scroll {
@@ -18,11 +30,14 @@
     border-radius: 20px;
     padding: 2rem;
     max-width: 600px;
-    width: 90%;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
     font-family: 'Rajdhani', sans-serif;
     box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
     backdrop-filter: blur(12px);
     position: relative;
+    box-sizing: border-box;
   }
   
   .codex-close {
@@ -34,6 +49,11 @@
     font-size: 1.5rem;
     color: #ff8080;
     cursor: pointer;
+    z-index: 10;
+  }
+  
+  .codex-content {
+    padding: 1rem 0;
   }
   
   .codex-content h2 {
@@ -42,7 +62,7 @@
     margin-bottom: 1rem;
     text-align: center;
   }
-
+  
   .codex-content h3 {
     color: #000000;
     margin-bottom: 1rem;
@@ -50,23 +70,59 @@
   }
   
   .codex-content p {
-    /* color: #e0f7ff; */
     color: #000000;
     font-size: 1rem;
     margin-bottom: 0.8rem;
     line-height: 1.6;
-    
   }
-
+  
   .codex-content li {
-    margin: 2rem auto;
-    color:black;
+    margin: 1rem auto;
+    color: black;
   }
-
-  .codex-content ul
-  {
+  
+  .codex-content ul {
     background: rgba(250, 249, 249, 0.15);
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    /* border: 2px solid rgba(255, 255, 255, 0.2); */
     border-radius: 20px;
+    padding: 2rem;
+  }
+  
+  /* Responsive Styling */
+  @media (max-width: 768px) {
+    .codex-scroll {
+      padding: 1.5rem;
+      max-width: 90%;
+      max-height: 85vh;
+    }
+  
+    .codex-content h2 {
+      font-size: 1.5rem;
+    }
+  
+    .codex-content p {
+      font-size: 0.95rem;
+    }
+  
+    .codex-close {
+      font-size: 1.3rem;
+      top: 8px;
+      right: 10px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .codex-scroll {
+      padding: 1rem;
+      max-height: 80vh;
+    }
+  
+    .codex-content h2 {
+      font-size: 1.3rem;
+    }
+  
+    .codex-content p {
+      font-size: 0.9rem;
+    }
   }
   
