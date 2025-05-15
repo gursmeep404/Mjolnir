@@ -1,0 +1,72 @@
+.codex-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('/codex2.jpg') no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(6px);
+  }
+  
+  .codex-scroll {
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    font-family: 'Rajdhani', sans-serif;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+    backdrop-filter: blur(12px);
+    position: relative;
+  }
+  
+  .codex-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #ff8080;
+    cursor: pointer;
+  }
+  
+  .codex-content h2 {
+    font-size: 1.8rem;
+    color: #000000;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .codex-content h3 {
+    color: #000000;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .codex-content p {
+    /* color: #e0f7ff; */
+    color: #000000;
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.6;
+    
+  }
+
+  .codex-content li {
+    margin: 2rem auto;
+    color:black;
+  }
+
+  .codex-content ul
+  {
+    background: rgba(250, 249, 249, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+  }
+  
