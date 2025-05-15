@@ -1,6 +1,6 @@
 ![Project Logo](./frontend/public/headerpic.png "scanner")
-[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?logo=vercel)](https://https://mjolnir-uy37.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?logo=vercel)](https://mjolnir-uy37.vercel.app/)
 ![React](https://img.shields.io/badge/Frontend-React-blue?logo=react)
 ![Flask](https://img.shields.io/badge/Backend-Flask-yellow?logo=flask)
 ![MIT License](https://img.shields.io/badge/License-MIT-green.svg)
-![Last Commit](https://img.shields.io/github/last-commit/16aurora/mjolnir)
+![Last Commit](https://img.shields.io/github/last-commit/16aurora/Mjolnir)
