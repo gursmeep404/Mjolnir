@@ -1,1 +1,1 @@
-![Project Logo](./frontend/public/MJOLNIR.png "scanner")
+![Project Logo](./frontend/public/headerpic.png "scanner")

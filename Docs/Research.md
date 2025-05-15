@@ -44,10 +44,6 @@ Fun Fact 🎈 (Learned it the hard way) : Scapy uses a function sniff() to captu
 Windows I feel is like Gollum. Starts out with good intentions but you don't know when he will lose it and all hell will break loose.😏
 
 
-## What will I use?
-- Python-nmap /Nmap for active scanning of ports, OS and services: It would be beneficial to use Nmap's large database for such detection.
-- Scapy for stealth scanning: It can craft raw packets to bypass firewalls and IDS if required.
-
 
 # **Web scanning**
 
@@ -101,12 +97,6 @@ It is a python library used to send HTTP requests and interact with websites and
 - It works with beautiful soup where it fetches webpages that are then analysed and parsed by beautifulsoup
 
 
-## What will I use?
-- Requests to fetch webpages and analyze responses
-- BeautifulSoup for web scraping
-- Nikto to scan for vulnerabilities and misconfigurations in web servers
-- Zap to perform active scanning and detect SQLi, XSS, etc
-
 
 # **CVE Mapping and Exploit Detection**
 
@@ -142,80 +132,3 @@ Just for my reference : Most commonly used file formats are csv(table structure)
 - [Requests](https://requests.readthedocs.io/en/latest/)
 - [NIST National vulnerability Database](https://nvd.nist.gov/)
 - [Exploit Database](https://www.exploit-db.com/?author=11688)
-
-### Temporary
-Phase 1 : Build the core scanner (network scanner, web scanner, CVE and exploit mapping) -----Python
-
-Phase 2 : Build the web dashboard 
-- Frontend: Main page(start scan- network, web, full), Results page (table + charts), Vulnerability details page (CVEs and fixes), Reports page (Download Scan results)
-- Backend: API to trigger scans and retrieve results, database to store results (SQLite, PostgreSQL)
-
-Phase 3 : Testing and advancement
-
-Phase 4 : Final look on Github
-
-vuln_scanner/
-│── backend/
-│   ├── scanner/
-│   │   ├── network_scanner.py      # Uses Nmap & Scapy for network scanning
-│   │   ├── web_scanner.py          # Uses OWASP ZAP, Nikto, Requests, BeautifulSoup
-│   │   ├── cve_checker.py          # Maps detected versions to CVEs using NIST NVD
-│   │   ├── exploit_lookup.py       # Checks Exploit-DB for known exploits
-│   │   ├── utils.py                # Common helper functions
-│   │   └── __init__.py
-│   ├── api/
-│   │   ├── api.py                   # Flask API to communicate with frontend
-│   │   ├── database.py               # Handles saving scan results to a database
-│   │   ├── models.py                 # Defines data structure for scan results
-│   │   └── __init__.py
-│   ├── config.py                     # Configuration file (API keys, database settings)
-│   └── requirements.txt               # List of Python dependencies
-│
-│── frontend/
-│   ├── static/
-│   │   ├── styles.css                 # Styling for UI
-│   │   ├── scripts.js                  # JavaScript for interactivity
-│   ├── templates/
-│   │   ├── index.html                  # Main UI page
-│   │   ├── results.html                 # Page to display scan results
-│   │   ├── report.html                  # Page to download reports
-│   ├── app.py                           # Flask/Django backend for the web UI
-│
-│── docs/
-│   ├── README.md                        # Project documentation
-│   ├── research_paper.md                # Your research documentation
-│   ├── API_docs.md                       # API documentation
-│
-│── scripts/
-│   ├── install_dependencies.sh           # Script to install necessary tools
-│   ├── run_scanner.sh                    # Script to run the scanner
-│
-└── .gitignore                            # Ignore unnecessary files for Git
-
-Mjolnir
-Only for the Worthy – Not everyone can wield Mjolnir. Your scanner will be a powerful tool in the hands of those who know how to use it.
-
-Frontend: React + Tailwind
-Backend: Flask
-Database: Postgres
-
-
-npm create vite@latest . --template react-------------initialises project structure using vite. otherwise you have to manually create all these files and folders
-
-inside the directory which contains package.json file--------npm install --------installs all dependencies listed in package.json and node_modules folder is created.
-
-vite------build tool that makes development faster. Starts a local development server. Only recompiles that file which is changed and doesnt rebuild the entire set of files. React doesnt work proberly without vite dev server which compile the jsx files into plain html and js that the browsers can understand. No bundling during development but during production you bundle it all into a dist folder and then only one server is running that is the flask server which uses files from this dist folder. 
-
-building --- compiling+bundling+dist folder creation
-
-Hence you need vite for browser to be able to process jsx
-
-python dependencies go in requirements.txt but frontend dependencies are there in package.json file
-
-index.html loads main.jsx cause browser cant directly run jsx files
-
-main.jsx is the first file to be executed. it loads react app to index.html file
-
-app.jsx contains the actual ui code
-
-package-lock.json ---------locks the exacat versions of installed dependencies
