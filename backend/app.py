@@ -6,6 +6,9 @@ import subprocess
 import threading
 import json
 import httpx
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -104,7 +107,7 @@ def scan_ip():
     # Return a "scanning" status and no host_id until scan is complete
     return jsonify({"status": "scanning"})
 
-NVD_API_KEY = "7c992ab6-382f-4c2e-91f0-0c3e39e940cc"
+NVD_API_KEY = os.getenv("NVD_API_KEY")
 
 PORT_KEYWORD_MAP = {
     "20": "ftp",               # FTP Data
@@ -163,7 +166,6 @@ def get_cve_for_keyword(keyword):
         "keywordSearch": keyword,
         "resultsPerPage": 10,
         "startIndex": 0
-        # ✅ Removed "sortBy"
     }
 
     headers = {
