@@ -113,6 +113,7 @@ body {
 
 .hero-text {
   max-width: 50rem;
+  width: 100%;
 }
 
 .hero-text h1 {
@@ -207,6 +208,7 @@ h2 {
 
 .hero-image img {
   max-width: 30rem;
+  width:100%;
 }
 
 .second-section, .third-section {
@@ -241,6 +243,7 @@ html {
   font-size: 18px;
   max-width: 600px;
   margin: 10px auto;
+  width:100%;
 }
 .second-section {
   text-align: center;
@@ -263,6 +266,7 @@ html {
   width: 30rem;
   text-align: center;
   box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+  width:100%;
 }
 
 .scan-card h3 {
@@ -298,7 +302,8 @@ html {
 
 
 .scan-icon {
-  width: 10rem;
+  max-width: 10rem;
+  width:100%;
   height: 10rem;
   margin: 2rem auto;
 }
@@ -319,6 +324,7 @@ html {
     max-width: 600px;
     margin: 7rem auto 30px auto;
     box-shadow: 0px 0px 12px rgba(255, 0, 0, 0.4);
+    width:100%;
 }
 
 .caution-box h2 {
@@ -402,10 +408,12 @@ html {
   border-radius: 12px;
   border: 2px solid #ff0077;
   box-shadow: 0 0 15px rgba(255, 0, 119, 0.8);
-  width: 320px;
+  max-width: 320px;
   text-align: center;
   font-family: 'Courier New', Courier, monospace;
   animation: pop-in 0.5s ease-out;
+  width: 100%;
+
 }
 
 
