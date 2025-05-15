@@ -4,6 +4,8 @@ import Home from "./components/homePage";
 import Header from "./components/header";
 import Dashboard from "./components/dashboard";
 import Report from "./components/report"
+import Contact from "./components/contact"
+import About from "./components/about"
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <Route path="/dashboard/:hostId" element={<Dashboard />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/report" element={<Report />} />
+        <Route path="/contact" element={<Contact/>}/>
+        <Route path="/about" element={<About/>}/>
       </Routes>
     </Router>
   );

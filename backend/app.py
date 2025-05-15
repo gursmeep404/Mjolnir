@@ -105,17 +105,57 @@ def scan_ip():
     return jsonify({"status": "scanning"})
 
 NVD_API_KEY = "7c992ab6-382f-4c2e-91f0-0c3e39e940cc"
+
 PORT_KEYWORD_MAP = {
-    "135": "rpc",
-    "137": "netbios",
-    "139": "netbios",
-    "445": "smb",
-    "80": "http",
-    "443": "https",
-    "21": "ftp",
-    "22": "ssh",
-    "23": "telnet"
+    "20": "ftp",               # FTP Data
+    "21": "ftp",               # FTP Control
+    "22": "ssh",               # Secure Shell
+    "23": "telnet",            # Telnet
+    "25": "smtp",              # Simple Mail Transfer Protocol
+    "53": "dns",               # Domain Name System
+    "67": "dhcp",              # DHCP Server
+    "68": "dhcp",              # DHCP Client
+    "69": "tftp",              # Trivial FTP
+    "80": "http",              # HyperText Transfer Protocol
+    "110": "pop3",             # Post Office Protocol v3
+    "111": "rpcbind",          # RPC Bind
+    "123": "ntp",              # Network Time Protocol
+    "135": "rpc",              # MS RPC
+    "137": "netbios",          # NetBIOS Name Service
+    "138": "netbios",          # NetBIOS Datagram
+    "139": "netbios",          # NetBIOS Session
+    "143": "imap",             # Internet Message Access Protocol
+    "161": "snmp",             # SNMP
+    "162": "snmptrap",         # SNMP Trap
+    "179": "bgp",              # Border Gateway Protocol
+    "389": "ldap",             # Lightweight Directory Access Protocol
+    "443": "https",            # Secure HTTP
+    "445": "smb",              # Server Message Block (Windows)
+    "500": "isakmp",           # Internet Security Association and Key Management Protocol (IPsec VPN)
+    "512": "exec",             # Remote Process Execution
+    "513": "login",            # Remote Login
+    "514": "shell",            # Remote Shell
+    "515": "printer",          # LPD - Line Printer Daemon
+    "520": "rip",              # Routing Information Protocol
+    "554": "rtsp",             # Real Time Streaming Protocol
+    "587": "smtp",             # SMTP Secure (Submission)
+    "631": "ipp",              # Internet Printing Protocol
+    "636": "ldaps",            # LDAP over SSL
+    "993": "imaps",            # IMAP over SSL
+    "995": "pop3s",            # POP3 over SSL
+    "1433": "mssql",           # Microsoft SQL Server
+    "1521": "oracle",          # Oracle DB
+    "1723": "pptp",            # Point-to-Point Tunneling Protocol
+    "2049": "nfs",             # Network File System
+    "3306": "mysql",           # MySQL
+    "3389": "rdp",             # Remote Desktop Protocol
+    "5432": "postgresql",      # PostgreSQL
+    "5900": "vnc",             # Virtual Network Computing
+    "6000": "x11",             # X Window System
+    "8080": "http-proxy",      # HTTP Alternate / Proxy
+    "8443": "https-alt",       # HTTPS Alternate
 }
+
 
 def get_cve_for_keyword(keyword):
     base_url = "https://services.nvd.nist.gov/rest/json/cves/2.0"
@@ -184,9 +224,9 @@ def generate_report():
     # Filter and query CVEs
     all_cves = []
     for keyword in keywords:
-        if keyword.lower() in {"windows", "linux", "os", "unknown"}:
-            print(f"⚠️ Skipping generic keyword '{keyword}'")
-            continue
+        # if keyword.lower() in {"windows", "linux", "os", "unknown"}:
+        #     print(f"⚠️ Skipping generic keyword '{keyword}'")
+        #     continue
 
         print(f"🔍 Querying CVEs for keyword: {keyword}")
         cves = get_cve_for_keyword(keyword)

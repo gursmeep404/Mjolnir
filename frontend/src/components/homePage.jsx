@@ -77,7 +77,7 @@ export default function Home() {
             before adversaries strike.
           </p>
           <div className="buttons">
-            <Link to="/learn-more" className="learn-more-btn">
+            <Link to="/about" className="learn-more-btn">
               Learn More →
             </Link>
             <button className="get-started-btn" onClick={handleScrollToSecond}>
@@ -106,17 +106,6 @@ export default function Home() {
             <button className="scan-btn" onClick={openModal}>
               Scan
             </button>
-          </div>
-          <div className="scan-card">
-            <img src="/web.png" alt="Network Scan Icon" className="scan-icon" />
-            <h3>Web Application Scan</h3>
-            <p>
-              Examine a web application for security vulnerabilities such as SQL
-              injection, cross-site scripting (XSS), and misconfigured security
-              headers. Detect weaknesses that could allow unauthorized access or
-              data breaches.
-            </p>
-            <button className="scan-btn">Scan</button>
           </div>
         </div>
       </section>
