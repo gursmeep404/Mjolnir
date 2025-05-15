@@ -6,7 +6,7 @@
     background: linear-gradient(to bottom, #0a0f1c 0%, #000 100%);
     min-height: 100vh;
     color: #00f0ff;
-    background-image: url('/images/matrix-bg.gif'); /* Optional: Add animated background */
+    background-image: url('/images/matrix-bg.gif'); 
     background-size: cover;
     background-repeat: no-repeat;
     margin-top:8rem;

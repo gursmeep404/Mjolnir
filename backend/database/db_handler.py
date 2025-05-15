@@ -1,9 +1,6 @@
 import sqlite3
 import json
-from datetime import datetime
 import os 
-import subprocess
-import sys
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -42,7 +39,7 @@ def get_or_create_host(host):
 def ip_exists(ip_address):
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-        # Adjust index `1` based on actual column names if needed
+        
     cursor.execute("SELECT 1 FROM hosts WHERE host = ? LIMIT 1", (ip_address,))
     result = cursor.fetchone()
 
@@ -132,7 +129,7 @@ def store_firewall_results(host, tcp_syn_responses, icmp_response, port_443_resp
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
-    # Convert responses to JSON-safe format
+    
     serialized_tcp_syn = [serialize_response(resp) for resp in tcp_syn_responses]
     serialized_icmp = serialize_response(icmp_response)
     serialized_port_443 = serialize_response(port_443_response)

@@ -35,7 +35,7 @@
 .profile-pic img {
   max-width: 100%;
   height: auto;
-  object-fit: scale-down; /* or remove object-fit entirely */
+  object-fit: scale-down; 
   display: block;
 }
 

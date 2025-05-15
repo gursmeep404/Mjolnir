@@ -23,7 +23,7 @@ CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 # Utility to safely fetch results, with optional IP filter
 def safe_get_results(category):
     try:
-        ip = request.args.get("ip")  # Optional IP query param
+        ip = request.args.get("ip")  
         data = get_results(category, ip)
         if not data:
             return jsonify({"error": f"No data found for {category} with IP {ip}"}), 404
@@ -73,7 +73,7 @@ def get_service_results():
 
 def run_scanner(ip):
     try:
-        # Full absolute path to Python interpreter (verified from your system)
+        # path to Python interpreter (according to my system)
         python_path = r"C:\Users\HP\AppData\Local\Programs\Python\Python312\python.exe"
 
         # Absolute path to the scanner script
@@ -104,7 +104,7 @@ def scan_ip():
     print(f"[~] IP {ip} not found in database. Starting scan.")
     threading.Thread(target=run_scanner, args=(ip,)).start()
 
-    # Return a "scanning" status and no host_id until scan is complete
+    
     return jsonify({"status": "scanning"})
 
 NVD_API_KEY = os.getenv("NVD_API_KEY")
@@ -201,7 +201,7 @@ def generate_report():
     data = request.get_json()
     keywords = set()
 
-    # Extract ports and map to service names
+    
     for entry in data.get("tcpResults", []):
         for key in ["tcp_open", "tcp_filtered"]:
             raw_ports = entry.get(key, "[]")
@@ -223,12 +223,9 @@ def generate_report():
 
     print("📌 Keywords for CVE search:", keywords)
 
-    # Filter and query CVEs
+    
     all_cves = []
     for keyword in keywords:
-        # if keyword.lower() in {"windows", "linux", "os", "unknown"}:
-        #     print(f"⚠️ Skipping generic keyword '{keyword}'")
-        #     continue
 
         print(f"🔍 Querying CVEs for keyword: {keyword}")
         cves = get_cve_for_keyword(keyword)

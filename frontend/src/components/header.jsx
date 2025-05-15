@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../public/logo.svg";
 import "../../styles/header.css";
-import "../../styles/codex.css"; // Add this for modal styling
+import "../../styles/codex.css"; 
 
 export default function Header() {
   const [visible, setVisible] = useState(true);
   const [prevScrollY, setPrevScrollY] = useState(0);
-  const [showCodex, setShowCodex] = useState(false); // Modal visibility
+  const [showCodex, setShowCodex] = useState(false); 
   const location = useLocation();
 
   useEffect(() => {

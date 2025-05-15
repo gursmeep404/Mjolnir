@@ -1,4 +1,3 @@
-/* Main Header */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
 body {
@@ -30,7 +29,6 @@ body {
   transform: translateY(0);
 }
 
-/* LOGO BOX (Independent Size) */
 .logo-box {
   display: flex;
   align-items: center;
@@ -42,7 +40,6 @@ body {
     
 }
 
-/* NAVIGATION BOX (Centered) */
 .nav-box {
   display: flex;
   position: relative;
@@ -56,15 +53,13 @@ body {
   color: white;
   text-decoration: none;
   font-size: 1.2rem;
-  /* font-family: "poppins"; */
-  /* font-weight: bold; */
 }
 
 .nav-item {
   position: relative;
-  text-decoration: none; /* Remove default underline */
-  color: white; /* Adjust text color */
-  padding: 10px 15px; /* Add spacing */
+  text-decoration: none; 
+  color: white; 
+  padding: 10px 15px; 
   font-size: 16px;
 }
 
@@ -73,7 +68,7 @@ body {
   content: "";
   position: absolute;
   left: 50%;
-  bottom: -5px; /* Controls the distance of the line from text */
+  bottom: -5px; 
   width: 0;
   height: 2px;
   background-color: #00D9FF;
@@ -90,9 +85,9 @@ body {
     margin: 0 1.5rem;
 }
 .gradient-btn {
-   background: linear-gradient(135deg, rgba(0, 20, 40, 0.8), rgba(0, 50, 100, 0.8)); /* Subtle blue tint */
+   background: linear-gradient(135deg, rgba(0, 20, 40, 0.8), rgba(0, 50, 100, 0.8)); 
   border: 1px solid rgba(0, 174, 255, 0.8); 
-  color: #00d9ff; /* Neon blue text */
+  color: #00d9ff; 
   padding: 12px 24px;
   border-radius: 8px;
   font-size: 16px;
@@ -104,7 +99,7 @@ body {
 }
 
 .gradient-btn:hover {
-   box-shadow: 0 0 15px rgba(0, 174, 255, 0.6); /* Stronger glow */
+   box-shadow: 0 0 15px rgba(0, 174, 255, 0.6); 
   transform: scale(1.04);
   background: linear-gradient(135deg, rgba(0, 40, 80, 0.9), rgba(0, 80, 160, 0.9));
 }

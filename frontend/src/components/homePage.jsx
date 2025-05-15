@@ -10,8 +10,8 @@ export default function Home() {
   const secondSectionRef = useRef(null);
   const thirdSectionRef = useRef(null);
 
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to control the modal visibility
-  const [ipAddress, setIpAddress] = useState(""); // State to hold the IP entered
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [ipAddress, setIpAddress] = useState(""); 
 
   const handleScrollToSecond = () => {
     secondSectionRef.current.scrollIntoView({ behavior: "smooth" });
@@ -44,11 +44,10 @@ export default function Home() {
 
       if (response.ok) {
         if (result.status === "scanning") {
-          // If the scan is in progress, navigate to the dashboard
-          // Without `host_id`, but the data will update as the scan completes.
+
           navigate(`/dashboard?ip=${ipAddress}`);
         } else {
-          // If host_id exists immediately, navigate with the host_id
+          
           navigate(`/dashboard/${result.host_id}?ip=${ipAddress}`);
         }
       } else {

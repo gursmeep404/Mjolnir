@@ -7,15 +7,15 @@ body {
   /* background-color: #020d24; */
   color: #fff;
   scroll-behavior: smooth;
-  overflow-y: auto; /* Ensures page scrolling */
-  background-attachment: fixed; /* Ensures it stays in place */
+  overflow-y: auto; 
+  background-attachment: fixed;
   position: relative;
 }
 
 
 .home-container {
   position: relative;
-  min-height: 200vh; /* Ensures scrollability */
+  min-height: 200vh;
   overflow: hidden;
 }
 
@@ -32,7 +32,7 @@ body {
   z-index: -2;
 }
 
-/* Dark Overlay with Adjustable Opacity */
+
 .home-container::after {
   content: "";
   position: absolute;
@@ -46,7 +46,7 @@ body {
 
 
 
-/* Navbar */
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -94,7 +94,7 @@ body {
   border-color: #ff4b4b;
 }
 
-/* Hero Section */
+
 .hero {
   display: flex;
   align-items: center;
@@ -108,7 +108,7 @@ body {
 .hero-text {
     /* background: rgba(0, 0, 0, 0.6);  */
     padding: 3rem;
-    border-radius: 0.8rem; /* Smooth edges */
+    border-radius: 0.8rem; 
 }
 
 .hero-text {
@@ -127,7 +127,7 @@ body {
 }
 .buttons {
     display: flex;
-    gap: 2rem; /* Space between buttons */
+    gap: 2rem; 
     justify-content: left;
     margin-top: 4rem;
 }
@@ -146,9 +146,8 @@ body {
     overflow: hidden;
 }
 
-/* Learn More - Glassy Neon */
 .learn-more-btn {
-    background: rgba(255, 255, 255, 0.1); /* Subtle glass effect */
+    background: rgba(255, 255, 255, 0.1); 
     backdrop-filter: blur(8px);
     border: 2px solid rgba(0, 255, 255, 0.6);
     color: #00ffff;
@@ -166,7 +165,7 @@ h2 {
 }
 
 .get-started-btn {
-    background: #0a0f1f; /* Dark background */
+    background: #0a0f1f;
     color: #00eaff; 
     font-size: 16px;
     font-weight: bold;
@@ -181,7 +180,6 @@ h2 {
     box-shadow: 0 0 10px rgba(0, 234, 255, 0.5);
 }
 
-/* Subtle electric glow effect */
 .get-started-btn::before {
     content: "";
     position: absolute;
@@ -194,7 +192,7 @@ h2 {
     transition: opacity 0.3s ease-in-out;
 }
 
-/* Hover effect - bright glow */
+
 .get-started-btn:hover {
     background: #041025;
     color: white;
@@ -212,7 +210,7 @@ h2 {
 }
 
 .second-section, .third-section {
-  height: 100vh; /* Full viewport height */
+  height: 100vh; 
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -224,10 +222,10 @@ h2 {
 }
 
 html {
-  scroll-snap-type: y mandatory; /* Enables smooth section snapping */
+  scroll-snap-type: y mandatory; 
   overflow-y: scroll;
 }
-/* Second & Third Sections */
+
 .second-section, .third-section {
   text-align: center;
   padding: 80px 20px;
@@ -338,7 +336,7 @@ html {
     margin-bottom: 1rem;
 }
 
-/* ⚡ ASCII ART */
+
 .ascii-art pre {
     color: #00ff66;
     font-size: 16px;
@@ -368,16 +366,13 @@ html {
   display: flex;
   /* flex-direction: column; */
   align-items: end; /* Centers the text */
-  justify-content:space-between; /* Ensures vertical centering */
+  justify-content:space-between; 
 }
 
 
 .footer p {
   gap: 3rem;
-  /* margin: 5px 5rem; */
-  /* text-transform: uppercase; */
-  /* letter-spacing: 1px; */
-  /* text-align: center; */
+ 
 }
 
 .footer p span {
@@ -385,7 +380,7 @@ html {
   font-weight: bold;
 }
 
-/* Modal overlay */
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -399,7 +394,7 @@ html {
   z-index: 1000;
 }
 
-/* Modal content */
+
 .modal-content {
   background-color: #2b2b2b;
   color: #00f9ff;
@@ -413,7 +408,7 @@ html {
   animation: pop-in 0.5s ease-out;
 }
 
-/* Modal input */
+
 .modal-content input {
   width: 100%;
   padding: 10px;
@@ -433,7 +428,7 @@ html {
   border-color: #ff0077;
 }
 
-/* Modal note */
+
 .modal-note {
   margin-top: 1rem;
   font-size: 12px;
@@ -472,7 +467,7 @@ html {
   background-color: #e6005c;
 }
 
-/* Modal pop-in animation */
+
 @keyframes pop-in {
   from {
     transform: scale(0.5);

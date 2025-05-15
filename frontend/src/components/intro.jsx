@@ -9,11 +9,11 @@ export default function Intro() {
   
   useEffect(() => {
     const timers = [
-      setTimeout(() => setStep(1), 6000), // Show Norse text after 2s
-      setTimeout(() => setStep(2), 12000), // Show "Let the hunt begin" after 4s
+      setTimeout(() => setStep(1), 6000), 
+      setTimeout(() => setStep(2), 12000),
       setTimeout(() => navigate("/home"), 16000),
     ];
-    return () => timers.forEach(clearTimeout); // Cleanup timers
+    return () => timers.forEach(clearTimeout);
   }, []);
 
   return (

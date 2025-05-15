@@ -27,7 +27,6 @@ body::after {
   grid-template-columns: repeat(2, 1fr);
   gap: 6rem;
   margin: 10rem;
-  /* place-items: center; */
 }
 
 .panel {
@@ -92,11 +91,8 @@ body::after {
 .host-card {
   border-radius: 20px;
   padding: 20px;
-  /* border: 3px solid rgba(255, 0, 255, 0.9); */
-  /* box-shadow: 0 0 25px rgba(255, 0, 255, 0.7), 0 0 10px rgba(0, 255, 255, 0.5); */
   color: #fff;
   text-align: center;
-  /* font-family: "Orbitron", sans-serif; */
   position: relative;
   overflow: hidden;
   text-transform: uppercase;
@@ -109,7 +105,6 @@ body::after {
   font-size: 1.5rem;
   font-weight: bold;
   color: #0ff;
-  /* text-shadow: 0 0 10px #0ff; */
 }
 
 .host-header .icon {
@@ -119,9 +114,7 @@ body::after {
 .host-list {
   margin-top: 10px;
   padding: 15px;
-  /* background: rgba(255, 0, 255, 0.1); */
   border-radius: 12px;
-  /* box-shadow: inset 0 0 10px rgba(255, 0, 255, 0.5); */
 }
 
 .host-item {
@@ -211,7 +204,6 @@ h1 {
 .title {
   font-size: 1.8rem;
   color: #00ffff;
-  /* text-shadow: 0 0 10px #00ffff; */
   margin-bottom: 15px;
 }
 
@@ -249,7 +241,6 @@ h1 {
 .details {
   font-size: 1rem;
   color: #00ffff;
-  /* text-shadow: 0 0 5px #00ffff; */
   margin: 5px 0;
 }
 
@@ -268,7 +259,6 @@ h1 {
 .holo-title {
   font-size: 22px;
   text-align: center;
-  /* text-shadow: 0 0 8px #00ffff; */
   padding-bottom: 5px;
 }
 .holo-log {
@@ -324,18 +314,13 @@ h1 {
 
 .service-container {
   padding: 20px;
-  /* background: #0a0f1e; */
   border-radius: 10px;
-  /* border: 2px solid #00f7ff; */
-  /* box-shadow: 0 0 10px #00f7ff; */
-  /* font-family: 'Orbitron', sans-serif; */
   color: #0ff;
 }
 
 .title {
   text-align: center;
   font-size: 1.6rem;
-  /* text-shadow: 0 0 8px #00f7ff; */
   margin-bottom: 20px;
 }
 

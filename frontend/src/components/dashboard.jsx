@@ -9,7 +9,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-// import "react-circular-progressbar/dist/styles.css";
+
 
 import "../../styles/dashboard.css";
 
@@ -103,7 +103,7 @@ const Dashboard = () => {
           setScanning(true);
         } else {
           setScanning(false);
-          clearInterval(interval); // Stop polling
+          clearInterval(interval); 
           setHosts(hostsRes || []);
           setTcpResults(tcpRes || []);
           setUdpResults(udpRes || []);
@@ -124,7 +124,7 @@ const Dashboard = () => {
     fetchData();
     interval = setInterval(fetchData, 3000);
 
-    return () => clearInterval(interval); // Cleanup
+    return () => clearInterval(interval); 
   }, [ip]);
   
 
