@@ -19,9 +19,6 @@ Mjolnir is a web-based network scanner designed to analyze a specific IP address
 - [Features](#features)
 - [Screenshots](#screenshots)
 - [Installation](#installation)
-    - [Dependencies](#dependencies)
-    - [Building the Project](#building-the-project)
-- [Notes & Usage Tips](#notes--usage-tips)    
 - [Limitations](#limitations)    
 - [License](#license)    
 
@@ -52,7 +49,7 @@ Mjolnir is a web-based network scanner designed to analyze a specific IP address
 ## Screenshots
 
 ### Try the scanner live 
-Access the deployed frontend here: [**Live Scanner**](https://mjolnir-uy37.vercel.app/)
+Access the deployed frontend here: [**Mjolnir**](https://mjolnir-uy37.vercel.app/)
 
 
 ### Application Walkthrough
@@ -95,8 +92,88 @@ Access the deployed frontend here: [**Live Scanner**](https://mjolnir-uy37.verce
 ![Codex Page](./frontend/public/screenshots/codex.png)
 
 
-### Installation
+## Installation
 
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/16aurora/Mjolnir
+    cd Mjolnir
+    ```
+
+2. Database Setup
+
+-Navigate to the `database` folder
+
+    ```bash
+    cd backend/database
+    ```
+
+-Run the following command to create the results.db file:
+
+    ```bash
+    python db_setup.py
+    ```
+
+3. Environment Variables  
+
+- In the project root folder, create a .env file and write this inside the file:
+
+    ```bash
+    NVD_API_KEY=your_nvd_api_key_here
+    ```
+
+- Make sure you have an activated and valid API key.You can request a free API key from the National Vulnerability Database (NVD) here:  
+[Request NVD API Key](https://nvd.nist.gov/developers/request-an-api-key)    
+
+
+4. Backend Setup
+
+- Navigate to the backend folder
+
+    ```bash
+    cd backend
+    ```
+
+- Create and activate a virtual environment
+
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows: venv\Scripts\activate
+    ```
+
+- Install backend dependencies
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+- Run the backend server
+
+    ```bash
+    python app.py
+    ```
+
+5. Frontend Setup
+
+- Open a new terminal and navigate to the frontend folder
+
+    ```bash
+    cd frontend
+    ```
+
+- Install frontend dependencies
+
+    ```bash
+    npm install
+    ```    
+
+- Start the frontend development server
+
+    ```bash
+    npm run dev
+    ```
+        
 
 ## Limitations
 
@@ -104,9 +181,7 @@ Access the deployed frontend here: [**Live Scanner**](https://mjolnir-uy37.verce
 
 - **OS Fingerprinting Accuracy**: The tool uses passive techniques for OS detection, relying on factors like TTL and TCP window size. As a result, the identified operating system may not be exact, and any inferred vulnerabilities might not accurately reflect the specific version or configuration in use.
 
-
-- takes time so wait
-- recommend to first test using your system's ip or loopback ip(fast)
+## License
 
 
 
