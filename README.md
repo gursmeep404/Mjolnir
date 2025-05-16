@@ -103,13 +103,13 @@ Access the deployed frontend here: [**Mjolnir**](https://mjolnir-uy37.vercel.app
 
 2. Database Setup
 
--Navigate to the `database` folder
+- Navigate to the `database` folder
 
     ```bash
     cd backend/database
     ```
 
--Run the following command to create the results.db file:
+- Run the following command to create the results.db file:
 
     ```bash
     python db_setup.py
