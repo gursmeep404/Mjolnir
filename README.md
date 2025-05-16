@@ -19,8 +19,7 @@ Mjolnir is a web-based network scanner designed to analyze a specific IP address
 - [Features](#features)
 - [Screenshots](#screenshots)
 - [Installation](#installation)
-- [Limitations](#limitations)    
-- [License](#license)    
+- [Limitations](#limitations)      
 
 
 
@@ -86,7 +85,7 @@ Access the deployed frontend here: [**Mjolnir**](https://mjolnir-uy37.vercel.app
 
 ![About Page](./frontend/public/screenshots/about.png)
 
-#### 5. **Codex**  
+#### 6. **Codex**  
 *Offers detailed explanation of how to use the scanner and what does it really do*
 
 ![Codex Page](./frontend/public/screenshots/codex.png)
@@ -94,7 +93,9 @@ Access the deployed frontend here: [**Mjolnir**](https://mjolnir-uy37.vercel.app
 
 ## Installation
 
-#### 1. **Clone the repository**:
+#### 1. **Clone the repository**
+
+- Clone the repository:
 
     ```bash
     git clone https://github.com/16aurora/Mjolnir
@@ -180,7 +181,6 @@ Access the deployed frontend here: [**Mjolnir**](https://mjolnir-uy37.vercel.app
 
 - **OS Fingerprinting Accuracy**: The tool uses passive techniques for OS detection, relying on factors like TTL and TCP window size. As a result, the identified operating system may not be exact, and any inferred vulnerabilities might not accurately reflect the specific version or configuration in use.
 
-## License
 
 
 
