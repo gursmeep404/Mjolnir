@@ -76,7 +76,7 @@ Access the deployed frontend here: [**Mjolnir**](https://mjolnir-uy37.vercel.app
   <img src="./frontend/public/screenshots/dashboard2.png" alt="Second Screenshot" width="45%" />
 </p>
 
-### 4. **CVE Report**
+#### 4. **CVE Report**
 *Displays the vulnerabilities loaded from the NVD database*
 
 ![Report](./frontend/public/screenshots/report.png)
@@ -94,14 +94,14 @@ Access the deployed frontend here: [**Mjolnir**](https://mjolnir-uy37.vercel.app
 
 ## Installation
 
-1. Clone the repository:
+#### 1. **Clone the repository**:
 
     ```bash
     git clone https://github.com/16aurora/Mjolnir
     cd Mjolnir
     ```
 
-2. Database Setup
+#### 2. **Database Setup**
 
 - Navigate to the `database` folder
 
@@ -115,7 +115,7 @@ Access the deployed frontend here: [**Mjolnir**](https://mjolnir-uy37.vercel.app
     python db_setup.py
     ```
 
-3. Environment Variables  
+#### 3. **Environment Variables**
 
 - In the project root folder, create a .env file and write this inside the file:
 
@@ -123,11 +123,10 @@ Access the deployed frontend here: [**Mjolnir**](https://mjolnir-uy37.vercel.app
     NVD_API_KEY=your_nvd_api_key_here
     ```
 
-- Make sure you have an activated and valid API key.You can request a free API key from the National Vulnerability Database (NVD) here:  
-[Request NVD API Key](https://nvd.nist.gov/developers/request-an-api-key)    
+- Make sure you have an activated and valid API key. You can request a free API key from the National Vulnerability Database (NVD) here: [Request NVD API Key](https://nvd.nist.gov/developers/request-an-api-key)    
 
 
-4. Backend Setup
+#### 4. **Backend Setup**
 
 - Navigate to the backend folder
 
@@ -154,7 +153,7 @@ Access the deployed frontend here: [**Mjolnir**](https://mjolnir-uy37.vercel.app
     python app.py
     ```
 
-5. Frontend Setup
+#### 5. **Frontend Setup**
 
 - Open a new terminal and navigate to the frontend folder
 
