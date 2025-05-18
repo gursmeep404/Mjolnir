@@ -29,15 +29,23 @@ def capture_packets():
 
 # ARP Scan for live hosts in a network
 def arp_scan(network):
-    
     print(f"[*] Sending ARP Request to {network}")
-    arp_request = ARP(pdst=network)
-    broadcast = Ether(dst="ff:ff:ff:ff:ff:ff")
-    packet = broadcast / arp_request
-    answered, _ = srp(packet, timeout=3, verbose=0)
+    try:
+        arp_request = ARP(pdst=network)
+        broadcast = Ether(dst="ff:ff:ff:ff:ff:ff")
+        packet = broadcast / arp_request
+        answered, _ = srp(packet, timeout=3, verbose=0)
 
-    results = [recv.psrc for _, recv in answered]
-    return [recv.psrc for _, recv in answered]
+        results = [recv.psrc for _, recv in answered]
+
+        if not results:
+            print("[!] No hosts responded to ARP request.")
+        return results
+
+    except Exception as e:
+        print(f"[!] ARP scan failed for {network}: {e}")
+        return []
+
 
 
 # TCP SYN packets are sent to check which ports are open
@@ -48,24 +56,32 @@ def tcp_syn_scan(host, ports):
     closed_ports = []
     filtered_ports = []
 
-    for port in ports:
-        pkt = IP(dst=host) / TCP(dport=port, flags="S")
-        response = sr1(pkt, timeout=2, verbose=0)
+    try:
+        for port in ports:
+            pkt = IP(dst=host) / TCP(dport=port, flags="S")
+            response = sr1(pkt, timeout=2, verbose=0)
 
-        if response is None:
-            filtered_ports.append(port)
-        elif response.haslayer(TCP):
-            if response[TCP].flags == 0x12: 
-                open_ports.append(port)
-                sr1(IP(dst=host) / TCP(dport=port, flags="R"), timeout=1, verbose=0)
-            elif response[TCP].flags == 0x14: 
-                closed_ports.append(port)
+            if response is None:
+                filtered_ports.append(port)
+            elif response.haslayer(TCP):
+                if response[TCP].flags == 0x12:
+                    open_ports.append(port)
+                    sr1(IP(dst=host) / TCP(dport=port, flags="R"), timeout=1, verbose=0)
+                elif response[TCP].flags == 0x14:
+                    closed_ports.append(port)
 
+        if not (open_ports or closed_ports or filtered_ports):
+            store_tcp_results(host_id, [], [], ["Scan Failed or No Response"])
+        else:
+            store_tcp_results(host_id, open_ports, closed_ports, filtered_ports)
 
-    store_tcp_results(host_id, open_ports, closed_ports, filtered_ports)
-    print(f"[+] Stored TCP scan results for {host}")
+        print(f"[+] Stored TCP scan results for {host}")
+        return open_ports
 
-    return open_ports
+    except Exception as e:
+        print(f"[!] TCP scan failed for {host}: {e}")
+        store_tcp_results(host_id, [], [], ["Scan Error"])
+        return []
     
 
 
@@ -77,24 +93,33 @@ def udp_scan(host, ports):
     closed_ports = []
     filtered_ports = []
 
-    for port in ports:
-        pkt = IP(dst=host) / UDP(dport=port)
-        response = sr1(pkt, timeout=3, verbose=0)
+    try:
+        for port in ports:
+            pkt = IP(dst=host) / UDP(dport=port)
+            response = sr1(pkt, timeout=3, verbose=0)
 
-        if response is None:
-            open_ports.append(port)  
-        elif response.haslayer(ICMP):
-            icmp_type = response[ICMP].type
-            icmp_code = response[ICMP].code
-            if icmp_type == 3 and icmp_code == 3:
-                closed_ports.append(port)
-            else:
-                filtered_ports.append(port)
+            if response is None:
+                open_ports.append(port)  # Possible open/filtered
+            elif response.haslayer(ICMP):
+                icmp_type = response[ICMP].type
+                icmp_code = response[ICMP].code
+                if icmp_type == 3 and icmp_code == 3:
+                    closed_ports.append(port)
+                else:
+                    filtered_ports.append(port)
 
-    store_udp_results(host_id, open_ports, closed_ports, filtered_ports)
-    print(f"[+] Stored UDP scan results for {host}")
-    
-    return open_ports
+        if not (open_ports or closed_ports or filtered_ports):
+            store_udp_results(host_id, [], [], ["Scan Failed or No Response"])
+        else:
+            store_udp_results(host_id, open_ports, closed_ports, filtered_ports)
+
+        print(f"[+] Stored UDP scan results for {host}")
+        return open_ports
+
+    except Exception as e:
+        print(f"[!] UDP scan failed for {host}: {e}")
+        store_udp_results(host_id, [], [], ["Scan Error"])
+        return []
 
 
 
@@ -103,11 +128,17 @@ def udp_scan(host, ports):
 def icmp_scan(host):
     global host_id
 
-    packets = [IP(dst=host)/ICMP(), IP(dst=host)/ICMP(type=13), IP(dst=host)/ICMP(type=17)]
-    responses, _ = sr(packets, timeout=2, verbose=0)
-    
-    results = []
-    for sent, received in responses:
+    try:
+        packets = [
+            IP(dst=host) / ICMP(),               # Echo Request
+            IP(dst=host) / ICMP(type=13),        # Timestamp Request
+            IP(dst=host) / ICMP(type=17)         # Address Mask Request
+        ]
+        responses, _ = sr(packets, timeout=2, verbose=0)
+
+        results = []
+
+        for sent, received in responses:
             if received.haslayer(ICMP):
                 response_details = {
                     'host': host,
@@ -116,11 +147,8 @@ def icmp_scan(host):
                     'description': ''
                 }
 
-                # ICMP Echo Reply (Ping response)
                 if received.type == 0:
                     response_details['description'] = 'Host is UP (ICMP Echo Reply)'
-
-                # ICMP Destination Unreachable
                 elif received.type == 3:
                     reason = {
                         0: "Net Unreachable",
@@ -131,19 +159,13 @@ def icmp_scan(host):
                         5: "Source Route Failed"
                     }.get(received.code, "Unknown reason")
                     response_details['description'] = f'Destination Unreachable: {reason}'
-
-                # ICMP Time Exceeded (TTL expired)
                 elif received.type == 11:
                     if received.code == 0:
                         response_details['description'] = 'TTL expired in transit'
                     elif received.code == 1:
                         response_details['description'] = 'Fragment reassembly time exceeded'
-
-                # ICMP Parameter Problem (Bad header fields)
                 elif received.type == 12:
                     response_details['description'] = 'Parameter problem in packet header'
-
-                # ICMP Timestamp Reply
                 elif received.type == 14:
                     response_details['description'] = 'ICMP Timestamp Reply'
                     response_details['timestamps'] = {
@@ -151,20 +173,12 @@ def icmp_scan(host):
                         'received': received.ts_rx,
                         'transmit': received.ts_tx
                     }
-
-                # ICMP Address Mask Reply
                 elif received.type == 18:
                     response_details['description'] = f'ICMP Address Mask Reply: Mask = {received.addr_mask}'
-
-                # ICMP Router Advertisement
                 elif received.type == 9:
                     response_details['description'] = 'ICMP Router Advertisement received'
-
-                # ICMP Router Solicitation
                 elif received.type == 10:
                     response_details['description'] = 'ICMP Router Solicitation received'
-
-                # ICMP Redirect (Host/Network redirection)
                 elif received.type == 5:
                     redirect_reason = {
                         0: "Redirect for Network",
@@ -173,15 +187,31 @@ def icmp_scan(host):
                         3: "Redirect for TOS & Host"
                     }.get(received.code, "Unknown redirect reason")
                     response_details['description'] = f'ICMP Redirect: {redirect_reason}'
-
-                # Unknown ICMP Response
                 else:
                     response_details['description'] = 'Unknown ICMP response received'
 
                 results.append(response_details)
 
-    store_icmp_results(host_id, results)
-    print(f"[+] Stored ICMP scan results for {host}")
+        if not results:
+            results.append({
+                'host': host,
+                'type': None,
+                'code': None,
+                'description': 'No ICMP response received'
+            })
+
+        store_icmp_results(host_id, results)
+        print(f"[+] Stored ICMP scan results for {host}")
+
+    except Exception as e:
+        print(f"[!] ICMP scan failed for {host}: {e}")
+        store_icmp_results(host_id, [{
+            'host': host,
+            'type': None,
+            'code': None,
+            'description': 'ICMP scan error'
+        }])
+
     
 
 
@@ -190,36 +220,48 @@ def icmp_scan(host):
 def os_detection(host):
     global host_id
 
-    pkt = IP(dst=host) / TCP(dport=80, flags="S")
-    response = sr1(pkt, timeout=2, verbose=0)
+    try:
+        pkt = IP(dst=host) / TCP(dport=80, flags="S")
+        response = sr1(pkt, timeout=2, verbose=0)
 
-    if response and response.haslayer(IP):
-        ttl = response[IP].ttl
-        window_size = response[TCP].window if response.haslayer(TCP) else 0
+        ttl = None
+        window_size = None
 
-        if ttl <= 32:
-            os_guess = "Very restricted system (e.g., embedded devices, routers)"
-        elif 33 <= ttl <= 64:
-            os_guess = "Linux/Unix (MacOS, Android, BSD)"
-        elif 65 <= ttl <= 128:
-            if window_size == 8192:
-                os_guess = "Windows 7/8/10"
-            elif window_size == 64240:
-                os_guess = "Windows 10/11 (Modern TCP stack)"
-            elif window_size == 5840:
-                os_guess = "Old Linux Kernel (2.4)"
+        if response and response.haslayer(IP):
+            ttl = response[IP].ttl
+            window_size = response[TCP].window if response.haslayer(TCP) else 0
+
+            if ttl <= 32:
+                os_guess = "Very restricted system (e.g., embedded devices, routers)"
+            elif 33 <= ttl <= 64:
+                os_guess = "Linux/Unix (MacOS, Android, BSD)"
+            elif 65 <= ttl <= 128:
+                if window_size == 8192:
+                    os_guess = "Windows 7/8/10"
+                elif window_size == 64240:
+                    os_guess = "Windows 10/11 (Modern TCP stack)"
+                elif window_size == 5840:
+                    os_guess = "Old Linux Kernel (2.4)"
+                else:
+                    os_guess = "Windows (General)"
+            elif 129 <= ttl <= 255:
+                os_guess = "Cisco/Networking Devices (Some UNIX variants)"
             else:
-                os_guess = "Windows (General)"
-        elif 129 <= ttl <= 255:
-            os_guess = "Cisco/Networking Devices (Some UNIX variants)"
+                os_guess = "Unknown OS"
+
+            print(f"[+] OS likely {os_guess} (TTL={ttl}, Window={window_size})")
+
         else:
-            os_guess = "Unknown OS"
+            os_guess = "No response received - OS unknown"
+            print(f"[!] No response from {host} for OS detection")
 
-        print(f"[+] OS likely {os_guess} (TTL={ttl}, Window={window_size})")
+        store_os_results(host_id, ttl, window_size, os_guess)
+        print(f"[+] Stored OS scan results for {host}")
 
-    
-    store_os_results(host_id, ttl, window_size, os_guess)
-    print(f"[+] Stored OS scan results for {host}")
+    except Exception as e:
+        print(f"[!] OS detection failed for {host}: {e}")
+        store_os_results(host_id, None, None, "OS detection error")
+
     
 
 
@@ -236,36 +278,49 @@ def detect_firewall(host):
         'conclusion': None
     }
 
-    pkt = IP(dst=host) / TCP(dport=80, flags="S")
-    responses = []
+    try:
+        pkt = IP(dst=host) / TCP(dport=80, flags="S")
+        responses = []
 
-    for _ in range(3):
-        response = sr1(pkt, timeout=2, verbose=0)
-        responses.append(response)
-        time.sleep(1)
+        for _ in range(3):
+            response = sr1(pkt, timeout=2, verbose=0)
+            responses.append(response)
+            time.sleep(1)
 
-    results['tcp_syn_responses'] = responses
+        results['tcp_syn_responses'] = responses
 
-    if all(r is None for r in responses):
-        icmp_response = sr1(IP(dst=host)/ICMP(), timeout=2, verbose=0)
-        results['icmp_response'] = icmp_response
+        if all(r is None for r in responses):
+            icmp_response = sr1(IP(dst=host)/ICMP(), timeout=2, verbose=0)
+            results['icmp_response'] = icmp_response
 
-        if icmp_response:
-            alt_pkt = IP(dst=host) / TCP(dport=443, flags="S")
-            alt_response = sr1(alt_pkt, timeout=2, verbose=0)
-            results['port_443_response'] = alt_response
+            if icmp_response:
+                alt_pkt = IP(dst=host) / TCP(dport=443, flags="S")
+                alt_response = sr1(alt_pkt, timeout=2, verbose=0)
+                results['port_443_response'] = alt_response
 
-            if alt_response:
-                results['conclusion'] = "Port 80 might be blocked by a firewall; Port 443 is responding."
+                if alt_response:
+                    results['conclusion'] = "Port 80 might be blocked by a firewall; Port 443 is responding."
+                else:
+                    results['conclusion'] = "Strong firewall or host blocking all TCP traffic; no response on ports 80 and 443."
             else:
-                results['conclusion'] = "Strong firewall or host blocking all TCP traffic; no response on ports 80 and 443."
+                results['conclusion'] = "Host is down, network issue, or firewall blocking all traffic; no ICMP response."
         else:
-            results['conclusion'] = "Host is down, network issue, or firewall blocking all traffic; no ICMP response."
-    else:
-        results['conclusion'] = "No firewall detected on port 80; host responded to TCP SYN."
+            results['conclusion'] = "No firewall detected on port 80; host responded to TCP SYN."
 
+    except Exception as e:
+        print(f"[!] Firewall detection failed for {host}: {e}")
+        results['conclusion'] = "Firewall detection failed due to an error."
+        results['tcp_syn_responses'] = []
+        results['icmp_response'] = None
+        results['port_443_response'] = None
 
-    store_firewall_results(host_id, results['tcp_syn_responses'], results['icmp_response'], results['port_443_response'], results['conclusion'])
+    store_firewall_results(
+        host_id,
+        results['tcp_syn_responses'],
+        results['icmp_response'],
+        results['port_443_response'],
+        results['conclusion']
+    )
     print(f"[+] Stored firewall scan results for {host}")
 
 

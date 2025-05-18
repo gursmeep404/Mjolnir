@@ -161,9 +161,9 @@ export default function Home() {
     |/     /\\     \\|
     (_     ^^     _)
      \\__|IIIIII|__/
-      | \\IIIIII/ |
-      \\          /
-       \`--------\`
+     |  \\IIIIII/  |
+     \\           /
+      \`--------\`
       `}
           </pre>
           <p className="hacker-quote">

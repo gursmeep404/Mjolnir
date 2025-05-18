@@ -98,7 +98,7 @@ Access the deployed frontend here: [**Mjolnir**](https://mjolnir-uy37.vercel.app
 - Clone the repository:
 
     ```bash
-    git clone https://github.com/16aurora/Mjolnir
+    git clone https://github.com/16aurora/Mjolnir.git
     cd Mjolnir
     ```
 
