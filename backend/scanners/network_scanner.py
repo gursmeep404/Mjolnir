@@ -3,7 +3,7 @@ import threading
 import time
 import os
 import sys
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -51,30 +51,34 @@ def arp_scan(network):
 # TCP SYN packets are sent to check which ports are open
 def tcp_syn_scan(host, ports):
     global host_id
+    open_ports, closed_ports, filtered_ports = [], [], []
 
-    open_ports = []
-    closed_ports = []
-    filtered_ports = []
+    def scan_port(port):
+        pkt = IP(dst=host) / TCP(dport=port, flags="S")
+        response = sr1(pkt, timeout=1, verbose=0)
+        if response is None:
+            return ("filtered", port)
+        elif response.haslayer(TCP):
+            if response[TCP].flags == 0x12:
+                sr1(IP(dst=host) / TCP(dport=port, flags="R"), timeout=1, verbose=0)
+                return ("open", port)
+            elif response[TCP].flags == 0x14:
+                return ("closed", port)
+        return ("filtered", port)
 
     try:
-        for port in ports:
-            pkt = IP(dst=host) / TCP(dport=port, flags="S")
-            response = sr1(pkt, timeout=2, verbose=0)
-
-            if response is None:
-                filtered_ports.append(port)
-            elif response.haslayer(TCP):
-                if response[TCP].flags == 0x12:
+        with ThreadPoolExecutor(max_workers=100) as executor:
+            futures = [executor.submit(scan_port, port) for port in ports]
+            for future in as_completed(futures):
+                result, port = future.result()
+                if result == "open":
                     open_ports.append(port)
-                    sr1(IP(dst=host) / TCP(dport=port, flags="R"), timeout=1, verbose=0)
-                elif response[TCP].flags == 0x14:
+                elif result == "closed":
                     closed_ports.append(port)
+                else:
+                    filtered_ports.append(port)
 
-        if not (open_ports or closed_ports or filtered_ports):
-            store_tcp_results(host_id, [], [], ["Scan Failed or No Response"])
-        else:
-            store_tcp_results(host_id, open_ports, closed_ports, filtered_ports)
-
+        store_tcp_results(host_id, open_ports, closed_ports, filtered_ports)
         print(f"[+] Stored TCP scan results for {host}")
         return open_ports
 
@@ -88,31 +92,35 @@ def tcp_syn_scan(host, ports):
 # Scanning for UDP ports
 def udp_scan(host, ports):
     global host_id
+    open_ports, closed_ports, filtered_ports = [], [], []
 
-    open_ports = []
-    closed_ports = []
-    filtered_ports = []
+    def scan_port(port):
+        pkt = IP(dst=host) / UDP(dport=port)
+        response = sr1(pkt, timeout=2, verbose=0)
+        if response is None:
+            return ("open", port)  # Open or filtered
+        elif response.haslayer(ICMP):
+            icmp_type = response[ICMP].type
+            icmp_code = response[ICMP].code
+            if icmp_type == 3 and icmp_code == 3:
+                return ("closed", port)
+            else:
+                return ("filtered", port)
+        return ("filtered", port)
 
     try:
-        for port in ports:
-            pkt = IP(dst=host) / UDP(dport=port)
-            response = sr1(pkt, timeout=3, verbose=0)
-
-            if response is None:
-                open_ports.append(port)  # Possible open/filtered
-            elif response.haslayer(ICMP):
-                icmp_type = response[ICMP].type
-                icmp_code = response[ICMP].code
-                if icmp_type == 3 and icmp_code == 3:
+        with ThreadPoolExecutor(max_workers=100) as executor:
+            futures = [executor.submit(scan_port, port) for port in ports]
+            for future in as_completed(futures):
+                result, port = future.result()
+                if result == "open":
+                    open_ports.append(port)
+                elif result == "closed":
                     closed_ports.append(port)
                 else:
                     filtered_ports.append(port)
 
-        if not (open_ports or closed_ports or filtered_ports):
-            store_udp_results(host_id, [], [], ["Scan Failed or No Response"])
-        else:
-            store_udp_results(host_id, open_ports, closed_ports, filtered_ports)
-
+        store_udp_results(host_id, open_ports, closed_ports, filtered_ports)
         print(f"[+] Stored UDP scan results for {host}")
         return open_ports
 
@@ -441,6 +449,12 @@ def scan_host(host):
     detect_firewall(host)
     tcp_open_ports=tcp_syn_scan(host, range(1, 1025))
     udp_open_ports=udp_scan(host, range(1, 1025))
+
+    if not tcp_open_ports and not udp_open_ports:
+        store_service_results(host_id, None, "No services detected")
+        print(f"[+] No services detected for {host}")
+        return
+
 
     for port in tcp_open_ports:
         detect_service(host, port)
