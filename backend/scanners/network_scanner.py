@@ -98,7 +98,7 @@ def udp_scan(host, ports):
         pkt = IP(dst=host) / UDP(dport=port)
         response = sr1(pkt, timeout=2, verbose=0)
         if response is None:
-            return ("open", port)  # Open or filtered
+            return ("open|filtered", port)  
         elif response.haslayer(ICMP):
             icmp_type = response[ICMP].type
             icmp_code = response[ICMP].code
